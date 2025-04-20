@@ -35,3 +35,45 @@
 2025-04-20 19:35:02 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
 2025-04-20 19:35:02 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 4 ms
 2025-04-20 19:35:02 [http-nio-8080-exec-1] ERROR c.f.s.CustomAuthenticationEntryPoint - 인증 실패 발생: Full authentication is required to access this resource, URI: /api/v1/test, IP: 0:0:0:0:0:0:0:1
+2025-04-20 19:39:28 [restartedMain] INFO  com.fsd.FsdApplication - Starting FsdApplication using Java 21.0.6 with PID 28956 (C:\dev\git\ncaco97\fsd_example\build\classes\java\main started by ncaco in C:\dev\git\ncaco97\fsd_example)
+2025-04-20 19:39:28 [restartedMain] INFO  com.fsd.FsdApplication - No active profile set, falling back to 1 default profile: "default"
+2025-04-20 19:39:28 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-04-20 19:39:28 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-04-20 19:39:29 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-20 19:39:29 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 62 ms. Found 2 JPA repository interfaces.
+2025-04-20 19:39:29 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-04-20 19:39:29 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-04-20 19:39:29 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-04-20 19:39:29 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-04-20 19:39:30 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api/v1] - Initializing Spring embedded WebApplicationContext
+2025-04-20 19:39:30 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1620 ms
+2025-04-20 19:39:30 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-20 19:39:30 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-04-20 19:39:30 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-04-20 19:39:30 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-20 19:39:30 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'org.springframework.jdbc.datasource.DriverManagerDataSource@5b977edd']
+	Database driver: undefined/unknown
+	Database version: 3.44.1
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-04-20 19:39:31 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-20 19:39:31 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-20 19:39:32 [restartedMain] DEBUG com.fsd.security.JwtRequestFilter - Filter 'jwtRequestFilter' configured for use
+2025-04-20 19:39:32 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userService
+2025-04-20 19:39:32 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-20 19:39:32 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-04-20 19:39:32 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-04-20 19:39:32 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api/v1'
+2025-04-20 19:39:32 [restartedMain] INFO  com.fsd.FsdApplication - Started FsdApplication in 5.057 seconds (process running for 5.503)
+2025-04-20 19:39:36 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api/v1] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-20 19:39:36 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-04-20 19:39:36 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-04-20 19:39:36 [http-nio-8080-exec-1] ERROR c.f.s.CustomAuthenticationEntryPoint - 인증 실패 발생: Full authentication is required to access this resource, URI: /api/v1/test, IP: 0:0:0:0:0:0:0:1
+2025-04-20 19:39:36 [http-nio-8080-exec-2] ERROR c.f.s.CustomAuthenticationEntryPoint - 인증 실패 발생: Full authentication is required to access this resource, URI: /api/v1/test, IP: 0:0:0:0:0:0:0:1
+2025-04-20 19:39:37 [http-nio-8080-exec-3] ERROR c.f.s.CustomAuthenticationEntryPoint - 인증 실패 발생: Full authentication is required to access this resource, URI: /api/v1/test, IP: 0:0:0:0:0:0:0:1
+2025-04-20 19:39:37 [http-nio-8080-exec-4] ERROR c.f.s.CustomAuthenticationEntryPoint - 인증 실패 발생: Full authentication is required to access this resource, URI: /api/v1/test, IP: 0:0:0:0:0:0:0:1
+2025-04-20 19:39:37 [http-nio-8080-exec-5] ERROR c.f.s.CustomAuthenticationEntryPoint - 인증 실패 발생: Full authentication is required to access this resource, URI: /api/v1/test, IP: 0:0:0:0:0:0:0:1
+2025-04-20 19:39:37 [http-nio-8080-exec-6] ERROR c.f.s.CustomAuthenticationEntryPoint - 인증 실패 발생: Full authentication is required to access this resource, URI: /api/v1/test, IP: 0:0:0:0:0:0:0:1

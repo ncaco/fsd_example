@@ -1,0 +1,63 @@
+.user-card {
+  display: flex;
+  padding: 16px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.user-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-avatar {
+  margin-right: 16px;
+}
+
+.user-avatar img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+}
+
+.user-email {
+  margin: 0 0 8px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.user-role {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.user-role.admin {
+  background-color: #f39c12;
+  color: white;
+}
+
+.user-role.user {
+  background-color: #3498db;
+  color: white;
+}
+
+.user-role.guest {
+  background-color: #95a5a6;
+  color: white;
+} 
