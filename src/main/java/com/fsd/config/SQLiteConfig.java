@@ -21,8 +21,8 @@ public class SQLiteConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
-        dataSource.setUrl(env.getProperty("spring.datasource.url"));
+        dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name", "org.sqlite.JDBC"));
+        dataSource.setUrl(env.getProperty("spring.datasource.url", "jdbc:sqlite:DB_FSD.db"));
         return dataSource;
     }
 
