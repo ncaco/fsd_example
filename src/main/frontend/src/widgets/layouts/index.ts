@@ -1,2 +1,2 @@
-export { HomeLayout } from './HomeLayout/ui/HomeLayout';
-export { ALayout } from './ALayout/ui/ALayout'; 
+export { HomeLayout } from '@widgets/layouts/HomeLayout/ui/HomeLayout';
+export { ALayout } from '@widgets/layouts/ALayout/ui/ALayout'; 

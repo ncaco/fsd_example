@@ -1,6 +1,5 @@
 import React from 'react';
-import { RouterProvider } from './providers';
-import './styles/index.css';
+import { RouterProvider } from '@app/providers';
 
 const App: React.FC = () => {
   return <RouterProvider />;
