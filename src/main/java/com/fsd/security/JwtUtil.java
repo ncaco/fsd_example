@@ -1,9 +1,16 @@
 package com.fsd.security;
 
+import com.fsd.security.exception.JwtException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -16,14 +23,23 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        try {
+            return extractClaim(token, Claims::getSubject);
+        } catch (Exception e) {
+            throw handleJwtException(e);
+        }
     }
     
     public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+        try {
+            return extractClaim(token, Claims::getExpiration);
+        } catch (Exception e) {
+            throw handleJwtException(e);
+        }
     }
     
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -32,11 +48,32 @@ public class JwtUtil {
     }
     
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
+            logger.error("JWT 토큰이 만료되었습니다: {}", e.getMessage());
+            throw new JwtException("JWT 토큰이 만료되었습니다", e);
+        } catch (UnsupportedJwtException e) {
+            logger.error("지원되지 않는 JWT 토큰입니다: {}", e.getMessage());
+            throw new JwtException("지원되지 않는 JWT 토큰입니다", e);
+        } catch (MalformedJwtException e) {
+            logger.error("잘못된 형식의 JWT 토큰입니다: {}", e.getMessage());
+            throw new JwtException("잘못된 형식의 JWT 토큰입니다", e);
+        } catch (SignatureException e) {
+            logger.error("잘못된 JWT 서명입니다: {}", e.getMessage());
+            throw new JwtException("잘못된 JWT 서명입니다", e);
+        } catch (Exception e) {
+            logger.error("JWT 토큰 처리 중 오류가 발생했습니다: {}", e.getMessage());
+            throw new JwtException("JWT 토큰 처리 중 오류가 발생했습니다", e);
+        }
     }
     
     private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        try {
+            return extractExpiration(token).before(new Date());
+        } catch (Exception e) {
+            throw handleJwtException(e);
+        }
     }
     
     public String generateToken(UserDetails userDetails) {
@@ -55,7 +92,19 @@ public class JwtUtil {
     }
     
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        try {
+            final String username = extractUsername(token);
+            return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        } catch (Exception e) {
+            throw handleJwtException(e);
+        }
+    }
+    
+    private JwtException handleJwtException(Exception e) {
+        if (e instanceof JwtException) {
+            return (JwtException) e;
+        }
+        logger.error("JWT 토큰 처리 중 오류가 발생했습니다: {}", e.getMessage());
+        return new JwtException("JWT 토큰 처리 중 오류가 발생했습니다", e);
     }
 } 

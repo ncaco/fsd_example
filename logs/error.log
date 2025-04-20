@@ -1,0 +1,1 @@
+2025-04-20 19:35:02 [http-nio-8080-exec-1] ERROR c.f.s.CustomAuthenticationEntryPoint - 인증 실패 발생: Full authentication is required to access this resource, URI: /api/v1/test, IP: 0:0:0:0:0:0:0:1
