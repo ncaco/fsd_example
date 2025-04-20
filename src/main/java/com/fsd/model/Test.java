@@ -5,9 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "TB_TEST")
+@Getter
+@Setter
 public class Test {
 
     @Id
@@ -25,31 +29,6 @@ public class Test {
     // 매개변수가 있는 생성자
     public Test(String name, String description) {
         this.name = name;
-        this.description = description;
-    }
-    
-    // Getter 및 Setter
-    public Long getId() {
-        return id;
-    }
-    
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getDescription() {
-        return description;
-    }
-    
-    public void setDescription(String description) {
         this.description = description;
     }
 } 
