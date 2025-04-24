@@ -1,24 +1,5 @@
 import React from 'react';
 
-interface PricingFeature {
-  name: string;
-  included: boolean;
-}
-
-interface PricingPlan {
-  title: string;
-  price: string;
-  description: string;
-  features: PricingFeature[];
-  ctaText: string;
-  popular?: boolean;
-}
-
-interface PricingSectionProps {
-  title: string;
-  description: string;
-  plans: PricingPlan[];
-}
 
 // 가격표 데이터
 const pricingPlans = [
@@ -67,11 +48,11 @@ const pricingPlans = [
   }
 ];
 
-export const PricingSection: React.FC<PricingSectionProps> = ({
-  title = "가격 표",
-  description = "Feature-Sliced Design을 사용하는 개발자들의 이야기를 들어보세요",
-  plans = pricingPlans,
-}) => {
+const title = "가격 표";
+const description = "Feature-Sliced Design을 사용하는 개발자들의 이야기를 들어보세요";
+const plans = pricingPlans;
+
+export const PricingSection: React.FC = () => {
   return (
     <div className="bg-white py-16 px-6 sm:py-24">
       <div className="max-w-7xl mx-auto text-center">
@@ -153,3 +134,4 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
     </div>
   );
 }; 
+export default PricingSection;

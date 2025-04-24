@@ -65,9 +65,10 @@ export const HomeLayout: React.FC = () => {
 
   // 헤더 메뉴 아이템
   const headerMenuItems = [
-    { label: "기능", href: "#features" },
-    { label: "예제", href: "#examples" },
-    { label: "문서", href: "#documentation" }
+    { label: "기능", href: "/feature" },
+    { label: "예제", href: "/hero" },
+    { label: "가격", href: "/pricing" },
+    { label: "테스터", href: "/testimonial" }
   ];
 
 

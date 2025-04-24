@@ -1,19 +1,5 @@
 import React from 'react';
 
-interface Feature {
-  title: string;
-  description: string;
-  icon?: React.ReactNode;
-}
-
-interface FeatureSectionProps {
-  sectionTitle?: string;
-  sectionDescription?: string;
-  features: Feature[];
-  columns?: 2 | 3 | 4;
-}
-
-
 // 기능 섹션 데이터
 const featureProps = {
   sectionTitle: "프론트엔드 개발의 새로운 표준",
@@ -49,12 +35,13 @@ const featureProps = {
   ]
 };
 
-export const FeatureSection: React.FC<FeatureSectionProps> = ({
-  sectionTitle = featureProps.sectionTitle,
-  sectionDescription = featureProps.sectionDescription,
-  features = featureProps.features,
-  columns = 3
-}) => {
+const sectionTitle = featureProps.sectionTitle;
+const sectionDescription = featureProps.sectionDescription;
+const features = featureProps.features;
+const columns = 3;
+
+export const FeatureSection: React.FC = () => {
+
   // 컬럼 수에 따른 그리드 클래스
   const gridClass = {
     2: "grid-cols-1 sm:grid-cols-2",
@@ -97,3 +84,4 @@ export const FeatureSection: React.FC<FeatureSectionProps> = ({
     </div>
   );
 }; 
+export default FeatureSection;

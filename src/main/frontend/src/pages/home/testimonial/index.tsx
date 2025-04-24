@@ -1,19 +1,5 @@
 import React from 'react';
 
-interface Testimonial {
-  quote: string;
-  author: string;
-  role: string;
-  avatar: string;
-}
-
-interface TestimonialSectionProps {
-  title?: string;
-  description?: string;
-  testimonials: Testimonial[];
-  bgColor?: 'white' | 'gray' | 'primary-light';
-}
-
 // 테스트 데이터
 const TESTIMONIALS = [
   {
@@ -36,19 +22,17 @@ const TESTIMONIALS = [
   }
 ];
 
-export const TestimonialSection: React.FC<TestimonialSectionProps> = ({
-  title = "개발자들의 실제 경험",
-  description = "Feature-Sliced Design을 사용하는 개발자들의 이야기를 들어보세요",
-  testimonials = TESTIMONIALS,
-  bgColor = 'white'
-}) => {
-  // 배경색에 따른 클래스
-  const bgClasses = {
-    'white': 'bg-white',
-    'gray': 'bg-gray-50',
-    'primary-light': 'bg-primary-50'
-  };
+const title = "개발자들의 실제 경험";
+const description = "Feature-Sliced Design을 사용하는 개발자들의 이야기를 들어보세요";
+const testimonials = TESTIMONIALS;
+const bgColor = 'white'
 
+const bgClasses = {
+  'white': 'bg-white',
+  'gray': 'bg-gray-50',
+  'primary-light': 'bg-primary-50'
+};
+export const TestimonialSection: React.FC = () => {
   return (
     <section className={`py-16 sm:py-24 ${bgClasses[bgColor]}`}>
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,3 +83,4 @@ export const TestimonialSection: React.FC<TestimonialSectionProps> = ({
     </section>
   );
 }; 
+export default TestimonialSection;

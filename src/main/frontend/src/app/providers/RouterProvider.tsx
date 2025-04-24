@@ -1,10 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HomeLayout, ALayout } from '@widgets/layouts';
+
 import MainPage from '@pages/home/main';
+import PricingPage from '@pages/home/pricing';
+import TestimonialPage from '@pages/home/testimonial';
+import FeaturePage from '@pages/home/feature';
+import HeroPage from '@pages/home/hero';
+
 import AMainPage from '@pages/a/main';
 import ASub1Page from '@pages/a/sub1';
 import ASub2Page from '@pages/a/sub2';
+
+
 
 export const RouterProvider: React.FC = () => {
   return (
@@ -13,6 +21,10 @@ export const RouterProvider: React.FC = () => {
         {/* 홈 레이아웃 라우트 */}
         <Route path="/" element={<HomeLayout />}>
           <Route index element={<MainPage />} />
+          <Route path="pricing" element={<PricingPage />} />
+          <Route path="testimonial" element={<TestimonialPage />} />
+          <Route path="feature" element={<FeaturePage />} />
+          <Route path="hero" element={<HeroPage />} />
         </Route>
 
         {/* A 레이아웃 라우트 */}

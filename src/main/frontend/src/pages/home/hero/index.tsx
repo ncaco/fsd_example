@@ -1,44 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface HeroSectionProps {
-  title: string;
-  subtitle: string;
+// 히어로 섹션 데이터
+const heroProps = {
+  title: "더 나은 아키텍처, 더 나은 개발 경험",
+  subtitle: "Feature-Sliced Design은 프론트엔드 프로젝트를 더 체계적이고 유지보수하기 쉽게 구성할 수 있는 아키텍처 방법론입니다.",
   primaryCTA: {
-    text: string;
-    href: string;
-  };
-  secondaryCTA?: {
-    text: string;
-    href: string;
-  };
-  image?: string;
-}
+    text: "가이드 보기",
+    href: "/a"
+  },
+  secondaryCTA: {
+    text: "GitHub 방문하기",
+    href: "#"
+  },
+  image: ""
+};
 
+const title = heroProps.title;
+const subtitle = heroProps.subtitle;
+const primaryCTA = heroProps.primaryCTA;
+const secondaryCTA = heroProps.secondaryCTA;
+const image = heroProps.image;
 
+export const HeroSection: React.FC = () => {
 
-  // 히어로 섹션 데이터
-  const heroProps = {
-    title: "더 나은 아키텍처, 더 나은 개발 경험",
-    subtitle: "Feature-Sliced Design은 프론트엔드 프로젝트를 더 체계적이고 유지보수하기 쉽게 구성할 수 있는 아키텍처 방법론입니다.",
-    primaryCTA: {
-      text: "가이드 보기",
-      href: "/a"
-    },
-    secondaryCTA: {
-      text: "GitHub 방문하기",
-      href: "#"
-    },
-    image: ""
-  };
-
-export const HeroSection: React.FC<HeroSectionProps> = ({
-  title = heroProps.title,
-  subtitle = heroProps.subtitle,
-  primaryCTA = heroProps.primaryCTA,
-  secondaryCTA = heroProps.secondaryCTA,
-  image = heroProps.image
-}) => {
   return (
     <div className="relative bg-gradient-to-r from-blue-50 to-indigo-50 overflow-hidden">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
@@ -92,3 +77,4 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     </div>
   );
 }; 
+export default HeroSection;
