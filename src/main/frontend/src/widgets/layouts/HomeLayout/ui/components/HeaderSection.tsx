@@ -1,22 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface HeaderSectionProps {
-  logoText: string;
-  menuItems: {
-    label: string;
-    href: string;
-  }[];
-  ctaText: string;
-  ctaLink: string;
-}
+const logoText="Feature-Sliced Design" 
+const ctaText="시작하기"
+const ctaLink="/a"
 
-export const HeaderSection: React.FC<HeaderSectionProps> = ({
-  logoText,
-  menuItems,
-  ctaText,
-  ctaLink
-}) => {
+// 헤더 메뉴 아이템
+const menuItems = [
+  { label: "기능", href: "/feature" },
+  { label: "예제", href: "/hero" },
+  { label: "가격", href: "/pricing" },
+  { label: "테스터", href: "/testimonial" }
+];
+
+export const HeaderSection: React.FC = () => {
   return (
     <header className="bg-white bg-opacity-90 backdrop-blur-sm sticky top-0 z-10 border-b border-gray-100 shadow-sm">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">

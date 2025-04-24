@@ -53,16 +53,4 @@ public class SecurityExceptionHandler {
         
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
-    
-    @ExceptionHandler(JwtException.class)
-    public ResponseEntity<Map<String, Object>> handleJwtException(JwtException e) {
-        logger.error("JWT 예외 처리: {}", e.getMessage());
-        
-        Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("status", HttpStatus.UNAUTHORIZED.value());
-        errorResponse.put("error", "토큰 오류");
-        errorResponse.put("message", e.getMessage());
-        
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-    }
 } 
