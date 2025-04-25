@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -23,8 +22,7 @@ import org.slf4j.LoggerFactory;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     /* 리다이렉트 URI */
-    @Value("${app.oauth2.redirect-uri}")
-    private String redirectUri;
+    private final String redirectUri = "http://localhost:8080/api/v1/oauth2/redirect";
 
     /* 로깅 인스턴스 */
     private static final Logger logger = LoggerFactory.getLogger(OAuth2AuthenticationSuccessHandler.class);
