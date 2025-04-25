@@ -1,50 +1,41 @@
-// API 클라이언트 설정
-const API_URL = import.meta.env.VITE_API_URL || 'https://api.example.com';
+import axios from 'axios';
 
-export const api = {
-  get: async <T>(endpoint: string): Promise<T> => {
-    const response = await fetch(`${API_URL}${endpoint}`);
-    if (!response.ok) {
-      throw new Error(`API 요청 실패: ${response.status}`);
-    }
-    return response.json();
+const baseURL = 'http://localhost:8080/api'; // 백엔드 서버 URL
+
+export const apiInstance = axios.create({
+  baseURL,
+  headers: {
+    'Content-Type': 'application/json',
   },
-  
-  post: async <T, D extends Record<string, unknown>>(endpoint: string, data: D): Promise<T> => {
-    const response = await fetch(`${API_URL}${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) {
-      throw new Error(`API 요청 실패: ${response.status}`);
+});
+
+// 요청 인터셉터 추가
+apiInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-    return response.json();
+    return config;
   },
-  
-  put: async <T, D extends Record<string, unknown>>(endpoint: string, data: D): Promise<T> => {
-    const response = await fetch(`${API_URL}${endpoint}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) {
-      throw new Error(`API 요청 실패: ${response.status}`);
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// 응답 인터셉터 추가
+apiInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // 토큰이 만료되었거나 유효하지 않은 경우 로그인 페이지로 리다이렉트
+      localStorage.removeItem('token');
+      window.location.href = '/a/login';
     }
-    return response.json();
-  },
-  
-  delete: async <T>(endpoint: string): Promise<T> => {
-    const response = await fetch(`${API_URL}${endpoint}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) {
-      throw new Error(`API 요청 실패: ${response.status}`);
-    }
-    return response.json();
-  },
-}; 
+    return Promise.reject(error);
+  }
+);
+
+export default apiInstance; 

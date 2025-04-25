@@ -6,9 +6,10 @@ interface RenderMenuItemProps {
     icon: React.ReactNode,
     label: string,
     isCollapsed: boolean,
+    onClick?: (e: React.MouseEvent) => void,
 }
 
-const RenderMenuItem = ({ to, icon, label, isCollapsed }: RenderMenuItemProps) => {
+const RenderMenuItem = ({ to, icon, label, isCollapsed, onClick }: RenderMenuItemProps) => {
     const location = useLocation();
 
     const isActive = (path: string) => {
@@ -28,6 +29,7 @@ const RenderMenuItem = ({ to, icon, label, isCollapsed }: RenderMenuItemProps) =
             to={to} 
             className={`group flex ${isCollapsed ? 'flex-col items-center justify-center px-1' : 'flex-row items-center px-3'} py-2 rounded-md ${isActive(to)}`}
             title={isCollapsed ? label : ""}
+            onClick={onClick}
         >
             <div className="flex-shrink-0">{icon}</div>
             {isCollapsed ? (

@@ -1,11 +1,25 @@
 import { CreateIcon } from '@/shared/ui/icon/CreateIcon';
 import RenderMenuItem from './renderMenuItem';
+import { authApi } from '@/features/auth/api/auth';
+import { useNavigate } from 'react-router-dom';
 
 interface BottomSectionProps {
     isCollapsed: boolean,
 }
 
 export const BottomSection = ({ isCollapsed }: BottomSectionProps) => {
+    const navigate = useNavigate();
+
+    const handleLogout = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        try {
+            await authApi.a_logout();
+            navigate('/a/login');
+        } catch (error) {
+            console.error('로그아웃 실패:', error);
+        }
+    };
+
     return (
         <>
             <div className="flex-shrink-0 mt-4 border-t border-gray-200 pt-4">
@@ -18,10 +32,11 @@ export const BottomSection = ({ isCollapsed }: BottomSectionProps) => {
                     />
                     
                     <RenderMenuItem 
-                        to="/a/logout"
+                        to="#"
                         icon={<CreateIcon iconKey="logout" />}
                         label="로그아웃"
                         isCollapsed={isCollapsed}
+                        onClick={handleLogout}
                     />
                 </nav>
             </div>
