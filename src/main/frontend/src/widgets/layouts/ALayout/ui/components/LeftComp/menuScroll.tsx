@@ -19,15 +19,11 @@ export const MenuScroll = ({ isCollapsed }: MenuScrollProps) => {
     const [menuList, setMenuList] = useState<MenuItem[]>([]);
 
     useEffect(() => {
-        console.log('-----LeftMenu useEffect-----');
+        console.log('-----MenuScroll useEffect-----');
         
         const menuList = [
             { to: '/a/sub1', icon: <CreateIcon iconKey="start" />, label: '시작하기' },
             { to: '/a/sub2', icon: <CreateIcon iconKey="example" />, label: '예제' },
-            { to: '/a/sub3', icon: <CreateIcon iconKey="user" />, label: '사용자' },
-            { to: '/a/sub4', icon: <CreateIcon iconKey="document" />, label: '문서' },
-            { to: '/a/sub5', icon: <CreateIcon iconKey="setting" />, label: '설정' },
-            { to: '/a/sub6', icon: <CreateIcon iconKey="event" />, label: '이벤트' },
         ]
     
         setMenuList(menuList);
