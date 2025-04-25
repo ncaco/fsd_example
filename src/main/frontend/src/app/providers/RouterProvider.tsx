@@ -8,10 +8,10 @@ import TestimonialPage from '@pages/home/testimonial';
 import FeaturePage from '@pages/home/feature';
 import HeroPage from '@pages/home/hero';
 
+import ALoginPage from '@pages/a/login';
 import AMainPage from '@pages/a/main';
 import ASub1Page from '@pages/a/sub1';
 import ASub2Page from '@pages/a/sub2';
-
 
 
 export const RouterProvider: React.FC = () => {
@@ -28,6 +28,8 @@ export const RouterProvider: React.FC = () => {
         </Route>
 
         {/* A 레이아웃 라우트 */}
+        {/* 로그인 페이지 */}
+        <Route path="/a/login" element={<ALoginPage />} />
         <Route path="/a" element={<ALayout />}>
           <Route index element={<AMainPage />} />
           <Route path="sub1" element={<ASub1Page />} />

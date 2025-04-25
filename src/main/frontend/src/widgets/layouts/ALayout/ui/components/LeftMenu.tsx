@@ -27,7 +27,7 @@ export const LeftMenu: React.FC = () => {
   return (
     <>
       {/* hidden sm:block을 추가하여 모바일에서는 숨기고 sm 브레이크포인트(640px) 이상에서만 보이도록 설정 */}
-      <div className={`hidden sm:block h-full border-r border-gray-300 bg-white flex-shrink-0 relative ${
+      <div className={`hidden md:block h-full border-r border-gray-300 bg-white flex-shrink-0 relative ${
           isCollapsed ? 'w-20' : 'w-64'
         }`}
       >

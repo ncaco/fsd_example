@@ -4,7 +4,7 @@ import { CreateIcon } from '@/shared/ui/icon/CreateIcon';
 export const MobileBottomMenu: React.FC = () => {
     return (
         // 하단에 고정되는 메뉴바
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 sm:hidden">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 md:hidden">
             <div className="flex items-center justify-between max-w-screen-xl mx-auto">
                 {/* 홈 */}
                 <button className="flex flex-col items-center justify-center w-1/5 text-gray-600 hover:text-red-600">
