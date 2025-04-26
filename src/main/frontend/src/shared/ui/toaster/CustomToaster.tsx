@@ -1,35 +1,44 @@
 import { Toaster } from 'react-hot-toast';
+import './CustomToaster.css'; // CSS 파일 import
 
 export const CustomToaster = () => {
     return (
         <Toaster
-            position="top-center" // 상단 가운데
+            position="top-center"
+            gutter={16}
+            containerClassName="toast-container"
             toastOptions={{
-                duration: 3000,
+                duration: 1500,
+                // 공통 스타일
                 style: {
-                    background: '#363636 !important',
-                    color: '#fff !important',
-                    borderRadius: '8px !important',
-                    padding: '16px !important',
-                    fontSize: '16px !important',
-                    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2) !important',
+                    background: '#f8f9fa',
+                    color: '#333',
+                    padding: '12px 16px',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                    fontSize: '15px',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    fontWeight: '500',
+                    letterSpacing: '-0.01em',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    maxWidth: '400px',
+                    lineHeight: '1.4',
                 },
+                // 성공 토스트
                 success: {
                     style: {
-                        background: '#4ade80',
-                        borderRadius: '8px',
-                        padding: '16px',
-                        fontSize: '16px',
-                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                        backgroundColor: '#ecf9ee',
+                        borderLeft: '4px solid #4ade80',
                     },
                 },
+                // 에러 토스트
                 error: {
                     style: {
-                        background: '#ef4444',
-                        borderRadius: '8px',
-                        padding: '16px',
-                        fontSize: '16px',
-                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+                        backgroundColor: '#fdf1f1',
+                        borderLeft: '4px solid #ef4444',
                     },
                 },
             }}
