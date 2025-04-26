@@ -37,6 +37,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ password, setPassword, on
           className="ml-2 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors"
           onClick={togglePasswordVisibility}
           aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 표시"}
+          tabIndex={-1}
         >
           {showPassword ? (
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

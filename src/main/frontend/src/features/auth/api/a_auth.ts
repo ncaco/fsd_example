@@ -1,13 +1,7 @@
 import apiInstance from '@/shared/api';
+import { User } from '@/types/a/user';
 
 export interface LoginRequest {
-  eml: string;
-  pswd: string;
-}
-
-export interface User {
-  sn: number;
-  nm: string;
   eml: string;
   pswd: string;
 }

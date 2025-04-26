@@ -4,21 +4,15 @@ import EmailInput from './EmailInput';
 import PasswordInput from './PasswordInput';
 import RememberMeCheckbox from './RememberMeCheckbox';
 import LoginButton from './LoginButton';
-import AlertMessage from './AlertMessage';
 import SocialLoginButtons from './SocialLoginButtons';
 import DemoAccountInfo from './DemoAccountInfo';
 
 interface LoginFormProps {
   onLogin: (email: string, password: string) => void;
   isLoading: boolean;
-  alert: {
-    show: boolean;
-    type: 'success' | 'error';
-    message: string;
-  };
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading, alert }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -68,8 +62,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading, alert }) => {
         <p className="text-gray-500 mt-2 text-sm">계정에 로그인하여 서비스를 이용하세요</p>
       </div>
 
-      <AlertMessage show={alert.show} type={alert.type} message={alert.message} />
-      
       <div className="space-y-6">
         <EmailInput 
           email={email} 
