@@ -39,3 +39,5 @@ out/
 
 logs/
 logs/*
+
+node_modules/

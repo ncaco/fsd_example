@@ -1,11 +1,11 @@
 import { Toaster } from 'react-hot-toast';
-import './CustomToaster.css'; // CSS 파일 import
 
 export const CustomToaster = () => {
     return (
         <Toaster
-            position="bottom-center"
+            position="top-center"
             gutter={16}
+            containerClassName="toast-container"
             toastOptions={{
                 duration: 1500,
                 // 공통 스타일
@@ -30,12 +30,22 @@ export const CustomToaster = () => {
                 success: {
                     style: {
                         backgroundColor: '#ecf9ee',
+                        borderLeft: '4px solid #4ade80',
+                    },
+                    iconTheme: {
+                        primary: '#4ade80',
+                        secondary: 'white',
                     },
                 },
                 // 에러 토스트
                 error: {
                     style: {
                         backgroundColor: '#fdf1f1',
+                        borderLeft: '4px solid #ef4444',
+                    },
+                    iconTheme: {
+                        primary: '#ef4444',
+                        secondary: 'white',
                     },
                 },
             }}
