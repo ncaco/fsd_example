@@ -1,13 +1,13 @@
 import { Toaster } from 'react-hot-toast';
 
-export const CustomToaster = () => {
+export const A_CustomToaster = () => {
     return (
         <Toaster
             position="top-center"
             gutter={16}
             containerClassName="toast-container"
             toastOptions={{
-                duration: 1500,
+                duration: 2000,
                 // 공통 스타일
                 style: {
                     background: '#f8f9fa',
@@ -53,4 +53,4 @@ export const CustomToaster = () => {
     );
 }
 
-export default CustomToaster;
+export default A_CustomToaster;

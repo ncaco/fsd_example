@@ -1,3 +1,3 @@
-export { CustomToaster } from './CustomToaster';
-export { toast as CustomToast } from './CustomToast';
+export { A_CustomToaster } from './A_CustomToaster';
+export { toast as A_CustomToast } from './CustomToast';
 

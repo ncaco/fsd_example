@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HomeLayout, ALayout } from '@widgets/layouts';
+import { A_CustomToaster } from '@shared/ui/toaster';
 
 import MainPage from '@pages/home/main';
 import PricingPage from '@pages/home/pricing';
@@ -17,6 +18,9 @@ import ASub2Page from '@pages/a/sub2';
 export const RouterProvider: React.FC = () => {
   return (
     <BrowserRouter>
+      {/* 전역 토스터 배치 */}
+      <A_CustomToaster />
+      
       <Routes>
         {/* 홈 레이아웃 라우트 */}
         <Route path="/" element={<HomeLayout />}>
@@ -27,9 +31,9 @@ export const RouterProvider: React.FC = () => {
           <Route path="hero" element={<HeroPage />} />
         </Route>
 
-        {/* A 레이아웃 라우트 */}
         {/* 로그인 페이지 */}
         <Route path="/a/login" element={<ALoginPage />} />
+        {/* A 레이아웃 라우트 */}
         <Route path="/a" element={<ALayout />}>
           <Route index element={<AMainPage />} />
           <Route path="sub1" element={<ASub1Page />} />
