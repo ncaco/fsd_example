@@ -17,7 +17,7 @@ public class LoginResponse extends BaseResponse {
         return LoginResponse.builder()
                 .status(status)
                 .statusCode(200)
-                .statusMessage("로그인 성공")
+                .message("로그인 성공")
                 .user(user)
                 .build();
     }
@@ -34,7 +34,7 @@ public class LoginResponse extends BaseResponse {
         return LoginResponse.builder()
                 .status(false)
                 .statusCode(Integer.parseInt(statusCode))
-                .statusMessage(additionalMessage)
+                .message(additionalMessage)
                 .build();
     }
 } 

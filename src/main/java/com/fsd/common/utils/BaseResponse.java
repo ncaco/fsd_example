@@ -12,5 +12,5 @@ import lombok.experimental.SuperBuilder;
 public class BaseResponse {
     private Boolean status;
     private Integer statusCode;
-    private String statusMessage;
+    private String message;
 }
