@@ -44,6 +44,7 @@ const ALoginPage: React.FC = () => {
       }, 1000);
       */
     } catch (error) {
+      console.log(error);
       // 로그인 실패
       const errorMessage = axios.isAxiosError(error)
         ? (error as AxiosError<{ message: string }>).response?.data?.message

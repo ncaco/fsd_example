@@ -44,7 +44,7 @@ public class A_LoginController {
             
             return ResponseEntity.ok(LoginResponse.fromUser(true, "로그인 성공", user));
         } catch (Exception e) {
-            return ResponseEntity.ok(LoginResponse.fromUser(false, e.getMessage(), null));
+            return ResponseEntity.ok(LoginResponse.error(e.getMessage()));
         }
     }
 
