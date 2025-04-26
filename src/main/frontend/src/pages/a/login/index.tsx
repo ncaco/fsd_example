@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoginLeft, LoginForm } from './components';
+import { authApi } from '@/features/auth/api/a_auth';
+import axios, { AxiosError } from 'axios';
 
 type AlertStatus = {
   show: boolean;
@@ -13,7 +15,7 @@ const ALoginPage: React.FC = () => {
   const [alert, setAlert] = useState<AlertStatus>({ show: false, type: 'success', message: '' });
   const navigate = useNavigate();
 
-  const handleLogin = (email: string, password: string) => {
+  const handleLogin = async (email: string, password: string) => {
     if (!email || !password) {
       setAlert({
         show: true,
@@ -26,23 +28,34 @@ const ALoginPage: React.FC = () => {
     setIsLoading(true);
     setAlert({ show: false, type: 'success', message: '' });
     
-    // API 호출 시뮬레이션
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const response = await authApi.a_login({ username: email, password });
       
-      // 로그인 성공 케이스 (데모용)
-      if (email === 'admin' && password === 'password') {
-        setAlert({ show: true, type: 'success', message: '로그인 성공! 메인 페이지로 이동합니다.' });
+      // 로그인 성공
+      setAlert({ show: true, type: 'success', message: '로그인 성공! 메인 페이지로 이동합니다.' });
+      
+      // 토큰 저장
+      localStorage.setItem('token', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
+      
+      // 1초 후 메인 페이지로 리다이렉션
+      setTimeout(() => {
+        navigate('/a');
+      }, 1000);
+    } catch (error) {
+      // 로그인 실패
+      const errorMessage = axios.isAxiosError(error)
+        ? (error as AxiosError<{ message: string }>).response?.data?.message
+        : '서버와 통신 중 오류가 발생했습니다.';
         
-        // 1초 후 메인 페이지로 리다이렉션
-        setTimeout(() => {
-          navigate('/a');
-        }, 1000);
-      } else {
-        // 로그인 실패 케이스
-        setAlert({ show: true, type: 'error', message: '아이디 또는 비밀번호가 올바르지 않습니다.' });
-      }
-    }, 1500);
+      setAlert({ 
+        show: true, 
+        type: 'error', 
+        message: errorMessage || '아이디 또는 비밀번호가 올바르지 않습니다.' 
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

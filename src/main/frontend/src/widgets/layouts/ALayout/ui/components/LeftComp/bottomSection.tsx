@@ -1,6 +1,6 @@
 import { CreateIcon } from '@/shared/ui/icon/CreateIcon';
 import RenderMenuItem from './renderMenuItem';
-import { authApi } from '@/features/auth/api/auth';
+import { authApi } from '@/features/auth/api/a_auth';
 import { useNavigate } from 'react-router-dom';
 
 interface BottomSectionProps {
