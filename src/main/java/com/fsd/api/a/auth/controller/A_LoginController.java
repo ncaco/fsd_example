@@ -45,7 +45,7 @@ public class A_LoginController {
     @PostMapping("/logout")
     public ResponseEntity<LogoutResponse> logout(HttpSession session) {
         logger.info("로그아웃 요청");
-        
+            
         authService.logout(session);
         
         return ResponseEntity.ok(LogoutResponse.success());

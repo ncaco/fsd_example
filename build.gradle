@@ -41,4 +41,9 @@ tasks.named('test') {
 
 tasks.withType(JavaCompile) {
 	options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+	options.encoding = 'UTF-8'
+}
+
+bootRun {
+    jvmArgs = ['-Dfile.encoding=UTF-8']
 }
