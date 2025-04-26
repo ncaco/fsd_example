@@ -1,29 +1,49 @@
-@keyframes toast-enter {
-    0% {
-        transform: translateY(-20px);
+/* 토스트 공통 애니메이션 */
+div[role="status"][data-rhf] {
+    position: relative !important;
+    animation-duration: 0.4s !important;
+    animation-fill-mode: both !important;
+}
+
+/* 토스트 입장 애니메이션 */
+@keyframes slideInDown {
+    from {
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
         opacity: 0;
     }
-    100% {
-        transform: translateY(0);
+    to {
+        transform: translate3d(0, 0, 0);
         opacity: 1;
     }
 }
 
-@keyframes toast-exit {
-    0% {
-        transform: translateY(0);
+div[id^="toast-"] {
+    animation-name: slideInDown !important;
+}
+
+/* 토스트 퇴장 애니메이션 */
+@keyframes slideOutDown {
+    from {
+        transform: translate3d(0, 0, 0);
         opacity: 1;
     }
-    100% {
-        transform: translateY(20px);
+    to {
+        transform: translate3d(0, 20px, 0);
         opacity: 0;
     }
 }
 
-.toast-container {
-    animation: toast-enter 0.4s ease forwards; /* 들어올 때 애니메이션 */
+div[id^="toast-"]:not(:hover) {
+    animation-name: slideOutDown !important;
+    animation-delay: 1.5s !important;
 }
 
-.toast-container.exit {
-    animation: toast-exit 0.4s ease forwards; /* 나갈 때 애니메이션 */
+/* 성공/에러 토스트 스타일 */
+div[data-type="success"] {
+    border-left: 4px solid #4ade80 !important;
+}
+
+div[data-type="error"] {
+    border-left: 4px solid #ef4444 !important;
 }
