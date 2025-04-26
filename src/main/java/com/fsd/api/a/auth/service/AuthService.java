@@ -15,24 +15,56 @@ import org.slf4j.LoggerFactory;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    
-    private final UserRepository userRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
     
-    public User login(String email, String password) {
-        // 실제 환경에서는 패스워드 검증 로직이 있어야 하지만
-        // 현재 User 모델에 패스워드 필드가 없어 이메일로만 검색
-        User user = userRepository.findByEmail(email)
+    private final UserRepository userRepository;
+    
+    /** 로그인 */
+    public User login(String eml, String pswd) {
+
+        //아이디로 조회
+        User user = userRepository.findByEml(eml)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "이메일 또는 비밀번호가 올바르지 않습니다."));
-        
-        logger.info("사용자 로그인 성공: {}", email);
+
+        //비밀번호 검증
+        if (!user.getPswd().equals(pswd)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "이메일 또는 비밀번호가 올바르지 않습니다.");
+        }
+
+        //로그인 성공
+        logger.info("사용자 로그인 성공: {}", eml);
+
         return user;
     }
-    
+
+    /** 로그아웃 */
     public void logout(HttpSession session) {
         if (session != null) {
             session.invalidate();
             logger.info("사용자 로그아웃 처리 완료");
         }
+    }
+    
+    /** 데모 계정 조회 */
+    public User getDemoAccount() {
+        logger.info("데모 계정 조회 시작");
+
+        User user = userRepository.findByEml("admin").orElse(null);
+
+        //데모 계정 없을경우 데모 계정 하나 생성함.
+        if (user == null) {
+            logger.info("데모 계정 생성 시작");
+            user = User.builder()
+                .nm("관리자")
+                .eml("admin")
+                .pswd("password")
+                .build();
+            user = userRepository.save(user);
+            logger.info("데모 계정 생성 완료");
+        }
+
+        logger.info("데모 계정 조회 완료: {}", user.toString());
+        return user;
     }
 } 

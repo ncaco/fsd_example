@@ -110,10 +110,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading, alert }) => {
           <p>아직 계정이 없으신가요? <Link to="/register" className="font-medium text-red-600 hover:text-red-800 transition-colors">회원가입</Link></p>
         </div>
 
-        <DemoAccountInfo 
-          username="admin" 
-          password="password" 
-        />
+        <DemoAccountInfo />
       </div>
     </div>
   );

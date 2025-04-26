@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TB_USER")
@@ -13,34 +14,39 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class User {
-    
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    @Column(nullable = false)
-    private String name;
-    
-    @Column(unique = true, nullable = false)
-    private String email;
-    
-    private String imageUrl;
-    
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
-    
-    private String providerId;
-    
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
-    
-    public enum AuthProvider {
-        LOCAL, GOOGLE, NAVER, KAKAO
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_sn_gen")
+    @SequenceGenerator(name = "user_sn_gen", sequenceName = "user_sn", allocationSize = 1)
+    @Column(name = "sn", nullable = false, columnDefinition = "BIGINT DEFAULT 0")
+    private Long sn;
+
+    @Column(name = "nm", nullable = false, columnDefinition = "VARCHAR(20) DEFAULT '사용자'")
+    private String nm;
+
+    @Column(name = "eml", unique = false, nullable = false, columnDefinition = "VARCHAR(256) DEFAULT 'admin'")
+    private String eml;
+
+    @Column(name = "pswd", nullable = false, columnDefinition = "VARCHAR(256) DEFAULT 'password'")
+    private String pswd;
+
+    @Column(name = "reg_dt", nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime regDt;
+
+    @Column(name = "rgtr_id", nullable = true, columnDefinition = "VARCHAR(20) DEFAULT 'admin'")
+    private String rgtrId;
+
+    @Column(name = "mod_dt", nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime modDt;
+
+    @Column(name = "mdfr_id", nullable = true, columnDefinition = "VARCHAR(20) DEFAULT 'admin'")
+    private String mdfrId;
+
+    // 등록수정시간 초기값 현재시간으로 적용
+    @PrePersist
+    public void prePersist() {
+        this.regDt = LocalDateTime.now();
+        this.modDt = LocalDateTime.now();
     }
-    
-    public enum Role {
-        ROLE_USER, ROLE_ADMIN
-    }
-} 
+
+}

@@ -11,20 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponse {
-    private Long userId;
-    private String name;
-    private String email;
-    private String imageUrl;
-    private User.Role role;
+    private User user;
     private String message;
     
     public static LoginResponse fromUser(User user) {
         return LoginResponse.builder()
-                .userId(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .imageUrl(user.getImageUrl())
-                .role(user.getRole())
+                .user(user)
                 .message("로그인 성공")
                 .build();
     }

@@ -15,8 +15,8 @@ const ALoginPage: React.FC = () => {
   const [alert, setAlert] = useState<AlertStatus>({ show: false, type: 'success', message: '' });
   const navigate = useNavigate();
 
-  const handleLogin = async (email: string, password: string) => {
-    if (!email || !password) {
+  const handleLogin = async (eml: string, pswd: string) => {
+    if (!eml || !pswd) {
       setAlert({
         show: true,
         type: 'error',
@@ -29,15 +29,15 @@ const ALoginPage: React.FC = () => {
     setAlert({ show: false, type: 'success', message: '' });
     
     try {
-      const response = await authApi.a_login({ username: email, password });
+      const response = await authApi.a_login({ eml: eml, pswd: pswd });
       
       // 로그인 성공
       setAlert({ show: true, type: 'success', message: '로그인 성공! 메인 페이지로 이동합니다.' });
       
-      // 토큰 저장
-      localStorage.setItem('token', response.accessToken);
-      localStorage.setItem('refreshToken', response.refreshToken);
-      
+      localStorage.setItem('sn', response.sn.toString());
+      localStorage.setItem('nm', response.nm);
+      localStorage.setItem('eml', response.eml);
+
       // 1초 후 메인 페이지로 리다이렉션
       setTimeout(() => {
         navigate('/a');

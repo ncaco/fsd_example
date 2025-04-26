@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.fsd.api.a.auth.dto.LoginRequest;
 import com.fsd.api.a.auth.dto.LoginResponse;
 import com.fsd.api.a.auth.dto.LogoutResponse;
 import com.fsd.api.a.auth.service.AuthService;
@@ -26,22 +25,26 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class A_LoginController {
     
-    private final AuthService authService;
     private static final Logger logger = LoggerFactory.getLogger(A_LoginController.class);
+    
+    private final AuthService authService;
 
+    /** 로그인 */
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
-        logger.info("로그인 요청: {}", loginRequest.getEmail());
+    public ResponseEntity<LoginResponse> login(@RequestBody User loginRequest, HttpSession session) {
+        logger.info("로그인 요청: {}", loginRequest.getEml());
         
-        User user = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        User user = authService.login(loginRequest.getEml(), loginRequest.getPswd());
         
         // 세션에 사용자 정보 저장
-        session.setAttribute("userId", user.getId());
-        session.setAttribute("userEmail", user.getEmail());
+        session.setAttribute("sn", user.getSn());
+        session.setAttribute("nm", user.getNm());
+        session.setAttribute("eml", user.getEml());
         
         return ResponseEntity.ok(LoginResponse.fromUser(user));
     }
-    
+
+    /** 로그아웃 */
     @PostMapping("/logout")
     public ResponseEntity<LogoutResponse> logout(HttpSession session) {
         logger.info("로그아웃 요청");
@@ -50,19 +53,29 @@ public class A_LoginController {
         
         return ResponseEntity.ok(LogoutResponse.success());
     }
-    
+
+    /** 세션 정보 조회 */
     @GetMapping("/session-info")
     public ResponseEntity<Map<String, Object>> getSessionInfo(HttpSession session) {
         Map<String, Object> sessionInfo = new HashMap<>();
         
-        Long userId = (Long) session.getAttribute("userId");
+        Long userSeq = (Long) session.getAttribute("userSeq");
+        String userName = (String) session.getAttribute("userName");
         String userEmail = (String) session.getAttribute("userEmail");
         
-        sessionInfo.put("isLoggedIn", userId != null);
-        sessionInfo.put("userId", userId);
+        sessionInfo.put("isLoggedIn", userSeq != null);
+        sessionInfo.put("userSeq", userSeq);
+        sessionInfo.put("userName", userName);
         sessionInfo.put("userEmail", userEmail);
         sessionInfo.put("sessionId", session.getId());
         
         return ResponseEntity.ok(sessionInfo);
+    }
+
+    /** 데모 계정 조회 */
+    @GetMapping("/demo-account")
+    public ResponseEntity<User> getDemoAccount() {
+        User user = authService.getDemoAccount();
+        return ResponseEntity.ok(user);
     }
 }
