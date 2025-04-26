@@ -34,24 +34,30 @@ public class A_LoginController {
     public ResponseEntity<LoginResponse> login(@RequestBody User loginRequest, HttpSession session) {
         logger.info("로그인 요청: {}", loginRequest.getEml());
         
-        User user = authService.login(loginRequest.getEml(), loginRequest.getPswd());
-        
-        // 세션에 사용자 정보 저장
-        session.setAttribute("sn", user.getSn());
-        session.setAttribute("nm", user.getNm());
-        session.setAttribute("eml", user.getEml());
-        
-        return ResponseEntity.ok(LoginResponse.fromUser(user));
+        try {
+            User user = authService.login(loginRequest.getEml(), loginRequest.getPswd());
+            
+            // 세션에 사용자 정보 저장
+            session.setAttribute("sn", user.getSn());
+            session.setAttribute("nm", user.getNm());
+            session.setAttribute("eml", user.getEml());
+            
+            return ResponseEntity.ok(LoginResponse.fromUser(true, "로그인 성공", user));
+        } catch (Exception e) {
+            return ResponseEntity.ok(LoginResponse.fromUser(false, e.getMessage(), null));
+        }
     }
 
     /** 로그아웃 */
     @PostMapping("/logout")
     public ResponseEntity<LogoutResponse> logout(HttpSession session) {
         logger.info("로그아웃 요청");
-            
-        authService.logout(session);
-        
-        return ResponseEntity.ok(LogoutResponse.success());
+        try {
+            authService.logout(session);
+            return ResponseEntity.ok(LogoutResponse.success());
+        } catch (Exception e) {
+            return ResponseEntity.ok(LogoutResponse.error(e.getMessage()));
+        }
     }
 
     /** 세션 정보 조회 */

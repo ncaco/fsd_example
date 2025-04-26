@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import { LoginLeft, LoginForm } from './components';
 import { authApi } from '@/features/auth/api/a_auth';
 import axios, { AxiosError } from 'axios';
@@ -13,7 +13,7 @@ type AlertStatus = {
 const ALoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<AlertStatus>({ show: false, type: 'success', message: '' });
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const handleLogin = async (eml: string, pswd: string) => {
     if (!eml || !pswd) {
@@ -39,9 +39,10 @@ const ALoginPage: React.FC = () => {
       localStorage.setItem('eml', response.eml);
 
       // 1초 후 메인 페이지로 리다이렉션
-      setTimeout(() => {
+      /*setTimeout(() => {
         navigate('/a');
       }, 1000);
+      */
     } catch (error) {
       // 로그인 실패
       const errorMessage = axios.isAxiosError(error)

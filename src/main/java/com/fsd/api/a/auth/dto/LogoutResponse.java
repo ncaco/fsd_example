@@ -1,20 +1,27 @@
 package com.fsd.api.a.auth.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
+
+import com.fsd.common.utils.BaseResponse;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class LogoutResponse {
-    private String message;
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
+public class LogoutResponse extends BaseResponse {
     
     public static LogoutResponse success() {
         return LogoutResponse.builder()
+                .status(true)
                 .message("로그아웃 성공")
+                .build();
+    }
+
+    public static LogoutResponse error(String message) {
+        return LogoutResponse.builder()
+                .status(false)
+                .message(message)
                 .build();
     }
 } 

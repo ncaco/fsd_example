@@ -1,23 +1,23 @@
 package com.fsd.api.a.auth.dto;
 
 import com.fsd.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
+
+import com.fsd.common.utils.BaseResponse;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class LoginResponse {
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+public class LoginResponse extends BaseResponse {
     private User user;
-    private String message;
-    
-    public static LoginResponse fromUser(User user) {
+
+    public static LoginResponse fromUser(Boolean status, String message, User user) {
         return LoginResponse.builder()
+                .status(status)
+                .message(message)
                 .user(user)
-                .message("로그인 성공")
                 .build();
     }
 } 
