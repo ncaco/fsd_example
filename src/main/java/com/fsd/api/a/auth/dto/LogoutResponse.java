@@ -14,6 +14,8 @@ public class LogoutResponse extends BaseResponse {
     public static LogoutResponse success() {
         return LogoutResponse.builder()
                 .status(true)
+                .statusCode(200)
+                .statusMessage("로그아웃 성공")
                 .message("로그아웃 성공")
                 .build();
     }
@@ -21,6 +23,8 @@ public class LogoutResponse extends BaseResponse {
     public static LogoutResponse error(String message) {
         return LogoutResponse.builder()
                 .status(false)
+                .statusCode(401)
+                .statusMessage("로그아웃 실패")
                 .message(message)
                 .build();
     }

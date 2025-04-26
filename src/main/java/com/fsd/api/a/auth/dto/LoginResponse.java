@@ -16,7 +16,8 @@ public class LoginResponse extends BaseResponse {
     public static LoginResponse fromUser(Boolean status, String message, User user) {
         return LoginResponse.builder()
                 .status(status)
-                .message(message)
+                .statusCode(200)
+                .statusMessage("로그인 성공")
                 .user(user)
                 .build();
     }
@@ -27,12 +28,13 @@ public class LoginResponse extends BaseResponse {
         //첫번째 공백까지가 문자열을 코드 //두번째 공백까지가 메세지 //나머지 문자열을 추가 메세지
         String[] parts = message.split(" ", 3);
         String statusCode = parts[0];
-        String statusMessage = parts[1];
+        //String statusMessage = parts[1];
         String additionalMessage = parts.length > 2 ? parts[2] : "";
         
         return LoginResponse.builder()
                 .status(false)
-                .message(additionalMessage)
+                .statusCode(Integer.parseInt(statusCode))
+                .statusMessage(additionalMessage)
                 .build();
     }
 } 

@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseResponse {
-    private String message;
     private Boolean status;
+    private Integer statusCode;
+    private String statusMessage;
 }
