@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Enumeration;
 
 import com.fsd.common.utils.token.TokenUtils;
 import com.fsd.common.utils.validate.StringUtils;
@@ -37,7 +38,7 @@ public class A_LoginController {
     /** 로그인 */
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody User loginRequest, HttpSession session) {
-        logger.info("로그인 요청: {}", loginRequest.getEml());
+        logger.info("로그인 요청: {}, 세션 ID: {}", loginRequest.getEml(), session.getId());
         
         try {
             User user = authService.login(loginRequest.getEml(), loginRequest.getPswd());
@@ -58,17 +59,14 @@ public class A_LoginController {
             session.setAttribute("eml", user.getEml());
             session.setAttribute("token", accessToken);
             session.setAttribute("refreshToken", refreshToken);
-
-            logger.info("세션 정보: {}", session.getAttribute("sn"));
-            logger.info("세션 정보: {}", session.getAttribute("nm"));
-            logger.info("세션 정보: {}", session.getAttribute("eml"));
-            logger.info("세션 정보: {}", session.getAttribute("token"));
-            logger.info("세션 정보: {}", session.getAttribute("refreshToken"));
+            
+            logger.info("세션 정보 저장 완료: 세션 ID: {}, 사용자: {}", session.getId(), user.getEml());
 
             logger.info("로그인 성공: {}", user);
 
             return ResponseEntity.ok(LoginResponse.fromUser(true, "로그인 성공", user));
         } catch (Exception e) {
+            logger.error("로그인 에러: {}", e.getMessage(), e);
             return ResponseEntity.ok(LoginResponse.error(e.getMessage()));
         }
     }
@@ -88,8 +86,15 @@ public class A_LoginController {
     /** 세션 정보 조회 */
     @GetMapping("/session-info")
     public ResponseEntity<Map<String, Object>> getSessionInfo(HttpSession session) {
-        logger.info("세션 정보 조회 요청");
-
+        logger.info("세션 정보 조회 요청: 세션 ID: {}", session.getId());
+        
+        // 세션에 저장된 모든 속성 나열
+        Enumeration<String> attributeNames = session.getAttributeNames();
+        while (attributeNames.hasMoreElements()) {
+            String name = attributeNames.nextElement();
+            logger.info("세션 속성: {} = {}", name, session.getAttribute(name));
+        }
+        
         Map<String, Object> sessionInfo = new HashMap<>();
         
         String sn = StringUtils.nullConvertToString(session.getAttribute("sn"));

@@ -7,6 +7,8 @@ export const apiInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // 중요: 세션 쿠키를 요청에 포함
+  timeout: 10000,
 });
 
 // 요청 인터셉터 추가
