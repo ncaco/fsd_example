@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { LeftMenu } from './components/LeftMenu';
 import { MainContent } from './components/MainContent';
 import { MobileBottomMenu } from './components/MobileBottomMenu';
@@ -7,16 +8,31 @@ import { User } from '@/types/a/user';
 
 export const ALayout: React.FC = () => {
   console.log('-----ALayout Rendered-----');
-
+  const navigate = useNavigate();
+  
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    console.log('-----ALayout useEffect-----');
+    
     const fetchUser = async () => {
       const response = await authApi.a_sessionInfo();
       setUser(response);
+
+      console.log(user);
     };
     fetchUser();
   }, []);
+
+
+  useEffect(() => {
+    console.log('-----ALayout useEffect-----');
+    console.log(user);
+    //세션정보가 없을 경우 로그인 페이지로 이동
+    if(!user?.sn) {
+      navigate('/a/login');
+    }
+  }, [user]);
 
   return (
     <>
