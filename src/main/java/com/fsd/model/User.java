@@ -42,6 +42,12 @@ public class User {
     @Column(name = "mdfr_id", nullable = true, columnDefinition = "VARCHAR(20) DEFAULT 'admin'")
     private String mdfrId;
 
+    @Column(name = "token", nullable = true, columnDefinition = "VARCHAR(256) DEFAULT ''")
+    private String token;
+
+    @Column(name = "refresh_token", nullable = true, columnDefinition = "VARCHAR(256) DEFAULT ''")
+    private String refreshToken;
+
     // 등록수정시간 초기값 현재시간으로 적용
     @PrePersist
     public void prePersist() {

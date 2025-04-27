@@ -9,7 +9,8 @@ interface BottomSectionProps {
 
 export const BottomSection = ({ isCollapsed }: BottomSectionProps) => {
     const navigate = useNavigate();
-
+    
+    // 로그아웃
     const handleLogout = async (e: React.MouseEvent) => {
         e.preventDefault();
         try {
@@ -38,6 +39,9 @@ export const BottomSection = ({ isCollapsed }: BottomSectionProps) => {
                         isCollapsed={isCollapsed}
                         onClick={handleLogout}
                     />
+
+                    {/* 테스트 세션 표시 */}
+                    
                 </nav>
             </div>
         </>

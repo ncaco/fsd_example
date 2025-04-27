@@ -1,11 +1,10 @@
 package com.fsd.api.a.auth.dto;
 
+import com.fsd.common.utils.dto.BaseResponse;
 import com.fsd.model.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-
-import com.fsd.common.utils.BaseResponse;
 
 @Data
 @SuperBuilder

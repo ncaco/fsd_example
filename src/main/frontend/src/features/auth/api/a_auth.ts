@@ -6,22 +6,39 @@ export interface LoginRequest {
   pswd: string;
 }
 
+function saveSession(user: User) {
+  localStorage.setItem('token', user.token);
+  localStorage.setItem('refreshToken', user.refreshToken);
+  localStorage.setItem('user', JSON.stringify(user));
+}
+
+function clearSession() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('user');
+}
+
 export const authApi = {
   a_login: async (data: LoginRequest): Promise<User> => {
     const response = await apiInstance.post<User>('/a/auth/login', data);
-    console.log(response);
+    saveSession(response.data);
     return response.data;
   },
 
   a_logout: async (): Promise<void> => {
     await apiInstance.post('/a/auth/logout');
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
+    clearSession();
+  },
+
+  a_sessionInfo: async (): Promise<User> => {
+    const response = await apiInstance.get<User>('/a/auth/session-info');
+    return response.data;
   },
 
   a_refreshToken: async (): Promise<User> => {
     const refreshToken = localStorage.getItem('refreshToken');
     const response = await apiInstance.post<User>('/a/auth/refresh', { refreshToken });
+    saveSession(response.data);
     return response.data;
   },
   

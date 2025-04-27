@@ -6,4 +6,6 @@ export interface User extends BaseResponse {
     nm: string;
     eml: string;
     pswd: string;
+    token: string;
+    refreshToken: string;
 }

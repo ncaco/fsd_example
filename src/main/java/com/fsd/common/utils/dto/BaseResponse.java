@@ -1,4 +1,4 @@
-package com.fsd.common.utils;
+package com.fsd.common.utils.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

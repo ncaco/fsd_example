@@ -67,4 +67,10 @@ public class AuthService {
         logger.info("데모 계정 조회 완료: {}", user.toString());
         return user;
     }
+
+    /** 이메일로 사용자 조회 */
+    public User findUserByEmail(String email) {
+        return userRepository.findByEml(email)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "사용자를 찾을 수 없습니다."));
+    }
 } 
