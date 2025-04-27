@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { LoginLeft, LoginForm } from './components';
 import { authApi } from '@/features/auth/api/a_auth';
 import axios, { AxiosError } from 'axios';
 import { A_CustomToast } from '@/shared/ui/toaster';
 
+interface LocationState {
+  from?: {
+    pathname: string;
+  };
+}
+
 const ALoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // 이전 위치 가져오기
+  const locationState = location.state as LocationState;
+  const from = locationState?.from?.pathname || '/a';
 
   const handleLogin = async (eml: string, pswd: string) => {
     if (!eml || !pswd) {
@@ -25,8 +36,8 @@ const ALoginPage: React.FC = () => {
         // 로그인 성공
         A_CustomToast.success(`로그인 성공! ${response.nm} 님 환영합니다.`);
         
-        // 메인 페이지로 리다이렉션
-        navigate('/a');
+        // 이전 페이지 또는 기본 페이지로 리다이렉션
+        navigate(from, { replace: true });
       }else{
         // 로그인 실패
         A_CustomToast.error(response.message);

@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HomeLayout, ALayout } from '@widgets/layouts';
 import { A_CustomToaster } from '@shared/ui/toaster';
+import { ProtectedRoute } from '@/shared/lib/components/ProtectedRoute';
 
 import MainPage from '@pages/home/main';
 import PricingPage from '@pages/home/pricing';
@@ -33,8 +34,13 @@ export const RouterProvider: React.FC = () => {
 
         {/* 로그인 페이지 */}
         <Route path="/a/login" element={<ALoginPage />} />
-        {/* A 레이아웃 라우트 */}
-        <Route path="/a" element={<ALayout />}>
+        
+        {/* A 레이아웃 라우트 - 보호된 라우트 */}
+        <Route path="/a" element={
+          <ProtectedRoute>
+            <ALayout />
+          </ProtectedRoute>
+        }>
           <Route index element={<AMainPage />} />
           <Route path="sub1" element={<ASub1Page />} />
           <Route path="sub2" element={<ASub2Page />} />
