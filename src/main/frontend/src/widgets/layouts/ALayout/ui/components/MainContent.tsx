@@ -1,22 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { authApi } from '@/features/auth/api/a_auth';
 import { User } from '@/types/a/user';
 
-export const MainContent: React.FC = () => {
+export const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
   console.log('-----MainContent Rendered-----');
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    console.log('-----MainContent useEffect-----');
-    
-    const fetchUser = async () => {
-      const response = await authApi.a_sessionInfo();  
-      console.log(response);
-      setUser(response);
-    };
-    fetchUser();
-  }, []);
 
   return (
     <>
