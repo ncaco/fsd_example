@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { User } from '@/types/a/user';
+import { useRecoilValue } from 'recoil';
+import { sessionState } from '@/shared/api/atom';
 
-export const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
+export const MainContent: React.FC = () => {
   console.log('-----MainContent Rendered-----');
+  const session = useRecoilValue(sessionState);
+  
+  useEffect(() => {
+    console.log('현재 세션 상태:', session);
+  }, [session]);
 
   return (
     <>
@@ -16,8 +22,9 @@ export const MainContent: React.FC<{ user: User | null }> = ({ user }) => {
         {/* 현재 사용자 정보 표시 */}
         <div className="px-6 py-5">
           <div className="text-sm text-gray-500">
-            <span className="font-bold">이름:</span> {user?.nm}
-            <span className="font-bold">이메일:</span> {user?.eml}
+            <span className="font-bold">세션 상태:</span> {JSON.stringify(session)} <br />
+            <span className="font-bold">이름:</span> {session?.A_NM || '정보 없음'} {' '}
+            <span className="font-bold">이메일:</span> {session?.A_EML || '정보 없음'}
           </div>
         </div>
 

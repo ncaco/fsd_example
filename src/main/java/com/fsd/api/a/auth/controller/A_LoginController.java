@@ -23,6 +23,9 @@ import java.util.Enumeration;
 
 import com.fsd.common.utils.token.TokenUtils;
 import com.fsd.common.utils.validate.StringUtils;
+import com.fsd.common.utils.session.SessionUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/api/a/auth")
 @RequiredArgsConstructor
@@ -54,14 +57,18 @@ public class A_LoginController {
             user.setRefreshToken(refreshToken);
 
             // 세션에 사용자 정보 저장
+            /*
             session.setAttribute("sn", user.getSn());
             session.setAttribute("nm", user.getNm());
             session.setAttribute("eml", user.getEml());
             session.setAttribute("token", accessToken);
             session.setAttribute("refreshToken", refreshToken);
+            */
             
-            logger.info("세션 정보 저장 완료: 세션 ID: {}, 사용자: {}", session.getId(), user.getEml());
-
+            SessionUtil.loginDataSetSession(user, 30);
+            
+            logger.info("세션 정보 저장 완료: 세션 ID: {}, 사용자: {}", SessionUtil.getASn(), SessionUtil.getAEml());
+            
             logger.info("로그인 성공: {}", user);
 
             return ResponseEntity.ok(LoginResponse.fromUser(true, "로그인 성공", user));
@@ -73,10 +80,10 @@ public class A_LoginController {
 
     /** 로그아웃 */
     @PostMapping("/logout")
-    public ResponseEntity<LogoutResponse> logout(HttpSession session) {
+    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
         logger.info("로그아웃 요청");
         try {
-            authService.logout(session);
+            SessionUtil.removeSession_A(request);
             return ResponseEntity.ok(LogoutResponse.success());
         } catch (Exception e) {
             return ResponseEntity.ok(LogoutResponse.error(e.getMessage()));
@@ -97,9 +104,9 @@ public class A_LoginController {
         
         Map<String, Object> sessionInfo = new HashMap<>();
         
-        String sn = StringUtils.nullConvertToString(session.getAttribute("sn"));
-        String nm = StringUtils.nullConvertToString(session.getAttribute("nm"));
-        String eml = StringUtils.nullConvertToString(session.getAttribute("eml"));
+        String sn = StringUtils.nullConvertToString(SessionUtil.getASn());
+        String nm = StringUtils.nullConvertToString(SessionUtil.getANm());
+        String eml = StringUtils.nullConvertToString(SessionUtil.getAEml());
         String token = StringUtils.nullConvertToString(session.getAttribute("token"));
         String refreshToken = StringUtils.nullConvertToString(session.getAttribute("refreshToken"));
         

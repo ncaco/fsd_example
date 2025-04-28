@@ -6,9 +6,8 @@ import RenderMenuItem from './LeftComp/renderMenuItem';
 import BottomSection from './LeftComp/bottomSection';
 import ToggleButton from './LeftComp/toggleButton';
 import MenuScroll from './LeftComp/menuScroll';
-import { User } from '@/types/a/user';
 
-export const LeftMenu: React.FC<{ user: User | null }> = ({ user }) => {
+export const LeftMenu: React.FC = () => {
   console.log('-----LeftMenu Rendered-----');
   
   
@@ -49,7 +48,7 @@ export const LeftMenu: React.FC<{ user: User | null }> = ({ user }) => {
           <MenuScroll isCollapsed={isCollapsed}/>
           
           {/* 설정 및 로그아웃 - 고정 영역 */}
-          <BottomSection isCollapsed={isCollapsed} user={user} />
+          <BottomSection isCollapsed={isCollapsed} />
 
           {/* 토글 버튼 */}
           <ToggleButton isCollapsed={isCollapsed} onToggle={onToggle} />

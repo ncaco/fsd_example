@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { apiInstance } from '@/shared/api';
+import { checkLoginStatus } from '@/shared/api/session';
 
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -8,8 +8,8 @@ export function useAuth() {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await apiInstance.get('/a/auth/session-info');
-        setIsAuthenticated(response.data.isLoggedIn);
+        const response = await checkLoginStatus();
+        setIsAuthenticated(response.isLoggedIn);
       } catch (error) {
         console.error('인증 상태 확인 중 오류 발생:', error);
         setIsAuthenticated(false);

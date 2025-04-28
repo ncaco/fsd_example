@@ -26,12 +26,12 @@ export const ALayout: React.FC = () => {
     <>
       <div className="h-screen w-screen overflow-hidden bg-gray-50 flex">
         {/* 왼쪽 메뉴 */}
-        <LeftMenu user={user} />
+        <LeftMenu />
           
         {/* 메인 콘텐츠 - 유동적 너비, 전체 높이, 내부 스크롤 */}
         <div className="flex-1 h-full overflow-hidden">
           <div className="h-full overflow-auto">
-            <MainContent user={user} />
+            <MainContent />
           </div>
         </div>
 

@@ -2,13 +2,11 @@ import { CreateIcon } from '@/shared/ui/icon/CreateIcon';
 import RenderMenuItem from './renderMenuItem';
 import { authApi } from '@/features/auth/api/a_auth';
 import { useNavigate } from 'react-router-dom';
-import { User } from '@/types/a/user';
 interface BottomSectionProps {
     isCollapsed: boolean,
-    user: User | null,
 }
 
-export const BottomSection = ({ isCollapsed, user }: BottomSectionProps) => {
+export const BottomSection = ({ isCollapsed }: BottomSectionProps) => {
     const navigate = useNavigate();
     
     // 로그아웃
@@ -41,14 +39,6 @@ export const BottomSection = ({ isCollapsed, user }: BottomSectionProps) => {
                         isCollapsed={isCollapsed}
                         onClick={handleLogout}
                     />
-
-                    {/* 테스트 세션 표시 */}
-                    <div>
-                        <p>세션 정보</p>
-                        <p>사용자 이메일: {user?.eml}</p>
-                        <p>사용자 이름: {user?.nm}</p>
-                        <p>사용자 번호: {user?.sn}</p>
-                    </div>
                 </nav>
             </div>
         </>

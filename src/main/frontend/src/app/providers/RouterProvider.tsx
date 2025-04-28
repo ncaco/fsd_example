@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HomeLayout, ALayout } from '@widgets/layouts';
 import { A_CustomToaster } from '@shared/ui/toaster';
 import { ProtectedRoute } from '@/shared/lib/components/ProtectedRoute';
+import { SessionProvider } from './session-provider';
 
 import MainPage from '@pages/home/main';
 import PricingPage from '@pages/home/pricing';
@@ -38,7 +39,9 @@ export const RouterProvider: React.FC = () => {
         {/* A 레이아웃 라우트 - 보호된 라우트 */}
         <Route path="/a" element={
           <ProtectedRoute>
-            <ALayout />
+            <SessionProvider>
+              <ALayout />
+            </SessionProvider>
           </ProtectedRoute>
         }>
           <Route index element={<AMainPage />} />

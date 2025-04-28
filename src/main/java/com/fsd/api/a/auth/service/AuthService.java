@@ -4,10 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fsd.common.utils.session.SessionUtil;
 import com.fsd.model.User;
 import com.fsd.api.a.auth.repository.UserRepository;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,10 +40,14 @@ public class AuthService {
     }
 
     /** 로그아웃 */
-    public void logout(HttpSession session) {
-        if (session != null) {
-            session.invalidate();
-            logger.info("사용자 로그아웃 처리 완료");
+    public void logout(HttpServletRequest request) {
+        if (request != null) {
+            try {
+                SessionUtil.removeSession_A(request);
+                logger.info("사용자 로그아웃 처리 완료");
+            } catch (Exception e) {
+                logger.error("로그아웃 처리 중 오류 발생: {}", e.getMessage());
+            }
         }
     }
     
