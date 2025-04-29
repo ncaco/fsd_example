@@ -1,27 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { LeftMenu } from './components/LeftMenu';
 import { MainContent } from './components/MainContent';
 import { MobileBottomMenu } from './components/MobileBottomMenu';
-import { authApi } from '@/features/auth/api/a_auth'; 
-import { User } from '@/types/a/user';
 
 export const ALayout: React.FC = () => {
   console.log('-----ALayout Rendered-----');
   
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    console.log('-----ALayout useEffect-----');
-    
-    const fetchUser = async () => {
-      const response = await authApi.a_sessionInfo();
-      setUser(response);
-
-      console.log(user);
-    };
-    fetchUser();
-  }, []);
-
   return (
     <>
       <div className="h-screen w-screen overflow-hidden bg-gray-50 flex">

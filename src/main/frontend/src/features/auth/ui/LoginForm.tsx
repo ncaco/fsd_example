@@ -24,14 +24,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
     setError('');
     
     try {
-      const response = await authApi.a_login({ username, password });
+      await authApi.a_login({ eml: username, pswd: password });
       
-      // 토큰 저장
-      localStorage.setItem('token', response.accessToken);
-      localStorage.setItem('refreshToken', response.refreshToken);
-      
-      // 사용자 정보 저장
-      localStorage.setItem('user', JSON.stringify(response.user));
+      // saveSession 함수가 API 내부에서 자동 호출됨
       
       if (onSuccess) {
         onSuccess();
