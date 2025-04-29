@@ -1,13 +1,24 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/store';
 
 const AMainPage: React.FC = () => {
+  // Redux에서 사용자 정보 가져오기
+  const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
+
   return (
     <div className="py-6">
       {/* 헤더 */}
       <header className="mb-10">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">섹션 A</h1>
         <p className="text-gray-600 max-w-2xl">
-          Feature-Sliced Design 패턴에서 'pages' 레이어에 위치한 섹션입니다. 서로 다른 기능 슬라이스를 조합해 완성된 UI를 구성합니다.
+          {isAuthenticated ? (
+            <>
+              안녕하세요, {user?.nm}님! Feature-Sliced Design 패턴에서 'pages' 레이어에 위치한 섹션입니다.
+            </>
+          ) : (
+            'Feature-Sliced Design 패턴에서 pages 레이어에 위치한 섹션입니다.'
+          )}
         </p>
       </header>
 
