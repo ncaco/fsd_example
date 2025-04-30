@@ -36,7 +36,7 @@ const initialState: AuthState = {
 };
 
 // 로그인 비동기 액션 생성
-export const login = createAsyncThunk<User, LoginRequest>(
+export const login = createAsyncThunk<User, LoginRequest, { rejectValue: string }>(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
@@ -169,4 +169,4 @@ const authSlice = createSlice({
 });
 
 export const { resetError, forceLogout } = authSlice.actions;
-export default authSlice.reducer; 
+export default authSlice.reducer;

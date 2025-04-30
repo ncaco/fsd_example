@@ -22,13 +22,13 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   // 진짜 인증되었는지 최종 확인 (Redux 상태와 로컬 스토리지 모두 체크)
   const isReallyAuthenticated = isAuthenticated && !!user && hasLocalStorageToken && hasLocalStorageUser;
 
-  console.log('인증 상태 체크:', { 
-    reduxAuthenticated: isAuthenticated, 
-    reduxUser: !!user,
-    localToken: hasLocalStorageToken,
-    localUser: hasLocalStorageUser,
-    finalResult: isReallyAuthenticated
-  });
+  // console.log('인증 상태 체크:', { 
+  //   reduxAuthenticated: isAuthenticated, 
+  //   reduxUser: !!user,
+  //   localToken: hasLocalStorageToken,
+  //   localUser: hasLocalStorageUser,
+  //   finalResult: isReallyAuthenticated
+  // });
 
   if (!isReallyAuthenticated) {
     // 인증이 되지 않은 경우 로그인 페이지로 리다이렉트하면서 이전 위치 정보를 전달

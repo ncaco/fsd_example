@@ -55,4 +55,25 @@ public class User {
         this.modDt = LocalDateTime.now();
     }
 
+
+    private Boolean status;
+    private Integer statusCode;
+    private String message;
+
+    // 성공 응답 생성
+    public User success(int statusCode, String message) {
+        return User.builder()
+                .status(true)
+                .statusCode(statusCode)
+                .message(message)
+                .build();
+    }
+    // 에러 응답 생성
+    public User error(int statusCode, String message) {
+        return User.builder()
+                .status(false)
+                .statusCode(statusCode)
+                .message(message)
+                .build();
+    }
 }

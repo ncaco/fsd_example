@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.fsd.api.a.auth.dto.LoginResponse;
-import com.fsd.api.a.auth.dto.LogoutResponse;
 import com.fsd.api.a.auth.service.AuthService;
 import com.fsd.model.User;
 
@@ -40,11 +38,11 @@ public class A_LoginController {
     
     /** 로그인 */
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody User loginRequest, HttpSession session) {
+    public ResponseEntity<User> login(@RequestBody User loginRequest, HttpSession session) {
         logger.info("로그인 요청: {}, 세션 ID: {}", loginRequest.getEml(), session.getId());
-        
+        User user = new User();
         try {
-            User user = authService.login(loginRequest.getEml(), loginRequest.getPswd());
+            user = authService.login(loginRequest.getEml(), loginRequest.getPswd());
             
             // 액세스 토큰 생성 
             String accessToken = TokenUtils.generateAccessToken(user.getEml());
@@ -71,22 +69,23 @@ public class A_LoginController {
             
             logger.info("로그인 성공: {}", user);
 
-            return ResponseEntity.ok(LoginResponse.fromUser(true, "로그인 성공", user));
+            return ResponseEntity.ok(user);
         } catch (Exception e) {
             logger.error("로그인 에러: {}", e.getMessage(), e);
-            return ResponseEntity.ok(LoginResponse.error(e.getMessage()));
+            return ResponseEntity.ok(user);
         }
     }
 
     /** 로그아웃 */
     @PostMapping("/logout")
-    public ResponseEntity<LogoutResponse> logout(HttpServletRequest request) {
+    public ResponseEntity<User> logout(HttpServletRequest request) {
         logger.info("로그아웃 요청");
+        User user = new User();
         try {
             SessionUtil.removeSession_A(request);
-            return ResponseEntity.ok(LogoutResponse.success());
+            return ResponseEntity.ok(user);
         } catch (Exception e) {
-            return ResponseEntity.ok(LogoutResponse.error(e.getMessage()));
+            return ResponseEntity.ok(user);
         }
     }
 
@@ -130,12 +129,14 @@ public class A_LoginController {
 
     /** 토큰 갱신 */
     @PostMapping("/refresh")
-    public ResponseEntity<LoginResponse> refreshToken(@RequestBody Map<String, String> request) {
+    public ResponseEntity<User> refreshToken(@RequestBody Map<String, String> request) {
         String refreshToken = request.get("refreshToken");
+        User user = new User();
+        
         try {
             // 리프레시 토큰 검증
             if (!TokenUtils.validateRefreshToken(refreshToken)) {
-                return ResponseEntity.ok(LoginResponse.error("리프레시 토큰 검증 실패"));
+                return ResponseEntity.ok(user.error(401, "리프레시 토큰 검증 실패"));
             }
             
             // 클레임에서 사용자 이메일 추출
@@ -145,12 +146,12 @@ public class A_LoginController {
             String newAccessToken = TokenUtils.generateAccessToken(eml);
             
             // 사용자 조회
-            User user = authService.findUserByEmail(eml);
+            user = authService.findUserByEmail(eml);
             user.setToken(newAccessToken);
             
-            return ResponseEntity.ok(LoginResponse.fromUser(true, "토큰 갱신 성공", user));
+            return ResponseEntity.ok(user.success(200, "토큰 갱신 성공"));
         } catch (Exception e) {
-            return ResponseEntity.ok(LoginResponse.error("토큰 갱신 실패: " + e.getMessage()));
+            return ResponseEntity.ok(user.error(401, "토큰 갱신 실패: " + e.getMessage()));
         }
     }
 }

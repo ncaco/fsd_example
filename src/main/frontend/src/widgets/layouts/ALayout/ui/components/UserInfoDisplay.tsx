@@ -5,10 +5,6 @@ import { RootState } from '@/app/store';
 export const UserInfoDisplay: React.FC = () => {
     const { user, isAuthenticated, isLoading } = useSelector((state: RootState) => state.auth);
 
-    console.log('user', user);
-    console.log('isAuthenticated', isAuthenticated);
-    console.log('isLoading', isLoading);
-
     return (
         <div className="px-6 py-5 border-b border-gray-200">
             <div className="text-sm text-gray-700">
