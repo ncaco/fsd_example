@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { authApi } from '@/features/auth/api/a_auth';
-import { User } from '@/types/a/user';
+import { User } from '@/entities/a/user';
 
 // 데모 계정 정보 표시
 const DemoAccountInfo: React.FC = () => {
