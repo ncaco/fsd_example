@@ -47,7 +47,10 @@ public class V1_MenuController {
             List<Menu> menuList = new ArrayList<>();
             
             /** 메뉴 목록 조회 */
-            menuList = menuService.getMenuList(siteId);
+            Menu menu = new Menu();
+            menu.setSiteId(siteId);
+            menu.setIsActive(true);
+            menuList = menuService.getMenuList(menu);
             
             /** 반환 */
             LOGGER.info("----------------------------------메뉴 목록 조회 완료----------------------------------");

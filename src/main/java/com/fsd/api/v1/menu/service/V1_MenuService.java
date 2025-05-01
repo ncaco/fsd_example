@@ -14,8 +14,8 @@ public class V1_MenuService {
     @Autowired
     private V1_MenuRepository menuRepository;
 
-    public List<Menu> getMenuList(String siteId) {
-        return menuRepository.findBySiteId(siteId);
+    public List<Menu> getMenuList(Menu menu) {
+        return menuRepository.findAll(menu);
     }
 
     public Menu createMenu(Menu menu) {

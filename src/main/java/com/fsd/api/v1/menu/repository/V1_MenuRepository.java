@@ -13,11 +13,13 @@ public interface V1_MenuRepository extends JpaRepository<Menu, Long> {
     
     @Query("""
         SELECT m FROM Menu m 
-        WHERE m.siteId = :siteId
+        WHERE 
+            m.siteId = :siteId
+            AND m.isActive = :isActive
             AND m.parentMenu IS NULL
         ORDER BY m.menuOrder ASC
     """)
-    List<Menu> findBySiteId(String siteId);
+    List<Menu> findAll(Menu menu);
     
 
 
