@@ -36,10 +36,10 @@ public class SQLiteConfig {
         em.setJpaVendorAdapter(vendorAdapter);
         
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", env.getProperty("spring.jpa.database-platform"));
-        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
-        properties.setProperty("hibernate.show_sql", env.getProperty("spring.jpa.show-sql"));
-        properties.setProperty("hibernate.format_sql", env.getProperty("spring.jpa.properties.hibernate.format_sql"));
+        properties.setProperty("hibernate.dialect", env.getProperty("spring.jpa.database-platform", "org.hibernate.community.dialect.SQLiteDialect"));
+        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto", "create"));
+        properties.setProperty("hibernate.show_sql", env.getProperty("spring.jpa.show-sql", "true"));
+        properties.setProperty("hibernate.format_sql", env.getProperty("spring.jpa.properties.hibernate.format_sql", "true"));
         
         em.setJpaProperties(properties);
         
