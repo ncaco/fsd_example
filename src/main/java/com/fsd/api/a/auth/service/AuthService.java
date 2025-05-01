@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fsd.common.utils.session.SessionUtil;
 import com.fsd.model.User;
 import com.fsd.api.a.auth.repository.UserRepository;
+import com.fsd.common.utils.session.SessionUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

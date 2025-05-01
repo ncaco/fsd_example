@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { authApi, LoginRequest } from './api/a_auth';
-import { User } from '@/entities/a/user';
+import { User } from '@/entities/user';
 import { AxiosError } from 'axios';
 
 // 초기 상태 타입 정의

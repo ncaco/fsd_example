@@ -1,4 +1,4 @@
-import { BaseResponse } from "../common";
+import { BaseResponse } from "./common";
 
 /** 사용자 정보 타입 */
 export interface User extends BaseResponse {

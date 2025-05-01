@@ -1,5 +1,5 @@
 import apiInstance from '@/shared/api';
-import { User } from '@/entities/a/user';
+import { User } from '@/entities/user';
 
 export interface LoginRequest {
   eml: string;
