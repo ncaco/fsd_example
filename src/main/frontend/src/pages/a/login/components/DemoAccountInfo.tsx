@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { authApi } from '@/features/auth/api/a_auth';
+import { authApi } from '@/features/auth/api/auth';
 import { User } from '@/entities/user';
 
 // 데모 계정 정보 표시
@@ -9,7 +9,7 @@ const DemoAccountInfo: React.FC = () => {
 
   useEffect(() => {
     const fetchDemoAccount = async () => {
-      const response = await authApi.a_demoAccount();
+      const response = await authApi.demoAccount();
       setDemoAccount(response);
     };
     fetchDemoAccount();

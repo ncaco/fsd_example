@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HomeLayout, ALayout } from '@widgets/layouts';
-import { A_CustomToaster } from '@shared/ui/toaster';
+import { CustomToaster } from '@shared/ui/toaster';
 import { ProtectedRoute } from '@/shared/lib/components/ProtectedRoute';
 
 import MainPage from '@pages/home/main';
@@ -20,7 +20,7 @@ export const RouterProvider: React.FC = () => {
   return (
     <BrowserRouter>
       {/* 전역 토스터 배치 */}
-      <A_CustomToaster />
+      <CustomToaster />
       
       <Routes>
         {/* 홈 레이아웃 라우트 */}

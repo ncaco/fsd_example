@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { authApi, LoginRequest } from './api/a_auth';
+import { authApi, LoginRequest } from './api/auth';
 import { User } from '@/entities/user';
 import { AxiosError } from 'axios';
 
@@ -40,7 +40,7 @@ export const login = createAsyncThunk<User, LoginRequest, { rejectValue: string 
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await authApi.a_login(credentials);
+      const response = await authApi.login(credentials);
       return response;
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
@@ -54,7 +54,7 @@ export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      await authApi.a_logout();
+      await authApi.logout();
       // 명시적으로 로컬 스토리지 정리
       localStorage.removeItem('token');
       localStorage.removeItem('refreshToken');
@@ -83,7 +83,7 @@ export const getSessionInfo = createAsyncThunk<User>(
         return rejectWithValue('인증 정보가 없습니다.');
       }
       
-      const response = await authApi.a_sessionInfo();
+      const response = await authApi.sessionInfo();
       return response;
     } catch (error) {
       // 세션 정보 가져오기 실패 시 로컬 스토리지 초기화

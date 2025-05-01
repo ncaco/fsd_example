@@ -29,40 +29,40 @@ public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MENU_SN", nullable = false)
-    private Long menuSn;
+    private Long menuSn;    //메뉴 일련번호
 
     @Column(name = "SITE_ID", nullable = false, length = 100)
-    private String siteId;
+    private String siteId;    //사이트 아이디
 
     @Column(name = "MENU_NAME", nullable = false, length = 100)
-    private String menuName;
+    private String menuName;    //메뉴 이름
 
     @Column(name = "MENU_URL", length = 255)
-    private String menuUrl;
+    private String menuUrl;    //메뉴 URL
 
     @Column(name = "MENU_ICON", length = 100)
-    private String menuIcon;
+    private String menuIcon;    //메뉴 아이콘
     
     @Column(name = "MENU_LEVEL", nullable = false)
-    private Integer menuLevel;
+    private Integer menuLevel;    //메뉴 레벨
     
     @Column(name = "MENU_ORDER")
-    private Integer menuOrder;
+    private Integer menuOrder;    //메뉴 순서
     
     @Column(name = "IS_EXTERNAL_URL", nullable = false)
-    private Boolean isExternalUrl;
+    private Boolean isExternalUrl;    //외부 URL 여부
     
     @Column(name = "IS_ACTIVE", nullable = false)
-    private Boolean isActive;
+    private Boolean isActive;    //활성화 여부
     
     @Column(name = "IS_VISIBLE", nullable = false)
-    private Boolean isVisible;
+    private Boolean isVisible;    //보여짐 여부
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_MENU_ID")
-    private Menu parentMenu;
+    private Menu parentMenu;    //부모 메뉴
     
     @OneToMany(mappedBy = "parentMenu")
     @Builder.Default
-    private List<Menu> childMenus = new ArrayList<>();
+    private List<Menu> childMenus = new ArrayList<>();    //자식 메뉴 목록
 }

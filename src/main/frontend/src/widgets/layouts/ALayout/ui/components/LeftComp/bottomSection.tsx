@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 import { logout } from '@/features/auth/authSlice';
 import { AppDispatch } from '@/app/store';
-import { A_CustomToast } from '@/shared/ui/toaster';
+import { CustomToast } from '@/shared/ui/toaster';
 
 interface BottomSectionProps {
     isCollapsed: boolean,
@@ -27,7 +27,7 @@ export const BottomSection = ({ isCollapsed }: BottomSectionProps) => {
             localStorage.removeItem('refreshToken');
             localStorage.removeItem('user');
             
-            A_CustomToast.success('로그아웃 되었습니다.');
+            CustomToast.success('로그아웃 되었습니다.');
             
             // 로그인 페이지로 강제 이동 (replace 옵션으로 뒤로 가기 불가능하게)
             navigate('/a/login', { replace: true });
@@ -36,7 +36,7 @@ export const BottomSection = ({ isCollapsed }: BottomSectionProps) => {
             //window.location.reload();
         } catch (error) {
             console.error('로그아웃 실패:', error);
-            A_CustomToast.error('로그아웃에 실패했습니다.');
+            CustomToast.error('로그아웃에 실패했습니다.');
         }
     }, [dispatch, navigate]);
 

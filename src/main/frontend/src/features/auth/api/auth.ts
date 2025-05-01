@@ -19,30 +19,30 @@ function clearSession() {
 }
 
 export const authApi = {
-  a_login: async (data: LoginRequest): Promise<User> => {
+  login: async (data: LoginRequest): Promise<User> => {
     const response = await apiInstance.post<User>('/a/auth/login', data);
     saveSession(response.data);
     return response.data;
   },
 
-  a_logout: async (): Promise<void> => {
+  logout: async (): Promise<void> => {
     await apiInstance.post('/a/auth/logout');
     clearSession();
   },
 
-  a_sessionInfo: async (): Promise<User> => {
+  sessionInfo: async (): Promise<User> => {
     const response = await apiInstance.get<User>('/a/auth/session-info');
     return response.data;
   },
 
-  a_refreshToken: async (): Promise<User> => {
+  refreshToken: async (): Promise<User> => {
     const refreshToken = localStorage.getItem('refreshToken');
     const response = await apiInstance.post<User>('/a/auth/refresh', { refreshToken });
     saveSession(response.data);
     return response.data;
   },
   
-  a_register: async (data: {
+  register: async (data: {
     nm: string;
     eml: string;
     pswd: string;
@@ -52,7 +52,7 @@ export const authApi = {
   },
 
   // 데모 계정 조회
-  a_demoAccount: async (): Promise<User> => {
+  demoAccount: async (): Promise<User> => {
     const response = await apiInstance.get<User>('/a/auth/demo-account');
     return response.data;
   }

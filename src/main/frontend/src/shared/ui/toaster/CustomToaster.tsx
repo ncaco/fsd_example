@@ -1,6 +1,6 @@
 import { Toaster } from 'react-hot-toast';
 
-export const A_CustomToaster = () => {
+export const CustomToaster = () => {
     return (
         <Toaster
             position="top-center"
@@ -53,4 +53,4 @@ export const A_CustomToaster = () => {
     );
 }
 
-export default A_CustomToaster;
+export default CustomToaster;

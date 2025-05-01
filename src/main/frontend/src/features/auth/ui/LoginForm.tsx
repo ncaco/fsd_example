@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { authApi } from '../api/a_auth';
+import { authApi } from '../api/auth';
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -24,7 +24,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onError }) => {
     setError('');
     
     try {
-      await authApi.a_login({ eml: username, pswd: password });
+      await authApi.login({ eml: username, pswd: password });
       
       // saveSession 함수가 API 내부에서 자동 호출됨
       

@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoginLeft, LoginForm } from './components';
 import { login, resetError, getSessionInfo } from '@/features/auth/authSlice';
-import { A_CustomToast } from '@/shared/ui/toaster';
+import { CustomToast } from '@/shared/ui/toaster';
 import { RootState, AppDispatch } from '@/app/store';
 
 interface LocationState {
@@ -60,13 +60,13 @@ const ALoginPage: React.FC = () => {
   // 에러 발생 시 토스트 메시지 표시
   useEffect(() => {
     if (error) {
-      A_CustomToast.error(error);
+      CustomToast.error(error);
     }
   }, [error]);
 
   const handleLogin = useCallback(async (eml: string, pswd: string) => {
     if (!eml || !pswd) {
-      A_CustomToast.error('이메일과 비밀번호를 모두 입력해주세요.');
+      CustomToast.error('이메일과 비밀번호를 모두 입력해주세요.');
       return;
     }
     
@@ -74,7 +74,7 @@ const ALoginPage: React.FC = () => {
       const resultAction = await dispatch(login({ eml, pswd })).unwrap();
       
       // 로그인 성공
-      A_CustomToast.success(`로그인 성공! ${resultAction.nm} 님 환영합니다.`);
+      CustomToast.success(`로그인 성공! ${resultAction.nm} 님 환영합니다.`);
       // 리다이렉트는 useEffect에서 처리
     } catch (error) {
       // 에러 처리는 Redux 상태와 useEffect에서 처리됨
