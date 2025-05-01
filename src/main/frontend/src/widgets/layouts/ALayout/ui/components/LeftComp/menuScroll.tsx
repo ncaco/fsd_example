@@ -26,10 +26,10 @@ export const MenuScroll = ({ isCollapsed }: MenuScrollProps) => {
         const fetchMenus = async () => {
             try {
                 setLoading(true);
-                const menus = await menuApi.getMenuList();
+                const menuList = await menuApi.getMenuList("a");
                 
                 // API에서 받아온 메뉴 데이터를 MenuItem 형식으로 변환
-                const formattedMenus = menus.map(menu => ({
+                const formattedMenus = menuList.map(menu => ({
                     to: menu.menuUrl,
                     icon: <CreateIcon iconKey={menu.menuIcon || "default"} />,
                     label: menu.menuName

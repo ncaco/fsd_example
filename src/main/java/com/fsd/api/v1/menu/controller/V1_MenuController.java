@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import com.fsd.model.Menu;
 import com.fsd.api.v1.menu.service.V1_MenuService;
-import com.fsd.common.utils.request.HttpRequestUtils;
-
-import jakarta.servlet.http.HttpServletRequest;
+import com.fsd.common.utils.response.ResponseUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,34 +38,29 @@ public class V1_MenuController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<List<Menu>> getAllMenus(HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> getAllMenus(@RequestParam(name = "siteId", required = true) String siteId) {
         LOGGER.info("----------------------------------메뉴 목록 조회----------------------------------");
+        LOGGER.info("siteId: {}", siteId);
         
         try {
             /** 선언 */
             List<Menu> menuList = new ArrayList<>();
             
-            /** 사이트 아이디 조회 */
-            String siteId = HttpRequestUtils.getSiteId(request);
-            if (siteId == null) {
-                return ResponseEntity.badRequest().body(menuList);
-            }
-
             /** 메뉴 목록 조회 */
             menuList = menuService.getMenuList(siteId);
-
+            
             /** 반환 */
             LOGGER.info("----------------------------------메뉴 목록 조회 완료----------------------------------");
-            return ResponseEntity.ok(menuList);
+            return ResponseUtil.success("메뉴 목록 조회 성공", menuList);
         } catch (Exception e) {
             LOGGER.error("메뉴 목록 조회 중 오류 발생", e);
-            return ResponseEntity.internalServerError().build();
+            return ResponseUtil.error("메뉴 목록 조회 중 오류가 발생했습니다.", e.getMessage());
         }
     }
     
     /** 등록 */
     @PostMapping
-    public ResponseEntity<Menu> createMenu(@RequestBody Menu menu) {
+    public ResponseEntity<Map<String, Object>> createMenu(@RequestBody Menu menu) {
         LOGGER.info("----------------------------------메뉴 등록----------------------------------");   
         try {
             /** 등록 */
@@ -73,16 +68,16 @@ public class V1_MenuController {
 
             /** 반환 */
             LOGGER.info("----------------------------------메뉴 등록 완료----------------------------------");
-            return ResponseEntity.ok(createdMenu);
+            return ResponseUtil.success("메뉴 등록 성공", createdMenu);
         } catch (Exception e) {
             LOGGER.error("메뉴 등록 중 오류 발생", e);
-            return ResponseEntity.internalServerError().build();
+            return ResponseUtil.error("메뉴 등록 중 오류가 발생했습니다.", e.getMessage());
         }
     }
 
     /** 수정 */
     @PutMapping("/{sn}")
-    public ResponseEntity<Menu> updateMenu(@PathVariable Long sn, @RequestBody Menu menu) {
+    public ResponseEntity<Map<String, Object>> updateMenu(@PathVariable Long sn, @RequestBody Menu menu) {
         LOGGER.info("----------------------------------메뉴 수정----------------------------------");
         try {
             /** 수정 */
@@ -90,16 +85,16 @@ public class V1_MenuController {
 
             /** 반환 */
             LOGGER.info("----------------------------------메뉴 수정 완료----------------------------------");
-            return ResponseEntity.ok(updatedMenu);
+            return ResponseUtil.success("메뉴 수정 성공", updatedMenu);
         } catch (Exception e) {
             LOGGER.error("메뉴 수정 중 오류 발생", e);
-            return ResponseEntity.internalServerError().build();
+            return ResponseUtil.error("메뉴 수정 중 오류가 발생했습니다.", e.getMessage());
         }
     }
 
     /** 삭제 */
     @DeleteMapping("/{sn}")
-    public ResponseEntity<Void> deleteMenu(@PathVariable Long sn) {
+    public ResponseEntity<Map<String, Object>> deleteMenu(@PathVariable Long sn) {
         LOGGER.info("----------------------------------메뉴 삭제----------------------------------");
         try {
             /** 삭제 */
@@ -107,10 +102,10 @@ public class V1_MenuController {
 
             /** 반환 */
             LOGGER.info("----------------------------------메뉴 삭제 완료----------------------------------");
-            return ResponseEntity.noContent().build();
+            return ResponseUtil.success("메뉴 삭제 성공");
         } catch (Exception e) {
             LOGGER.error("메뉴 삭제 중 오류 발생", e);
-            return ResponseEntity.internalServerError().build();
+            return ResponseUtil.error("메뉴 삭제 중 오류가 발생했습니다.", e.getMessage());
         }
     }
 }

@@ -35,7 +35,7 @@ export const LeftMenu: React.FC = () => {
           <TopLogo isCollapsed={isCollapsed} />
           
           {/* 대시보드 - 고정 영역 */}
-          <div className="flex-shrink-0 mb-3">
+          <div className="flex-shrink-0 mb-3 border-t border-gray-200">
             <RenderMenuItem
               to="/a"
               icon={<CreateIcon iconKey="dashboard" />}

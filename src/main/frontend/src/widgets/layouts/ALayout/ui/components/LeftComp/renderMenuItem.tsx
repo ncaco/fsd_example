@@ -20,8 +20,8 @@ const RenderMenuItem = ({ to, icon, label, isCollapsed, onClick }: RenderMenuIte
     
     // 접힌 상태일 때 라벨 처리
     const getTruncatedLabel = (text: string) => {
-        if (text.length <= 4) return text;
-        return text.substring(0, 4) + '...';
+        if (text.length <= 7) return text;
+        return text.substring(0, 7) + '...';
     };
     
     return (
@@ -33,7 +33,7 @@ const RenderMenuItem = ({ to, icon, label, isCollapsed, onClick }: RenderMenuIte
         >
             <div className="flex-shrink-0">{icon}</div>
             {isCollapsed ? (
-                <span className="text-xs mt-1 text-center w-full overflow-hidden">
+                <span className="text-[10px] mt-1 text-center w-full overflow-hidden">
                     {getTruncatedLabel(label)}
                 </span>
             ) : (

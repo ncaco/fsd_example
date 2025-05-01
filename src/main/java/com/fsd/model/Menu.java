@@ -13,11 +13,13 @@ import jakarta.persistence.FetchType;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "TB_MENU")
@@ -60,9 +62,19 @@ public class Menu {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_MENU_ID")
+    @JsonIgnore
     private Menu parentMenu;    //부모 메뉴
     
     @OneToMany(mappedBy = "parentMenu")
     @Builder.Default
     private List<Menu> childMenus = new ArrayList<>();    //자식 메뉴 목록
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "menuSn=" + menuSn +
+                ", menuName='" + menuName + '\'' +
+                ", childMenus=" + (childMenus != null ? childMenus.stream().map(Menu::getMenuName).collect(Collectors.toList()) : null) +
+                '}';
+    }
 }

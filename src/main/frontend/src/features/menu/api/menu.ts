@@ -7,9 +7,9 @@ export const menuApi = {
      * 메뉴 목록 조회
      * @returns 메뉴 목록
      */
-    getMenuList: async (): Promise<Menu[]> => {
-        const response = await apiInstance.get('/v1/menu');
-        return response.data;
+    getMenuList: async (siteId: string): Promise<Menu[]> => {
+        const response = await apiInstance.get(`/v1/menu?siteId=${siteId}`);
+        return response.data.data;
     },
 
     /**
