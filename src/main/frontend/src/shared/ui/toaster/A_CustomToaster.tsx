@@ -7,7 +7,7 @@ export const A_CustomToaster = () => {
             gutter={16}
             containerClassName="toast-container"
             toastOptions={{
-                duration: 2000,
+                duration: 3000,
                 // 공통 스타일
                 style: {
                     background: '#f8f9fa',

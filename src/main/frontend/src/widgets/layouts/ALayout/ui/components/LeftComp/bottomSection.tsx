@@ -33,7 +33,7 @@ export const BottomSection = ({ isCollapsed }: BottomSectionProps) => {
             navigate('/a/login', { replace: true });
             
             // 페이지 새로고침 (모든 Redux 상태 초기화)
-            window.location.reload();
+            //window.location.reload();
         } catch (error) {
             console.error('로그아웃 실패:', error);
             A_CustomToast.error('로그아웃에 실패했습니다.');
