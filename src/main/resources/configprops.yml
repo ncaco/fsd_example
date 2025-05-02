@@ -8,10 +8,11 @@ spring:
     database-platform: org.hibernate.community.dialect.SQLiteDialect
     hibernate:
       ddl-auto: create
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+          use_sql_comments: true
     defer-datasource-initialization: true
   sql:
     init:
@@ -53,6 +54,10 @@ logging:
     root: INFO
     org.springframework: INFO
     com.fsd: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.type: TRACE
   charset:
     console: UTF-8
     file: UTF-8

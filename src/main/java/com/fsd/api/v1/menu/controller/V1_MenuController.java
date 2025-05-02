@@ -39,7 +39,7 @@ public class V1_MenuController {
      */
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAllMenus(@RequestParam(name = "siteId", required = true) String siteId) {
-        LOGGER.info("----------------------------------메뉴 목록 조회----------------------------------");
+        LOGGER.info("\n----------------------------------메뉴 목록 조회----------------------------------");
         LOGGER.info("siteId: {}", siteId);
         
         try {
@@ -49,11 +49,11 @@ public class V1_MenuController {
             /** 메뉴 목록 조회 */
             Menu menu = new Menu();
             menu.setSiteId(siteId);
-            menu.setIsActive(true);
+            menu.setUseYn("Y");
             menuList = menuService.getMenuList(menu);
             
             /** 반환 */
-            LOGGER.info("----------------------------------메뉴 목록 조회 완료----------------------------------");
+            LOGGER.info("\n----------------------------------메뉴 목록 조회 완료----------------------------------");
             return ResponseUtil.success("메뉴 목록 조회 성공", menuList);
         } catch (Exception e) {
             LOGGER.error("메뉴 목록 조회 중 오류 발생", e);
@@ -64,13 +64,13 @@ public class V1_MenuController {
     /** 등록 */
     @PostMapping
     public ResponseEntity<Map<String, Object>> createMenu(@RequestBody Menu menu) {
-        LOGGER.info("----------------------------------메뉴 등록----------------------------------");   
+        LOGGER.info("\n----------------------------------메뉴 등록----------------------------------");   
         try {
             /** 등록 */
             Menu createdMenu = menuService.createMenu(menu);
 
             /** 반환 */
-            LOGGER.info("----------------------------------메뉴 등록 완료----------------------------------");
+            LOGGER.info("\n----------------------------------메뉴 등록 완료----------------------------------");
             return ResponseUtil.success("메뉴 등록 성공", createdMenu);
         } catch (Exception e) {
             LOGGER.error("메뉴 등록 중 오류 발생", e);
@@ -81,13 +81,13 @@ public class V1_MenuController {
     /** 수정 */
     @PutMapping("/{sn}")
     public ResponseEntity<Map<String, Object>> updateMenu(@PathVariable Long sn, @RequestBody Menu menu) {
-        LOGGER.info("----------------------------------메뉴 수정----------------------------------");
+        LOGGER.info("\n----------------------------------메뉴 수정----------------------------------");
         try {
             /** 수정 */
             Menu updatedMenu = menuService.updateMenu(sn, menu);
 
             /** 반환 */
-            LOGGER.info("----------------------------------메뉴 수정 완료----------------------------------");
+            LOGGER.info("\n----------------------------------메뉴 수정 완료----------------------------------");
             return ResponseUtil.success("메뉴 수정 성공", updatedMenu);
         } catch (Exception e) {
             LOGGER.error("메뉴 수정 중 오류 발생", e);
@@ -98,13 +98,13 @@ public class V1_MenuController {
     /** 삭제 */
     @DeleteMapping("/{sn}")
     public ResponseEntity<Map<String, Object>> deleteMenu(@PathVariable Long sn) {
-        LOGGER.info("----------------------------------메뉴 삭제----------------------------------");
+        LOGGER.info("\n----------------------------------메뉴 삭제----------------------------------");
         try {
             /** 삭제 */
             menuService.deleteMenu(sn);
 
             /** 반환 */
-            LOGGER.info("----------------------------------메뉴 삭제 완료----------------------------------");
+            LOGGER.info("\n----------------------------------메뉴 삭제 완료----------------------------------");
             return ResponseUtil.success("메뉴 삭제 성공");
         } catch (Exception e) {
             LOGGER.error("메뉴 삭제 중 오류 발생", e);

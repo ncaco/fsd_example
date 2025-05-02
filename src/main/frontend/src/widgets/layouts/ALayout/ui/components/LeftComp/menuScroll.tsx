@@ -29,11 +29,13 @@ export const MenuScroll = ({ isCollapsed }: MenuScrollProps) => {
                 const menuList = await menuApi.getMenuList("a");
                 
                 // API에서 받아온 메뉴 데이터를 MenuItem 형식으로 변환
-                const formattedMenus = menuList.map(menu => ({
-                    to: menu.menuUrl,
-                    icon: <CreateIcon iconKey={menu.menuIcon || "default"} />,
-                    label: menu.menuName
-                }));
+                const formattedMenus = menuList
+                    .filter(menu => menu.lnkgUrl) // lnkgUrl이 없는 항목 필터링
+                    .map(menu => ({
+                        to: menu.lnkgUrl || '', // fallback 빈 문자열 추가
+                        icon: <CreateIcon iconKey={menu.icon || "default"} />,
+                        label: menu.menuNm
+                    })) as MenuItem[]; // 명시적 타입 캐스팅
                 
                 setMenuList(formattedMenus);
             } catch (error) {
