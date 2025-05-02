@@ -1,13 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import TopLogo from './LeftComp/topLogo';
 import BottomSection from './LeftComp/bottomSection';
 import ToggleButton from './LeftComp/toggleButton';
 import MenuScroll from './LeftComp/menuScroll';
 
+import { MobileBottomMenu } from './MobileBottomMenu';
+import { menuApi } from '@/features/menu/api/menu';
+import { Menu } from '@/entities/menu';
+
 export const LeftMenu: React.FC = () => {
   console.log('-----LeftMenu Rendered-----');
   
+  const [menuList, setMenuList] = useState<Menu[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    console.log('-----MenuScroll useEffect-----');
+    
+    const fetchMenus = async () => {
+        try {
+            setLoading(true);
+            const menuList = await menuApi.getMenuList("a");
+            setMenuList(menuList);
+        } catch (error) {
+            console.error('메뉴 목록을 불러오는 중 오류가 발생했습니다:', error);
+            // 오류 발생 시 기본 메뉴 표시
+            const fallbackMenus: Menu[] = [];
+            setMenuList(fallbackMenus);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchMenus();
+}, []);
   
   // 로컬 스토리지에서 초기값을 가져오고, 없으면 true로 설정
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -33,16 +60,20 @@ export const LeftMenu: React.FC = () => {
           <TopLogo isCollapsed={isCollapsed} />
           
           {/* 스크롤 가능한 메뉴 영역 */}
-          <MenuScroll isCollapsed={isCollapsed}/>
+          <MenuScroll isCollapsed={isCollapsed} menuList={menuList} loading={loading}/>
           
           {/* 설정 및 로그아웃 - 고정 영역 */}
-          <BottomSection isCollapsed={isCollapsed} />
+          <BottomSection isCollapsed={isCollapsed} menuList={menuList} loading={loading}/>
 
           {/* 토글 버튼 */}
           <ToggleButton isCollapsed={isCollapsed} onToggle={onToggle} />
           
         </div>
       </div>
+
+      
+      {/* 반응형에서 하단 메뉴 */}
+      <MobileBottomMenu />
     </>
   );
 }; 

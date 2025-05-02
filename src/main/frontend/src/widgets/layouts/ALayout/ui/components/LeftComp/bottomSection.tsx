@@ -6,15 +6,21 @@ import { useCallback } from 'react';
 import { logout } from '@/features/auth/authSlice';
 import { AppDispatch } from '@/app/store';
 import { CustomToast } from '@/shared/ui/toaster';
-
+import { Menu } from '@/entities/menu';
 interface BottomSectionProps {
+    menuList: Menu[],
     isCollapsed: boolean,
+    loading: boolean,
 }
 
-export const BottomSection = ({ isCollapsed }: BottomSectionProps) => {
+export const BottomSection = ({ menuList, isCollapsed, loading }: BottomSectionProps) => {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     
+    console.log(menuList);
+    console.log(isCollapsed);
+    console.log(loading);
+
     // 로그아웃
     const handleLogout = useCallback(async (e: React.MouseEvent) => {
         e.preventDefault();

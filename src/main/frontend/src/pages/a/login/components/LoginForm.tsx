@@ -50,12 +50,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading }) => {
 
   return (
     <div className="w-full max-w-md">
+      {/* 언어 선택 영역 주석처리
       <div className="flex justify-end mb-6">
         <select className="text-sm text-gray-500 border-none bg-transparent hover:text-red-600 focus:outline-none cursor-pointer transition-colors">
           <option>한국어</option>
           <option>English(USA)</option>
         </select>
       </div>
+      */}
       
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-gray-800">로그인</h2>
@@ -80,11 +82,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading }) => {
             rememberMe={rememberMe} 
             setRememberMe={setRememberMe} 
           />
+          
+          {/* 비밀번호 찾기 영역 주석처리
           <div className="text-sm">
             <Link to="/forgot-password" className="font-medium text-red-600 hover:text-red-800 transition-colors">
               비밀번호 찾기
             </Link>
           </div>
+          */}
         </div>
 
         <div className="mt-8">

@@ -17,7 +17,7 @@ const RememberMeCheckbox: React.FC<RememberMeCheckboxProps> = ({ rememberMe, set
         className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer"
       />
       <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 cursor-pointer">
-        자동 로그인
+        아이디 저장
       </label>
     </div>
   );
