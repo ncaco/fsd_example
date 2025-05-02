@@ -15,14 +15,14 @@ INSERT INTO TB_MENU (
     REG_DT              /* 등록 일시 */
 ) VALUES 
 -- 1단계 메뉴 (최상위 메뉴)
-(1, 'a', 1.0, 0, '대시보드', 'C004', '/a/main', 1, 'Y', 'Y', 'dashboard', 'admin', CURRENT_TIMESTAMP),
-(2, 'a', 1.0, 0, '사용자 관리', 'C004', '/a/user', 2, 'Y', 'Y', 'user', 'admin', CURRENT_TIMESTAMP),
-(3, 'a', 1.0, 0, '메뉴 관리', 'C004', '/a/menu', 3, 'Y', 'Y', 'menu', 'admin', CURRENT_TIMESTAMP),
+(1, 'a', 1.0, 0, '대시보드', 'C004', '/a', 1, 'Y', 'Y', 'dashboard', 'C001', 'admin', CURRENT_TIMESTAMP),
+(2, 'a', 1.0, 0, '사용자 관리', 'C004', '/a/user', 2, 'Y', 'Y', 'user', 'C001', 'admin', CURRENT_TIMESTAMP),
+(3, 'a', 1.0, 0, '메뉴 관리', 'C004', '/a/menu', 3, 'Y', 'Y', 'menu', 'C001', 'admin', CURRENT_TIMESTAMP),
 
 -- 2단계 메뉴 (사용자 관리 하위)
-(4, 'a', 1.0, 2, '사용자 목록', 'C004', '/a/user/list', 1, 'Y', 'Y', 'user-list', 'admin', CURRENT_TIMESTAMP),
-(5, 'a', 1.0, 2, '권한 관리', 'C004', '/a/user/auth', 2, 'Y', 'Y', 'shield', 'admin', CURRENT_TIMESTAMP),
+(4, 'a', 1.0, 2, '사용자 목록', 'C004', '/a/user/list', 1, 'Y', 'Y', 'user-list', 'C002', 'admin', CURRENT_TIMESTAMP),
+(5, 'a', 1.0, 2, '권한 관리', 'C004', '/a/user/auth', 2, 'Y', 'Y', 'shield', 'C002', 'admin', CURRENT_TIMESTAMP),
 
 -- 2단계 메뉴 (메뉴 관리 하위)
-(6, 'a', 1.0, 3, '메뉴 목록', 'C004', '/a/menu/list', 1, 'Y', 'Y', 'menu-list', 'admin', CURRENT_TIMESTAMP),
+(6, 'a', 1.0, 3, '메뉴 목록', 'C004', '/a/menu/list', 1, 'Y', 'Y', 'menu-list', 'C002', 'admin', CURRENT_TIMESTAMP),
 (7, 'a', 1.0, 3, '메뉴 설정', 'C004', '/a/menu/setting', 2, 'Y', 'Y', 'setting', 'admin', CURRENT_TIMESTAMP); 
