@@ -103,7 +103,7 @@ public class Menu {
     @Column(name = "FILTER_SE_CD_LIST", length = 1000)
     private String filterSeCdList;    // 필터구분코드목록
 
-    @Column(name = "POS_CD", length = 4)
+    @Column(name = "MENU_POS_CD", length = 4)
     private String menuPosCd;    // 메뉴위치코드    //U002: 메뉴위치코드, C001: TOP / C002: LEFT / C003: RIGHT / C004: BOTTOM
 
     @Column(name = "MOBL_USE_YN", length = 1)

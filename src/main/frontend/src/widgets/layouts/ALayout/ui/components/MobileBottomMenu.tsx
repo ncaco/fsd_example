@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CreateIcon } from '@/shared/ui/icon/CreateIcon';
 import { Menu } from '@/entities/menu';
 import { Link, useLocation } from 'react-router-dom';
@@ -6,12 +6,10 @@ import { Link, useLocation } from 'react-router-dom';
 
 export const MobileBottomMenu: React.FC<{ menuList: Menu[] }> = ({ menuList }) => {
     const location = useLocation();
-    const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
     
     // 현재 경로와 메뉴의 링크 URL이 일치하는지 확인하는 함수
     const isActive = (path: string) => {
-        // 호버 상태일 때는 호버된 메뉴를 액티브로 표시
-        const isActiveNow = hoveredMenu === path || (hoveredMenu === null && location.pathname === path);
+        const isActiveNow = location.pathname === path;
         return isActiveNow
             ? 'flex flex-col items-center justify-center w-1/5 h-[52px] text-red-600 font-medium relative after:absolute after:w-full after:h-1 after:bg-red-600 after:bottom-[0px] after:rounded-t-md' 
             : 'flex flex-col items-center justify-center w-1/5 h-[52px] text-gray-600 hover:text-red-600 transition-colors duration-200';
@@ -27,16 +25,12 @@ export const MobileBottomMenu: React.FC<{ menuList: Menu[] }> = ({ menuList }) =
                     const menu = menuList.find(menu => menu.moblPosCd === posCd);
                     if (menu) {
                         const menuPath = menu.lnkgUrl || '';
-                        const isActiveMenu = hoveredMenu === menuPath || (hoveredMenu === null && location.pathname === menuPath);
+                        const isActiveMenu = location.pathname === menuPath;
                         return (
                             <Link
                                 to={menuPath}
                                 key={menu.menuSn}
                                 className={isActive(menuPath)}
-                                onMouseEnter={() => setHoveredMenu(menuPath)}
-                                onMouseLeave={() => setHoveredMenu(null)}
-                                onTouchStart={() => setHoveredMenu(menuPath)}
-                                onTouchEnd={() => setHoveredMenu(null)}
                             >
                                 <div className="flex flex-col items-center justify-center p-1 w-full">
                                     <div className="flex justify-center items-center">
@@ -68,10 +62,6 @@ export const MobileBottomMenu: React.FC<{ menuList: Menu[] }> = ({ menuList }) =
                                 to={'#'}
                                 key={`default-${posCd}`}
                                 className="flex flex-col items-center justify-center w-1/5 text-gray-400 hover:text-gray-500 transition-colors duration-200"
-                                onMouseEnter={() => setHoveredMenu(`default-${posCd}`)}
-                                onMouseLeave={() => setHoveredMenu(null)}
-                                onTouchStart={() => setHoveredMenu(`default-${posCd}`)}
-                                onTouchEnd={() => setHoveredMenu(null)}
                             >
                                 <div className="flex flex-col items-center justify-center p-1 w-full">
                                     <div className="flex justify-center items-center">
