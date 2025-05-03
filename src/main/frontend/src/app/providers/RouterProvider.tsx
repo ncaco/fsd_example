@@ -12,10 +12,11 @@ import HeroPage from '@pages/home/hero';
 
 import ALoginPage from '@pages/a/login';
 import AMainPage from '@pages/a/main';
+import MenuIndex from '@pages/a/menu';
+
 import ASub1Page from '@pages/a/sub1';
 import ASub2Page from '@pages/a/sub2';
 import NotFoundPage from '@pages/a/error/NotFoundPage';
-
 
 export const RouterProvider: React.FC = () => {
   return (
@@ -44,6 +45,7 @@ export const RouterProvider: React.FC = () => {
           }
         >
           <Route index element={<AMainPage />} />
+          <Route path="menu/*" element={<MenuIndex />} />
           <Route path="sub1" element={<ASub1Page />} />
           <Route path="sub2" element={<ASub2Page />} />
           <Route path="*" element={<NotFoundPage />} />
