@@ -22,6 +22,9 @@ export interface Menu extends BaseResponse {
     dgstfnUseYn?: string;           // 만족도사용여부
     ognzSn?: number;                // 조직일련번호
     filterSeCdList?: string;        // 필터구분코드목록
+    menuPosCd: string;              // 메뉴위치코드
+    moblUseYn: string;              // 모바일사용여부
+    moblPosCd: string;              // 모바일위치코드
     rgtrId: string;                 // 등록자아이디
     regDt: string;                  // 등록일시
     mdfrId?: string;                // 수정자아이디

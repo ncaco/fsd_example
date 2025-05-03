@@ -48,6 +48,7 @@ export const LeftMenu: React.FC = () => {
     localStorage.setItem('isCollapsed', JSON.stringify(newCollapsedState)); // 상태 변경 시 로컬 스토리지에 저장
   };
 
+
   return (
     <>
       {/* hidden sm:block을 추가하여 모바일에서는 숨기고 sm 브레이크포인트(640px) 이상에서만 보이도록 설정 */}
@@ -60,10 +61,24 @@ export const LeftMenu: React.FC = () => {
           <TopLogo isCollapsed={isCollapsed} />
           
           {/* 스크롤 가능한 메뉴 영역 */}
-          <MenuScroll isCollapsed={isCollapsed} menuList={menuList} loading={loading}/>
+          <MenuScroll 
+            isCollapsed={isCollapsed} 
+            loading={loading}
+            menuList={menuList.filter(menu => 
+              menu.expsrYn === 'Y' &&
+              menu.menuPosCd === 'C002'
+            )} 
+          />
           
           {/* 설정 및 로그아웃 - 고정 영역 */}
-          <BottomSection isCollapsed={isCollapsed} menuList={menuList} loading={loading}/>
+          <BottomSection 
+            isCollapsed={isCollapsed} 
+            menuList={menuList.filter(menu => 
+              menu.expsrYn === 'Y' &&
+              menu.menuPosCd === 'C004'
+            )} 
+            loading={loading}
+          />
 
           {/* 토글 버튼 */}
           <ToggleButton isCollapsed={isCollapsed} onToggle={onToggle} />
@@ -73,7 +88,12 @@ export const LeftMenu: React.FC = () => {
 
       
       {/* 반응형에서 하단 메뉴 */}
-      <MobileBottomMenu />
+      <MobileBottomMenu
+        menuList={menuList.filter(menu => 
+          menu.expsrYn === 'Y' &&
+          menu.moblUseYn === 'Y'
+        )}
+      />
     </>
   );
 }; 

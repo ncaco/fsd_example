@@ -9,7 +9,6 @@ interface MenuScrollProps {
     loading: boolean;
 }
 
-
 export const MenuScroll = ({ menuList, isCollapsed, loading }: MenuScrollProps) => {
     console.log('-----MenuScroll Rendered-----');
     

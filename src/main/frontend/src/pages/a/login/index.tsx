@@ -1,20 +1,20 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoginLeft, LoginForm } from './components';
 import { login, resetError, getSessionInfo } from '@/features/auth/authSlice';
 import { CustomToast } from '@/shared/ui/toaster';
 import { RootState, AppDispatch } from '@/app/store';
 
-interface LocationState {
-  from?: {
-    pathname: string;
-  };
-}
+//interface LocationState {
+//    from?: {
+//    pathname: string;
+//  };
+//}
 
 const ALoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  //const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
   const [redirectInProcess, setRedirectInProcess] = useState(false);
   
@@ -22,8 +22,9 @@ const ALoginPage: React.FC = () => {
   const { isLoading, isAuthenticated, error, user } = useSelector((state: RootState) => state.auth);
   
   // 이전 위치 가져오기
-  const locationState = location.state as LocationState;
-  const from = locationState?.from?.pathname || '/a';
+  //const locationState = location.state as LocationState;
+  //const from = locationState?.from?.pathname || '/a';
+  const from = '/a';
 
   // 컴포넌트 언마운트 시 에러 상태 초기화
   useEffect(() => {

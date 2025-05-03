@@ -103,6 +103,16 @@ public class Menu {
     @Column(name = "FILTER_SE_CD_LIST", length = 1000)
     private String filterSeCdList;    // 필터구분코드목록
 
+    @Column(name = "POS_CD", length = 4)
+    private String menuPosCd;    // 메뉴위치코드    //U002: 메뉴위치코드, C001: TOP / C002: LEFT / C003: RIGHT / C004: BOTTOM
+
+    @Column(name = "MOBL_USE_YN", length = 1)
+    @Builder.Default
+    private String moblUseYn = "N";    // 모바일사용여부
+
+    @Column(name = "MOBL_POS_CD", length = 4)
+    private String moblPosCd;    // 모바일위치코드 / U003: 모바일위치코드, C001~4: 첫번째 ~ 네번째 메뉴
+
     @Column(name = "RGTR_ID", nullable = false, length = 50)
     private String rgtrId;    // 등록자아이디
 
