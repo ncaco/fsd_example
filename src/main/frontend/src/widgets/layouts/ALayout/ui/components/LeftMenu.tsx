@@ -56,7 +56,7 @@ export const LeftMenu: React.FC = () => {
           isCollapsed ? 'w-20' : 'w-64'
         }`}
       >
-        <div className={`h-screen flex flex-col ${isCollapsed ? 'px-1 py-3' : 'px-3 py-3'} relative`}>
+        <div className={`h-screen flex flex-col ${isCollapsed ? 'px-1 py-6' : 'px-3 py-6'} relative`}>
           {/* 로고 - 고정 영역 */}
           <TopLogo isCollapsed={isCollapsed} />
           
