@@ -19,7 +19,7 @@ export const MobileBottomMenu: React.FC<{ menuList: Menu[] }> = ({ menuList }) =
 
     return (
         // 하단에 고정되는 메뉴바
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 md:hidden shadow-lg">
+        <div className="fixed bottom-0 left-0 right-0 h-[52px] bg-white border-t border-gray-200 md:hidden shadow-lg">
             <div className="flex items-center justify-between max-w-screen-xl mx-auto">
                 
                 {/* C001 ~ C004 각각에 대해 메뉴가 없으면 default 버튼으로 대체 */}
@@ -42,7 +42,7 @@ export const MobileBottomMenu: React.FC<{ menuList: Menu[] }> = ({ menuList }) =
                                     <div className="flex justify-center items-center">
                                         <CreateIcon iconKey={menu.icon || 'default'} />
                                     </div>
-                                    <span className={`mt-1 text-xs text-center w-full ${isActiveMenu ? 'font-bold' : ''}`}>
+                                    <span className={`mt-1 text-xs text-center w-full ${isActiveMenu ? 'font-bold' : ''} sm:block hidden`}>
                                         {menu.menuNm}
                                     </span>
                                 </div>
@@ -77,7 +77,7 @@ export const MobileBottomMenu: React.FC<{ menuList: Menu[] }> = ({ menuList }) =
                                     <div className="flex justify-center items-center">
                                         <CreateIcon iconKey="default" />
                                     </div>
-                                    <span className="mt-1 text-xs text-center w-full">없음</span>
+                                    <span className="mt-1 text-xs text-center w-full sm:block hidden">없음</span>
                                 </div>
                             </Link>
                         );
