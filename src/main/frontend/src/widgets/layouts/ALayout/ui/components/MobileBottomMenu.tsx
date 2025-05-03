@@ -13,8 +13,8 @@ export const MobileBottomMenu: React.FC<{ menuList: Menu[] }> = ({ menuList }) =
         // 호버 상태일 때는 호버된 메뉴를 액티브로 표시
         const isActiveNow = hoveredMenu === path || (hoveredMenu === null && location.pathname === path);
         return isActiveNow
-            ? 'flex flex-col items-center justify-center w-1/5 text-red-600 font-medium relative after:absolute after:w-full after:h-1 after:bg-red-600 after:bottom-[0px] after:rounded-t-md' 
-            : 'flex flex-col items-center justify-center w-1/5 text-gray-600 hover:text-red-600 transition-colors duration-200';
+            ? 'flex flex-col items-center justify-center w-1/5 h-[52px] text-red-600 font-medium relative after:absolute after:w-full after:h-1 after:bg-red-600 after:bottom-[0px] after:rounded-t-md' 
+            : 'flex flex-col items-center justify-center w-1/5 h-[52px] text-gray-600 hover:text-red-600 transition-colors duration-200';
     };
 
     return (
@@ -55,7 +55,7 @@ export const MobileBottomMenu: React.FC<{ menuList: Menu[] }> = ({ menuList }) =
                                 className="flex flex-col items-center justify-center w-1/5" 
                                 key={`plus-button`}
                             >
-                                <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
+                                <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white shadow-lg transform hover:scale-105 transition-transform duration-200">
                                     <CreateIcon iconKey="plus_white" />
                                 </div>
                             </button>
