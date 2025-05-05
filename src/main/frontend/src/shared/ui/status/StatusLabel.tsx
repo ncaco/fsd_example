@@ -6,25 +6,19 @@ interface StatusLabelProps {
 }
 
 const StatusLabel: React.FC<StatusLabelProps> = ({ menu }) => {
-  let backgroundColor = '#f44336'; // 비활성화
+  let statusClass = 'bg-red-500'; // 비활성화 상태 기본 클래스
   let label = '비활성화';
   
   if (menu.useYn === 'Y' && menu.expsrYn === 'Y') {
-    backgroundColor = '#4caf50'; // 활성화
+    statusClass = 'bg-green-500'; // 활성화
     label = '활성화';
   } else if (menu.useYn === 'Y') {
-    backgroundColor = '#ff9800'; // 비노출
+    statusClass = 'bg-orange-500'; // 비노출
     label = '비노출';
   }
   
   return (
-    <span style={{ 
-      backgroundColor, 
-      color: 'white',
-      padding: '2px 8px',
-      borderRadius: '12px',
-      fontSize: '12px',
-    }}>
+    <span className={`${statusClass} text-white px-2 py-0.5 rounded-full text-xs`}>
       {label}
     </span>
   );

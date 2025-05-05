@@ -22,8 +22,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -129,12 +130,12 @@ public class Menu {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MENU_UP_SN", referencedColumnName = "MENU_SN", insertable = false, updatable = false)
-    @JsonIgnore
+    @JsonBackReference
     private Menu parentMenu;    // 부모 메뉴
     
     @OneToMany(mappedBy = "parentMenu")
     @Builder.Default
-    @JsonIgnore
+    @JsonManagedReference
     private List<Menu> childMenus = new ArrayList<>();    // 자식 메뉴 목록
 
     @Override

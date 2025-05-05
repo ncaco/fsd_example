@@ -1,15 +1,16 @@
 import Button from './button';
 import { TopButton } from './button';
-import TreeView from './tree';
+import TreeView from './tree/TreeView';
+import { filterTreeItems, convertToTreeItems } from './tree/utils';
 import SearchBar from './search';
 import StatusLabel from './status';
-import { getFilteredMenus } from '../lib/utils/FilteredMenuList';
 
 export { 
   Button, 
   TopButton,
-  TreeView, 
+  TreeView,
+  filterTreeItems,
+  convertToTreeItems,
   SearchBar, 
-  StatusLabel, 
-  getFilteredMenus 
+  StatusLabel
 }; 

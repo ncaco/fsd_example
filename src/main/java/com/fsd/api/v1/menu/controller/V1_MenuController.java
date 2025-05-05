@@ -80,7 +80,7 @@ public class V1_MenuController {
 
     /** 수정 */
     @PutMapping("/{sn}")
-    public ResponseEntity<Map<String, Object>> updateMenu(@PathVariable Long sn, @RequestBody Menu menu) {
+    public ResponseEntity<Map<String, Object>> updateMenu(@PathVariable Integer sn, @RequestBody Menu menu) {
         LOGGER.info("\n----------------------------------메뉴 수정----------------------------------");
         try {
             /** 수정 */
@@ -97,7 +97,7 @@ public class V1_MenuController {
 
     /** 삭제 */
     @DeleteMapping("/{sn}")
-    public ResponseEntity<Map<String, Object>> deleteMenu(@PathVariable Long sn) {
+    public ResponseEntity<Map<String, Object>> deleteMenu(@PathVariable Integer sn) {
         LOGGER.info("\n----------------------------------메뉴 삭제----------------------------------");
         try {
             /** 삭제 */
@@ -109,6 +109,25 @@ public class V1_MenuController {
         } catch (Exception e) {
             LOGGER.error("메뉴 삭제 중 오류 발생", e);
             return ResponseUtil.error("메뉴 삭제 중 오류가 발생했습니다.", e.getMessage());
+        }
+    }
+
+    /** 메뉴 트리 조회 */
+    @GetMapping("/tree")
+    public ResponseEntity<Map<String, Object>> getMenuTreeList(@RequestParam(name = "siteId", required = true) String siteId) {
+        LOGGER.info("\n----------------------------------메뉴 트리 조회----------------------------------");
+        LOGGER.info("siteId: {}", siteId);
+        
+        try {
+            /** 메뉴 트리 조회 */
+            List<Menu> menuTreeList = menuService.getMenuTreeList(siteId);
+
+            /** 반환 */
+            LOGGER.info("\n----------------------------------메뉴 트리 조회 완료----------------------------------");
+            return ResponseUtil.success("메뉴 트리 조회 성공", menuTreeList);
+        } catch (Exception e) {
+            LOGGER.error("메뉴 트리 조회 중 오류 발생", e);
+            return ResponseUtil.error("메뉴 트리 조회 중 오류가 발생했습니다.", e.getMessage());
         }
     }
 }

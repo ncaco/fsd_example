@@ -40,5 +40,21 @@ export const menuApi = {
      */ 
     deleteMenu: async (sn: number): Promise<void> => {
         await apiInstance.delete(`/v1/menu/${sn}`);
+    },
+
+    /**
+     * 메뉴 트리 조회
+     * @param siteId 사이트 아이디
+     * @returns 메뉴 트리
+     */
+    getMenuTreeList: async (siteId: string): Promise<Menu[]> => {
+        try {
+            const response = await apiInstance.get(`/v1/menu/tree?siteId=${siteId}`);
+            console.log('API 원본 응답:', response);
+            return response.data.data;
+        } catch (error) {
+            console.error('메뉴 트리 조회 API 호출 오류:', error);
+            throw error;
+        }
     }
 };

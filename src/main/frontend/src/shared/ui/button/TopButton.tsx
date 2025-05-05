@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface TopButtonProps {
   onClick: () => void;
@@ -19,31 +19,33 @@ const TopButton: React.FC<TopButtonProps> = ({
   icon = "plus",
   size = "medium"
 }) => {
-  // 버튼 색상 설정
+  const [isHovered, setIsHovered] = useState(false);
+
+  // 버튼 색상 클래스 설정
   const getButtonColors = () => {
     switch (variant) {
       case 'primary':
-        return { bg: '#1976d2', color: 'white', hoverBg: '#1565c0' };
+        return 'bg-blue-600 hover:bg-blue-700 text-white';
       case 'secondary':
-        return { bg: '#f5f5f5', color: '#333', hoverBg: '#e0e0e0' };
+        return 'bg-gray-100 hover:bg-gray-200 text-gray-800';
       case 'success':
-        return { bg: '#4caf50', color: 'white', hoverBg: '#43a047' };
+        return 'bg-green-500 hover:bg-green-600 text-white';
       case 'danger':
-        return { bg: '#f44336', color: 'white', hoverBg: '#e53935' };
+        return 'bg-red-500 hover:bg-red-600 text-white';
       default:
-        return { bg: '#1976d2', color: 'white', hoverBg: '#1565c0' };
+        return 'bg-blue-600 hover:bg-blue-700 text-white';
     }
   };
 
-  // 버튼 크기 설정
+  // 버튼 크기 클래스 설정
   const getButtonSize = () => {
     switch (size) {
       case 'small':
-        return { padding: '6px 12px', fontSize: '12px' };
+        return 'px-3 py-1.5 text-xs';
       case 'large':
-        return { padding: '10px 20px', fontSize: '16px' };
+        return 'px-5 py-2.5 text-base';
       default: // medium
-        return { padding: '8px 16px', fontSize: '14px' };
+        return 'px-4 py-2 text-sm';
     }
   };
 
@@ -65,46 +67,34 @@ const TopButton: React.FC<TopButtonProps> = ({
     }
   };
 
-  const { bg, color, hoverBg } = getButtonColors();
-  const { padding, fontSize } = getButtonSize();
+  const iconSize = size === 'small' ? 'text-sm' : size === 'large' ? 'text-lg' : 'text-base';
   const buttonIcon = getIcon();
+  
+  const shadowClass = isHovered ? 'shadow-md' : 'shadow';
 
   return (
     <button 
       onClick={onClick}
-      style={{
-        backgroundColor: bg,
-        color: color,
-        border: 'none',
-        padding: padding,
-        borderRadius: '4px',
-        cursor: 'pointer',
-        fontWeight: 500,
-        fontSize: fontSize,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '6px',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-        transition: 'all 0.2s ease',
-        outline: 'none'
-      }}
-      onMouseOver={(e) => {
-        e.currentTarget.style.backgroundColor = hoverBg;
-        e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
-      }}
-      onMouseOut={(e) => {
-        e.currentTarget.style.backgroundColor = bg;
-        e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
-      }}
+      className={`
+        ${getButtonColors()}
+        ${getButtonSize()}
+        ${shadowClass}
+        border-none
+        rounded
+        font-medium
+        flex
+        items-center
+        justify-center
+        gap-1.5
+        transition-all
+        duration-200
+        outline-none
+      `}
+      onMouseOver={() => setIsHovered(true)}
+      onMouseOut={() => setIsHovered(false)}
     >
       {buttonIcon && (
-        <span style={{ 
-          fontSize: size === 'small' ? '14px' : size === 'large' ? '20px' : '16px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
+        <span className={`${iconSize} flex items-center justify-center`}>
           {buttonIcon}
         </span>
       )}

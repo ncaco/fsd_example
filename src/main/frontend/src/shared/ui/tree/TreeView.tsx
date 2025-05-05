@@ -1,237 +1,137 @@
-import React from 'react';
-import { Menu } from '@/entities/menu';
-import StatusLabel from '../status/StatusLabel';
+import React, { useState } from 'react';
+
+// 트리 아이템 인터페이스
+export interface TreeItem<T = unknown> {
+  id: number | string;
+  name: string;
+  description?: string;
+  children?: TreeItem<T>[];
+  data?: T;
+}
 
 // 트리 노드 컴포넌트 Props
-interface TreeNodeProps {
-  menu: Menu;
+interface TreeNodeProps<T> {
+  item: TreeItem<T>;
   level: number;
-  goToEdit: (sn: number) => void;
-  goToShow: (sn: number) => void;
-  openNodes: Record<number, boolean>;
-  toggleNode: (nodeId: number) => void;
+  openNodes: Record<string | number, boolean>;
+  toggleNode: (nodeId: string | number) => void;
+  renderActions?: (item: TreeItem<T>) => React.ReactNode;
+  getItemStatus?: (item: TreeItem<T>) => React.ReactNode;
 }
 
 // 트리 뷰 컴포넌트 Props
-interface TreeViewProps {
-  items: Menu[];
-  goToEdit: (sn: number) => void;
-  goToShow: (sn: number) => void;
-  openNodes: Record<number, boolean>;
-  toggleNode: (nodeId: number) => void;
+interface TreeViewProps<T> {
+  items: TreeItem<T>[];
+  openNodes: Record<string | number, boolean>;
+  toggleNode: (nodeId: string | number) => void;
+  renderActions?: (item: TreeItem<T>) => React.ReactNode;
+  getItemStatus?: (item: TreeItem<T>) => React.ReactNode;
   emptyMessage?: string;
 }
 
 // 트리 노드 컴포넌트
-export const TreeNode: React.FC<TreeNodeProps> = ({ 
-  menu, 
+export function TreeNode<T>({ 
+  item, 
   level, 
-  goToEdit, 
-  goToShow, 
   openNodes, 
-  toggleNode 
-}) => {
-  const isOpen = openNodes[menu.menuSn];
-  const hasChildren = menu.childMenus && menu.childMenus.length > 0;
+  toggleNode,
+  renderActions,
+  getItemStatus
+}: TreeNodeProps<T>) {
+  const [isHovered, setIsHovered] = useState(false);
+  const isOpen = openNodes[item.id];
+  const hasChildren = item.children && item.children.length > 0;
   
   return (
-    <div style={{ width: '100%' }}>
+    <div className="w-full">
       <div 
-        style={{ 
-          display: 'flex',
-          padding: '10px 8px 10px ' + (level * 24 + 8) + 'px',
-          borderBottom: '1px solid #eee',
-          alignItems: 'center',
-          cursor: hasChildren ? 'pointer' : 'default',
-          transition: 'background-color 0.2s',
-          backgroundColor: level === 0 ? '#f9f9f9' : 'white',
-          position: 'relative',
-        }}
-        onClick={() => hasChildren && toggleNode(menu.menuSn)}
-        onMouseOver={(e) => {
-          e.currentTarget.style.backgroundColor = '#f5f5f5';
-        }}
-        onMouseOut={(e) => {
-          e.currentTarget.style.backgroundColor = level === 0 ? '#f9f9f9' : 'white';
-        }}
+        className={`flex items-center border-b border-gray-200 transition-colors relative
+          ${level === 0 ? 'bg-gray-50' : 'bg-white'} 
+          ${isHovered ? 'bg-gray-100' : ''}
+          ${hasChildren ? 'cursor-pointer' : 'cursor-default'}`}
+        style={{ padding: `10px 8px 10px ${level * 24 + 8}px` }}
+        onClick={() => hasChildren && toggleNode(item.id)}
+        onMouseOver={() => setIsHovered(true)}
+        onMouseOut={() => setIsHovered(false)}
       >
-        <div style={{ 
-          marginRight: '10px',
-          width: '16px',
-          height: '16px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
+        <div className="mr-2.5 w-4 h-4 flex items-center justify-center">
           {hasChildren && (
-            <span style={{ 
-              fontSize: '10px',
-              width: '16px',
-              height: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: isOpen ? '#e6f7ff' : '#f0f0f0',
-              color: isOpen ? '#1890ff' : '#666',
-              borderRadius: '3px',
-              transition: 'all 0.2s'
-            }}>
+            <span className={`text-xs w-4 h-4 flex items-center justify-center rounded transition-all
+              ${isOpen ? 'bg-blue-50 text-blue-500' : 'bg-gray-100 text-gray-600'}`}>
               {isOpen ? '▼' : '▶'}
             </span>
           )}
         </div>
         
-        <div style={{ flexGrow: 1 }}>
-          <div style={{ 
-            fontWeight: level === 0 ? 'bold' : 'normal',
-            fontSize: '14px',
-            color: level === 0 ? '#333' : '#555',
-            marginBottom: menu.menuHelpCn ? '4px' : '0'
-          }}>
-            {menu.menuNm}
+        <div className="flex-grow">
+          <div className={`text-sm mb-${item.description ? '1' : '0'}
+            ${level === 0 ? 'font-bold text-gray-800' : 'font-normal text-gray-600'}`}>
+            {item.name}
           </div>
-          {menu.menuHelpCn && (
-            <div style={{ 
-              color: '#888',
-              fontSize: '12px'
-            }}>
-              {menu.menuHelpCn}
+          {item.description && (
+            <div className="text-gray-500 text-xs">
+              {item.description}
             </div>
           )}
         </div>
         
-        <div style={{ 
-          display: 'flex', 
-          gap: '8px', 
-          alignItems: 'center'
-        }}>
-          <StatusLabel menu={menu} />
-          
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              goToShow(menu.menuSn);
-            }}
-            style={{
-              border: '1px solid #e8e8e8',
-              background: 'white',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              padding: '4px 10px',
-              fontSize: '12px',
-              color: '#555',
-              transition: 'all 0.2s',
-              boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.borderColor = '#d9d9d9';
-              e.currentTarget.style.color = '#333';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.borderColor = '#e8e8e8';
-              e.currentTarget.style.color = '#555';
-            }}
-          >
-            상세
-          </button>
-          
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              goToEdit(menu.menuSn);
-            }}
-            style={{
-              border: '1px solid #1890ff',
-              background: 'white',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              padding: '4px 10px',
-              fontSize: '12px',
-              color: '#1890ff',
-              transition: 'all 0.2s',
-              boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#e6f7ff';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = 'white';
-            }}
-          >
-            수정
-          </button>
+        <div className="flex gap-2 items-center">
+          {getItemStatus && getItemStatus(item)}
+          {renderActions && renderActions(item)}
         </div>
       </div>
       
       {hasChildren && isOpen && (
-        <div style={{
-          borderLeft: level === 0 ? '1px dashed #d9d9d9' : 'none',
-          marginLeft: level === 0 ? '17px' : '0',
-          paddingLeft: level === 0 ? '1px' : '0'
-        }}>
-          {menu.childMenus.map(child => (
+        <div className={`${level === 0 ? 'border-l border-dashed border-gray-300 ml-4 pl-px' : ''}`}>
+          {item.children?.map(child => (
             <TreeNode
-              key={child.menuSn}
-              menu={child}
+              key={child.id}
+              item={child}
               level={level + 1}
-              goToEdit={goToEdit}
-              goToShow={goToShow}
               openNodes={openNodes}
               toggleNode={toggleNode}
+              renderActions={renderActions}
+              getItemStatus={getItemStatus}
             />
           ))}
         </div>
       )}
     </div>
   );
-};
+}
 
 // 트리 뷰 컴포넌트
-const TreeView: React.FC<TreeViewProps> = ({ 
+function TreeView<T>({
   items, 
-  goToEdit, 
-  goToShow, 
   openNodes, 
   toggleNode,
+  renderActions,
+  getItemStatus,
   emptyMessage = "표시할 항목이 없습니다."
-}) => {
+}: TreeViewProps<T>) {
   if (items.length === 0) {
     return (
-      <div style={{ 
-        textAlign: 'center',
-        padding: '30px',
-        backgroundColor: '#f9f9f9',
-        borderRadius: '8px',
-        color: '#888',
-        fontSize: '14px',
-        border: '1px dashed #d9d9d9'
-      }}>
+      <div className="text-center py-8 px-6 bg-gray-50 rounded-lg text-gray-500 text-sm border border-dashed border-gray-300">
         {emptyMessage}
       </div>
     );
   }
 
   return (
-    <div style={{ 
-      border: '1px solid #e0e0e0',
-      borderRadius: '8px',
-      backgroundColor: 'white',
-      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-      overflow: 'hidden'
-    }}>
-      {items.map(menu => (
+    <div className="border border-gray-200 rounded-lg bg-white shadow-md overflow-hidden">
+      {items.map(item => (
         <TreeNode
-          key={menu.menuSn}
-          menu={menu}
+          key={item.id}
+          item={item}
           level={0}
-          goToEdit={goToEdit}
-          goToShow={goToShow}
           openNodes={openNodes}
           toggleNode={toggleNode}
+          renderActions={renderActions}
+          getItemStatus={getItemStatus}
         />
       ))}
     </div>
   );
-};
+}
 
 export default TreeView; 

@@ -12,27 +12,16 @@ const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = "검색어를 입력하세요"
 }) => {
   return (
-    <div style={{ marginBottom: '16px' }}>
-      <div style={{ position: 'relative' }}>
+    <div className="mb-4">
+      <div className="relative">
         <input
           type="text"
           placeholder={placeholder}
           value={searchTerm}
           onChange={onChange}
-          style={{
-            width: '100%',
-            padding: '8px 8px 8px 32px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-            boxSizing: 'border-box'
-          }}
+          className="w-full px-8 py-2 rounded border border-gray-300 box-border"
         />
-        <span style={{ 
-          position: 'absolute', 
-          left: '8px',
-          top: '50%',
-          transform: 'translateY(-50%)'
-        }}>
+        <span className="absolute left-2 top-1/2 transform -translate-y-1/2">
           🔍
         </span>
       </div>
