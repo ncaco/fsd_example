@@ -4,11 +4,12 @@ import { Menu } from '@/entities/menu';
 import { menuApi } from '@/features/menu/api/menu';
 
 // 공유 UI 컴포넌트 불러오기
-import { SearchBar } from '@/shared/ui';
+import { SearchBar, HierarchicalTabs } from '@/shared/ui';
 import TreeView, { TreeItem } from '@/shared/ui/tree/TreeView';
 import { filterTreeItems, convertToTreeItems } from '@/shared/ui/tree/utils';
 import PageHeader from '@/shared/ui/pageHeader';
 import StatusLabel from '@/shared/ui/status/StatusLabel';
+import { TabItem } from '@/shared/ui/tab/HierarchicalTabs';
 
 // 더미 데이터 추가 (API 통신 실패시 사용)
 const dummyMenuList: Menu[] = [
@@ -91,7 +92,58 @@ function MenuListPage() {
   const [loading, setLoading] = useState(false);
   const [openNodes, setOpenNodes] = useState<Record<string | number, boolean>>({});
   
-  const siteId = 'a'; // 기본 사이트 ID
+  // 탭 관련 상태
+  const [activeSiteId, setActiveSiteId] = useState<string>('main');
+  const [activeMainTab, setActiveMainTab] = useState<string>('WINDOW');
+  const [activeSubTab, setActiveSubTab] = useState<string>('LEFT');
+  
+  // 사이트 ID 탭 목록
+  const siteIdTabs: TabItem[] = [
+    { id: 'home', label: '홈' },
+    { id: 'a', label: '관리자' },
+  ];
+  
+  // 메인 탭 목록
+  const mainTabs: TabItem[] = [
+    { 
+      id: 'WINDOW', 
+      label: '윈도우',
+      children: [
+        { id: 'LEFT', label: '좌측' },
+        { id: 'RIGHT', label: '우측' },
+        { id: 'BOTTOM', label: '하단' }
+      ]
+    },
+    { 
+      id: 'MOBILE', 
+      label: '모바일',
+      children: []
+    }
+  ];
+  
+  // 선택된 메뉴 위치 코드에 따라 메뉴 필터링
+  const getFilteredMenusByPosition = (menus: Menu[]): Menu[] => {
+    if (!menus) return [];
+    
+    let filteredMenus = [...menus];
+    
+    // 메인 탭에 따라 필터링
+    if (activeMainTab === 'WINDOW') {
+      // WINDOW 내에서 LEFT/RIGHT/BOTTOM 탭에 따라 추가 필터링
+      if (activeSubTab === 'LEFT') {
+        filteredMenus = filteredMenus.filter(menu => menu.menuPosCd === 'C002');
+      } else if (activeSubTab === 'RIGHT') {
+        filteredMenus = filteredMenus.filter(menu => menu.menuPosCd === 'C003');
+      } else if (activeSubTab === 'BOTTOM') {
+        filteredMenus = filteredMenus.filter(menu => menu.menuPosCd === 'C004');
+      }
+    } else if (activeMainTab === 'MOBILE') {
+      // 모바일 탭에 따른 필터링
+      filteredMenus = filteredMenus.filter(menu => menu.moblUseYn === 'Y');
+    }
+    
+    return filteredMenus;
+  };
   
   // 검색어에 따라 노드 자동 확장
   useEffect(() => {
@@ -123,7 +175,7 @@ function MenuListPage() {
         
         try {
           // API에서 메뉴 트리 가져오기
-          list = await menuApi.getMenuTreeList(siteId);
+          list = await menuApi.getMenuTreeList(activeSiteId);
           
           console.log('메뉴 트리 데이터:', list);
           console.log('최상위 메뉴 수:', list.length);
@@ -166,7 +218,7 @@ function MenuListPage() {
     };
     
     fetchMenuList();
-  }, [siteId]);
+  }, [activeSiteId]);
   
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -193,8 +245,10 @@ function MenuListPage() {
   
   // 메뉴를 TreeItem으로 변환
   const menuTreeItems = useMemo(() => {
-    return convertToTreeItems(menuList, menuToTreeItemProps);
-  }, [menuList]);
+    // 현재 탭 선택에 따라 메뉴 필터링
+    const filteredMenus = getFilteredMenusByPosition(menuList);
+    return convertToTreeItems(filteredMenus, menuToTreeItemProps);
+  }, [menuList, activeMainTab, activeSubTab]);
 
   // 검색어로 필터링된 트리 아이템 목록
   const filteredTreeItems = useMemo(() => {
@@ -235,6 +289,29 @@ function MenuListPage() {
     const menu = item.data!;
     return <StatusLabel menu={menu} />;
   };
+
+  // 탭 클릭 핸들러
+  const handleSiteIdTabClick = (tabId: string) => {
+    setActiveSiteId(tabId);
+  };
+  
+  const handleMainTabClick = (tabId: string) => {
+    setActiveMainTab(tabId);
+    
+    // 기본값 설정
+    if (tabId === 'WINDOW') {
+      setActiveSubTab('LEFT');
+    } else if (tabId === 'MOBILE') {
+      setActiveSubTab('MAIN');
+    } else {
+      // 다른 메인 탭의 경우 서브탭 선택 초기화
+      setActiveSubTab('');
+    }
+  };
+  
+  const handleSubTabClick = (tabId: string) => {
+    setActiveSubTab(tabId);
+  };
   
   return (
     <div className="p-5">
@@ -250,6 +327,18 @@ function MenuListPage() {
             size: "medium"
           }
         ]}
+      />
+      
+      {/* 계층형 탭 컴포넌트 사용 */}
+      <HierarchicalTabs
+        siteIdTabs={siteIdTabs}
+        mainTabs={mainTabs}
+        activeSiteId={activeSiteId}
+        activeMainTab={activeMainTab}
+        activeSubTab={activeSubTab}
+        onSiteIdTabClick={handleSiteIdTabClick}
+        onMainTabClick={handleMainTabClick}
+        onSubTabClick={handleSubTabClick}
       />
       
       <SearchBar 
