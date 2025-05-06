@@ -86,7 +86,8 @@ const menuToTreeItemProps = (menu: Menu) => ({
   name: menu.menuNm,
   description: menu.menuHelpCn,
   children: menu.childMenus,
-  data: menu
+  data: menu,
+  parentId: menu.menuUpSn
 });
 
 // 로딩 상태 키 생성 함수
@@ -344,6 +345,83 @@ function MenuListPage() {
     }
   };
   
+  // 메뉴 아이템 이동 핸들러
+  const handleMenuMove = async (draggedItemId: string | number, targetItemId: string | number, position: 'before' | 'after' | 'inside') => {
+    try {
+      setLoading(true);
+
+      // 메뉴 아이템 찾기
+      const findMenuItem = (list: Menu[], id: string | number): Menu | null => {
+        for (const menu of list) {
+          if (menu.menuSn === id) {
+            return menu;
+          }
+          
+          if (menu.childMenus?.length) {
+            const found = findMenuItem(menu.childMenus, id);
+            if (found) return found;
+          }
+        }
+        
+        return null;
+      };
+      
+      // 타겟 메뉴 아이템 찾기
+      const targetMenu = findMenuItem(menuList, targetItemId);
+      if (!targetMenu) {
+        console.error('타겟 메뉴를 찾을 수 없습니다.');
+        return;
+      }
+      
+      // 드래그 중인 메뉴 아이템 찾기
+      const draggedMenu = findMenuItem(menuList, draggedItemId);
+      if (!draggedMenu) {
+        console.error('드래그 중인 메뉴를 찾을 수 없습니다.');
+        return;
+      }
+      
+      let newParentId: number;
+      let newSortSn: number;
+      
+      // 위치에 따라 부모 ID와 정렬 순서 결정
+      switch (position) {
+        case 'inside':
+          newParentId = Number(targetItemId);
+          newSortSn = targetMenu.childMenus?.length ? targetMenu.childMenus.length + 1 : 1;
+          break;
+        case 'before':
+          newParentId = targetMenu.menuUpSn;
+          newSortSn = targetMenu.sortSn;
+          // 기존 메뉴 재정렬 필요 (API에서 처리 가정)
+          break;
+        case 'after':
+          newParentId = targetMenu.menuUpSn;
+          newSortSn = targetMenu.sortSn + 1;
+          // 기존 메뉴 재정렬 필요 (API에서 처리 가정)
+          break;
+        default:
+          console.error('유효하지 않은 드래그 위치입니다.');
+          return;
+      }
+      
+      // API 호출 (구현 필요)
+      console.log(`메뉴 이동: ${draggedMenu.menuNm}를 ${position} ${targetMenu.menuNm} (새 부모: ${newParentId}, 새 순서: ${newSortSn})`);
+      
+      // 이 부분에 실제 API 호출 추가 필요
+      // await menuApi.moveMenu(draggedItemId, newParentId, newSortSn);
+      
+      // 성공 시 메뉴 목록 다시 불러오기
+      const updatedList = await menuApi.getMenuTreeList(activeSiteId);
+      setMenuList(updatedList);
+      
+    } catch (error) {
+      console.error('메뉴 이동 실패:', error);
+      // 에러 처리
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   // 메뉴 액션 렌더링 함수
   const renderMenuActions = (item: TreeItem<Menu>) => {
     const menu = item.data!;
@@ -525,6 +603,8 @@ function MenuListPage() {
           columns={treeColumns}
           emptyMessage="표시할 메뉴가 없습니다."
           showHeader={true}
+          draggable={true}
+          onItemMove={handleMenuMove}
         />
       )}
     </PageContainer>
