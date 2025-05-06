@@ -94,7 +94,8 @@ function MenuListPage() {
   const [menuList, setMenuList] = useState<Menu[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
-  const [statusLoading, setStatusLoading] = useState<Record<number, boolean>>({});
+  const [useYnLoading, setUseYnLoading] = useState<Record<number, boolean>>({});
+  const [expsrYnLoading, setExpsrYnLoading] = useState<Record<number, boolean>>({});
   const [openNodes, setOpenNodes] = useState<Record<string | number, boolean>>({});
   
   // 탭 관련 상태
@@ -249,7 +250,7 @@ function MenuListPage() {
   // useYn 상태 변경 핸들러
   const handleToggleUseYn = async (menu: Menu, newStatus: boolean) => {
     try {
-      setStatusLoading(prev => ({ ...prev, [menu.menuSn]: true }));
+      setUseYnLoading(prev => ({ ...prev, [menu.menuSn]: true }));
       
       // Y 또는 N으로 변환
       const newUseYn = newStatus ? 'Y' : 'N';
@@ -282,7 +283,47 @@ function MenuListPage() {
       console.error('메뉴 상태 변경 실패:', error);
       // 에러 처리 - 필요시 alert 등으로 사용자에게 알림
     } finally {
-      setStatusLoading(prev => ({ ...prev, [menu.menuSn]: false }));
+      setUseYnLoading(prev => ({ ...prev, [menu.menuSn]: false }));
+    }
+  };
+  
+  // expsrYn 상태 변경 핸들러
+  const handleToggleExpsrYn = async (menu: Menu, newStatus: boolean) => {
+    try {
+      setExpsrYnLoading(prev => ({ ...prev, [menu.menuSn]: true }));
+      
+      // Y 또는 N으로 변환
+      const newExpsrYn = newStatus ? 'Y' : 'N';
+      
+      // API 호출 (실제 API 메서드로 대체 필요)
+      await menuApi.setExpsrYn(menu.menuSn, newExpsrYn);
+      
+      // 상태 업데이트
+      setMenuList(prevList => {
+        const updateMenu = (menus: Menu[]): Menu[] => {
+          return menus.map(m => {
+            if (m.menuSn === menu.menuSn) {
+              return { ...m, expsrYn: newExpsrYn };
+            }
+            
+            if (m.childMenus?.length) {
+              return { ...m, childMenus: updateMenu(m.childMenus) };
+            }
+            
+            return m;
+          });
+        };
+        
+        return updateMenu(prevList);
+      });
+      
+      // 성공 메시지
+      console.log(`메뉴 "${menu.menuNm}" 노출 상태가 ${newStatus ? '노출' : '비노출'}로 변경되었습니다.`);
+    } catch (error) {
+      console.error('메뉴 노출 상태 변경 실패:', error);
+      // 에러 처리 - 필요시 alert 등으로 사용자에게 알림
+    } finally {
+      setExpsrYnLoading(prev => ({ ...prev, [menu.menuSn]: false }));
     }
   };
   
@@ -322,10 +363,10 @@ function MenuListPage() {
     );
   };
 
-  // 메뉴 상태 렌더링 함수
+  // 메뉴 상태(useYn) 렌더링 함수
   const renderMenuStatus = (item: TreeItem<Menu>) => {
     const menu = item.data!;
-    const isLoading = statusLoading[menu.menuSn];
+    const isLoading = useYnLoading[menu.menuSn];
     
     return isLoading ? (
       <Spinner size="sm" color="primary" className="w-16" />
@@ -339,7 +380,31 @@ function MenuListPage() {
         size="sm"
         iconMode={false}
         onToggle={handleToggleUseYn}
-        width={85}
+        width={70}
+        tooltip="사용 여부 변경"
+      />
+    );
+  };
+
+  // 메뉴 노출여부(expsrYn) 렌더링 함수
+  const renderMenuExposure = (item: TreeItem<Menu>) => {
+    const menu = item.data!;
+    const isLoading = expsrYnLoading[menu.menuSn];
+    
+    return isLoading ? (
+      <Spinner size="sm" color="primary" className="w-16" />
+    ) : (
+      <StatusToggle 
+        item={menu} 
+        statusField="expsrYn"
+        activeLabel="노출"
+        inactiveLabel="비노출"
+        clickable={true}
+        size="sm"
+        iconMode={false}
+        width={70}
+        tooltip="노출 여부 변경"
+        onToggle={handleToggleExpsrYn}
       />
     );
   };
@@ -415,7 +480,13 @@ function MenuListPage() {
           toggleNode={toggleNode}
           renderActions={renderMenuActions}
           getItemStatus={renderMenuStatus}
+          getItemExtra={renderMenuExposure}
           emptyMessage="표시할 메뉴가 없습니다."
+          showHeader={true}
+          headerNameText="메뉴명"
+          headerStatusText="사용여부"
+          headerExtraText="노출여부"
+          headerActionText="관리"
         />
       )}
     </PageContainer>

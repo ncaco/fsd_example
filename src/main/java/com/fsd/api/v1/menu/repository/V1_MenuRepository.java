@@ -62,4 +62,11 @@ public interface V1_MenuRepository extends JpaRepository<Menu, Integer> {
     @Modifying
     @Query("UPDATE Menu m SET m.useYn = :useYn WHERE m.menuSn = :menuSn")
     void setUseYn(@Param("menuSn") Integer menuSn, @Param("useYn") String useYn);
+
+    /**
+     * 노출여부 변경
+     */
+    @Modifying
+    @Query("UPDATE Menu m SET m.expsrYn = :expsrYn WHERE m.menuSn = :menuSn")
+    void setExpsrYn(@Param("menuSn") Integer menuSn, @Param("expsrYn") String expsrYn);
 }

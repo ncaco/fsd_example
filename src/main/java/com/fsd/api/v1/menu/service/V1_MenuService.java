@@ -135,4 +135,12 @@ public class V1_MenuService {
     public void setUseYn(Integer menuSn, String useYn) {
         menuRepository.setUseYn(menuSn, useYn);
     }
+
+    /**
+     * 노출여부 변경
+     */
+    @Transactional
+    public void setExpsrYn(Integer menuSn, String expsrYn) {
+        menuRepository.setExpsrYn(menuSn, expsrYn);
+    }   
 }

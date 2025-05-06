@@ -63,8 +63,8 @@ function StatusToggle<T>({
       text: 'text-xs',
       icon: 'text-[9px]',
       defaultWidth: 64, // 기본 너비 (px)
-      paddingActive: 'pr-5 pl-2',
-      paddingInactive: 'pl-5 pr-2',
+      circleOffsetActive: 'right-1.5',
+      circleOffsetInactive: 'left-1.5',
     },
     md: {
       container: 'h-7',
@@ -72,8 +72,8 @@ function StatusToggle<T>({
       text: 'text-sm',
       icon: 'text-[10px]',
       defaultWidth: 76, // 기본 너비 (px)
-      paddingActive: 'pr-6 pl-2.5',
-      paddingInactive: 'pl-6 pr-2.5',
+      circleOffsetActive: 'right-1.5',
+      circleOffsetInactive: 'left-1.5',
     },
     lg: {
       container: 'h-8',
@@ -81,8 +81,8 @@ function StatusToggle<T>({
       text: 'text-sm',
       icon: 'text-xs font-bold',
       defaultWidth: 88, // 기본 너비 (px)
-      paddingActive: 'pr-7 pl-3',
-      paddingInactive: 'pl-7 pr-3',
+      circleOffsetActive: 'right-1.5',
+      circleOffsetInactive: 'left-1.5',
     }
   };
 
@@ -208,9 +208,18 @@ function StatusToggle<T>({
         className={`
           ${iconMode ? sizeClasses[size].icon : sizeClasses[size].text}
           font-medium z-10 truncate
-          ${isActive ? sizeClasses[size].paddingActive : sizeClasses[size].paddingInactive}
+          absolute
         `}
-        style={{ maxWidth: buttonWidth - 20, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+        style={{ 
+          maxWidth: buttonWidth - 20, 
+          overflow: 'hidden', 
+          textOverflow: 'ellipsis', 
+          whiteSpace: 'nowrap',
+          ...(isActive 
+            ? { left: '8px', textAlign: 'left' }
+            : { right: '8px', textAlign: 'right' }
+          )
+        }}
       >
         {iconMode 
           ? (isActive ? 'ON' : 'OFF') 
@@ -220,7 +229,7 @@ function StatusToggle<T>({
       <span
         className={`
           absolute
-          ${isActive ? 'right-1.5' : 'left-1.5'}
+          ${isActive ? sizeClasses[size].circleOffsetActive : sizeClasses[size].circleOffsetInactive}
           flex items-center justify-center
           ${sizeClasses[size].circle}
           rounded-full bg-white shadow-sm

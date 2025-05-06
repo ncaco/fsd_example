@@ -73,5 +73,22 @@ export const menuApi = {
             console.error('사용여부 변경 API 호출 오류:', error);
             throw error;
         }
+    },
+
+    /**
+     * 노출여부 변경
+     * @param sn 메뉴 번호
+     * @param expsrYn 노출여부
+     * @returns 변경된 메뉴 정보
+     */
+    setExpsrYn: async (menuSn: number, expsrYn: string): Promise<void> => {
+        try {
+            const response = await apiInstance.put(`/v1/menu/setExpsrYn`, { menuSn, expsrYn });
+            console.log('API 원본 응답:', response);
+            return response.data;
+        } catch (error) {
+            console.error('노출여부 변경 API 호출 오류:', error);
+            throw error;
+        }
     }
 };
