@@ -5,6 +5,7 @@ import { filterTreeItems, convertToTreeItems } from './tree/utils';
 import SearchBar from './search';
 import StatusToggle from './status';
 import HierarchicalTabs from './tab';
+import Spinner from './spinner';
 
 export { 
   Button, 
@@ -14,5 +15,6 @@ export {
   convertToTreeItems,
   SearchBar, 
   StatusToggle,
-  HierarchicalTabs
+  HierarchicalTabs,
+  Spinner
 }; 

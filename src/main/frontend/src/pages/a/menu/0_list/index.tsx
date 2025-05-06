@@ -4,13 +4,16 @@ import { Menu } from '@/entities/menu';
 import { menuApi } from '@/features/menu/api/menu';
 
 // 공유 UI 컴포넌트 불러오기
-import { SearchBar, HierarchicalTabs } from '@/shared/ui';
+import { SearchBar, HierarchicalTabs, Spinner } from '@/shared/ui';
 import TreeView, { TreeItem } from '@/shared/ui/tree/TreeView';
 import { filterTreeItems, convertToTreeItems } from '@/shared/ui/tree/utils';
 import PageHeader from '@/shared/ui/pageHeader';
 import StatusToggle from '@/shared/ui/status/StatusToggle';
 import { TabItem } from '@/shared/ui/tab/HierarchicalTabs';
 import { IconButton } from '@/shared/ui/button';
+
+// 레이아웃 컴포넌트 불러오기
+import { PageContainer } from '@/widgets/layouts/ALayout';
 
 // 더미 데이터 추가 (API 통신 실패시 사용)
 const dummyMenuList: Menu[] = [
@@ -327,7 +330,7 @@ function MenuListPage() {
           label="메뉴 수정"
           tooltip="메뉴 수정하기"
           tooltipPosition="top"
-          className="text-blue-500"
+          className="text-red-600"
         />
       </>
     );
@@ -339,7 +342,7 @@ function MenuListPage() {
     const isLoading = statusLoading[menu.menuSn];
     
     return isLoading ? (
-      <span className="inline-block w-16 h-6 bg-gray-200 animate-pulse rounded-full"></span>
+      <Spinner size="sm" color="primary" className="w-16" />
     ) : (
       <StatusToggle 
         item={menu} 
@@ -378,7 +381,7 @@ function MenuListPage() {
   };
   
   return (
-    <div className="p-5">
+    <PageContainer>
       <PageHeader 
         title="메뉴 관리"
         description="웹사이트의 메뉴를 관리할 수 있습니다."
@@ -412,9 +415,12 @@ function MenuListPage() {
       />
       
       {loading ? (
-        <div className="flex justify-center py-10">
-          로딩 중...
-        </div>
+        <Spinner 
+          size="lg" 
+          color="primary" 
+          label="메뉴 목록을 불러오는 중입니다" 
+          fullPage={true}
+        />
       ) : (
         <TreeView<Menu>
           items={filteredTreeItems}
@@ -425,7 +431,7 @@ function MenuListPage() {
           emptyMessage="표시할 메뉴가 없습니다."
         />
       )}
-    </div>
+    </PageContainer>
   );
 }
 
