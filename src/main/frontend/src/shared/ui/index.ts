@@ -3,7 +3,7 @@ import { TopButton } from './button';
 import TreeView from './tree/TreeView';
 import { filterTreeItems, convertToTreeItems } from './tree/utils';
 import SearchBar from './search';
-import StatusLabel from './status';
+import StatusToggle from './status';
 import HierarchicalTabs from './tab';
 
 export { 
@@ -13,6 +13,6 @@ export {
   filterTreeItems,
   convertToTreeItems,
   SearchBar, 
-  StatusLabel,
+  StatusToggle,
   HierarchicalTabs
 }; 

@@ -56,5 +56,22 @@ export const menuApi = {
             console.error('메뉴 트리 조회 API 호출 오류:', error);
             throw error;
         }
+    },
+
+    /**
+     * 사용여부 변경
+     * @param sn 메뉴 번호
+     * @param useYn 사용여부
+     * @returns 변경된 메뉴 정보
+     */
+    setUseYn: async (menuSn: number, useYn: string): Promise<void> => {
+        try {
+            const response = await apiInstance.put(`/v1/menu/setUseYn`, { menuSn, useYn });
+            console.log('API 원본 응답:', response);
+            return response.data;
+        } catch (error) {
+            console.error('사용여부 변경 API 호출 오류:', error);
+            throw error;
+        }
     }
 };

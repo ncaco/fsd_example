@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Menu } from '@/entities/menu';
 import { menuApi } from '@/features/menu/api/menu';
 
@@ -8,8 +8,9 @@ import { SearchBar, HierarchicalTabs } from '@/shared/ui';
 import TreeView, { TreeItem } from '@/shared/ui/tree/TreeView';
 import { filterTreeItems, convertToTreeItems } from '@/shared/ui/tree/utils';
 import PageHeader from '@/shared/ui/pageHeader';
-import StatusLabel from '@/shared/ui/status/StatusLabel';
+import StatusToggle from '@/shared/ui/status/StatusToggle';
 import { TabItem } from '@/shared/ui/tab/HierarchicalTabs';
+import { IconButton } from '@/shared/ui/button';
 
 // 더미 데이터 추가 (API 통신 실패시 사용)
 const dummyMenuList: Menu[] = [
@@ -90,10 +91,11 @@ function MenuListPage() {
   const [menuList, setMenuList] = useState<Menu[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
+  const [statusLoading, setStatusLoading] = useState<Record<number, boolean>>({});
   const [openNodes, setOpenNodes] = useState<Record<string | number, boolean>>({});
   
   // 탭 관련 상태
-  const [activeSiteId, setActiveSiteId] = useState<string>('main');
+  const [activeSiteId, setActiveSiteId] = useState<string>('a');
   const [activeMainTab, setActiveMainTab] = useState<string>('WINDOW');
   const [activeSubTab, setActiveSubTab] = useState<string>('LEFT');
   
@@ -110,7 +112,6 @@ function MenuListPage() {
       label: '윈도우',
       children: [
         { id: 'LEFT', label: '좌측' },
-        { id: 'RIGHT', label: '우측' },
         { id: 'BOTTOM', label: '하단' }
       ]
     },
@@ -122,7 +123,7 @@ function MenuListPage() {
   ];
   
   // 선택된 메뉴 위치 코드에 따라 메뉴 필터링
-  const getFilteredMenusByPosition = (menus: Menu[]): Menu[] => {
+  const getFilteredMenusByPosition = useCallback((menus: Menu[]): Menu[] => {
     if (!menus) return [];
     
     let filteredMenus = [...menus];
@@ -143,7 +144,7 @@ function MenuListPage() {
     }
     
     return filteredMenus;
-  };
+  }, [activeMainTab, activeSubTab]);
   
   // 검색어에 따라 노드 자동 확장
   useEffect(() => {
@@ -248,12 +249,53 @@ function MenuListPage() {
     // 현재 탭 선택에 따라 메뉴 필터링
     const filteredMenus = getFilteredMenusByPosition(menuList);
     return convertToTreeItems(filteredMenus, menuToTreeItemProps);
-  }, [menuList, activeMainTab, activeSubTab]);
+  }, [menuList, getFilteredMenusByPosition]);
 
   // 검색어로 필터링된 트리 아이템 목록
   const filteredTreeItems = useMemo(() => {
     return filterTreeItems(menuTreeItems, searchTerm, ['menuNm', 'menuHelpCn']);
   }, [menuTreeItems, searchTerm]);
+  
+  // useYn 상태 변경 핸들러
+  const handleToggleUseYn = async (menu: Menu, newStatus: boolean) => {
+    try {
+      setStatusLoading(prev => ({ ...prev, [menu.menuSn]: true }));
+      
+      // Y 또는 N으로 변환
+      const newUseYn = newStatus ? 'Y' : 'N';
+      
+      
+      // API 호출
+      await menuApi.setUseYn(menu.menuSn, newUseYn);
+      
+      // 상태 업데이트
+      setMenuList(prevList => {
+        const updateMenu = (menus: Menu[]): Menu[] => {
+          return menus.map(m => {
+            if (m.menuSn === menu.menuSn) {
+              return { ...m, useYn: newUseYn };
+            }
+            
+            if (m.childMenus?.length) {
+              return { ...m, childMenus: updateMenu(m.childMenus) };
+            }
+            
+            return m;
+          });
+        };
+        
+        return updateMenu(prevList);
+      });
+      
+      // 성공 메시지
+      console.log(`메뉴 "${menu.menuNm}" 상태가 ${newStatus ? '활성화' : '비활성화'}로 변경되었습니다.`);
+    } catch (error) {
+      console.error('메뉴 상태 변경 실패:', error);
+      // 에러 처리 - 필요시 alert 등으로 사용자에게 알림
+    } finally {
+      setStatusLoading(prev => ({ ...prev, [menu.menuSn]: false }));
+    }
+  };
   
   // 메뉴 액션 렌더링 함수
   const renderMenuActions = (item: TreeItem<Menu>) => {
@@ -261,25 +303,32 @@ function MenuListPage() {
     
     return (
       <>
-        <button
+        <IconButton
+          icon="detail"
+          variant="white"
+          size="sm"
           onClick={(e) => {
             e.stopPropagation();
             goToShow(menu.menuSn);
           }}
-          className="border border-gray-200 bg-white rounded px-2.5 py-1 text-xs text-gray-600 transition-all shadow-sm hover:border-gray-300 hover:text-gray-800"
-        >
-          상세
-        </button>
+          label="상세 보기"
+          tooltip="상세 정보 보기"
+          tooltipPosition="top"
+        />
         
-        <button
+        <IconButton
+          icon="edit"
+          variant="outline"
+          size="sm"
           onClick={(e) => {
             e.stopPropagation();
             goToEdit(menu.menuSn);
           }}
-          className="border border-blue-500 bg-white rounded px-2.5 py-1 text-xs text-blue-500 transition-all shadow-sm hover:bg-blue-50"
-        >
-          수정
-        </button>
+          label="메뉴 수정"
+          tooltip="메뉴 수정하기"
+          tooltipPosition="top"
+          className="text-blue-500"
+        />
       </>
     );
   };
@@ -287,7 +336,22 @@ function MenuListPage() {
   // 메뉴 상태 렌더링 함수
   const renderMenuStatus = (item: TreeItem<Menu>) => {
     const menu = item.data!;
-    return <StatusLabel menu={menu} />;
+    const isLoading = statusLoading[menu.menuSn];
+    
+    return isLoading ? (
+      <span className="inline-block w-16 h-6 bg-gray-200 animate-pulse rounded-full"></span>
+    ) : (
+      <StatusToggle 
+        item={menu} 
+        statusField="useYn"
+        activeLabel="사용"
+        inactiveLabel="미사용"
+        clickable={true}
+        size="sm"
+        iconMode={true}
+        onToggle={handleToggleUseYn}
+      />
+    );
   };
 
   // 탭 클릭 핸들러

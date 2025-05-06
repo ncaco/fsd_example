@@ -130,4 +130,24 @@ public class V1_MenuController {
             return ResponseUtil.error("메뉴 트리 조회 중 오류가 발생했습니다.", e.getMessage());
         }
     }
+
+    /** 사용여부 변경 */    
+    @PutMapping("/setUseYn")
+    public ResponseEntity<Map<String, Object>> setUseYn(@RequestBody Menu menu) {
+        LOGGER.info("\n----------------------------------사용여부 변경----------------------------------");
+        LOGGER.info("menuSn: {}", menu.getMenuSn());
+        LOGGER.info("useYn: {}", menu.getUseYn());
+        
+        try {
+            /** 사용여부 변경 */
+            menuService.setUseYn(menu.getMenuSn(), menu.getUseYn());
+
+            /** 반환 */
+            LOGGER.info("\n----------------------------------사용여부 변경 완료----------------------------------");
+            return ResponseUtil.success("사용여부 변경 성공");
+        } catch (Exception e) {
+            LOGGER.error("사용여부 변경 중 오류 발생", e);
+            return ResponseUtil.error("사용여부 변경 중 오류가 발생했습니다.", e.getMessage());
+        }
+    }
 }

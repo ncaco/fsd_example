@@ -1,4 +1,4 @@
-import StatusLabel from './StatusLabel';
+import StatusToggle from './StatusToggle';
 
-export { StatusLabel };
-export default StatusLabel; 
+export { StatusToggle };
+export default StatusToggle; 

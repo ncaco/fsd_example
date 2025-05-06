@@ -4,7 +4,7 @@ interface TopButtonProps {
   onClick: () => void;
   label?: string;
   variant?: 'primary' | 'secondary' | 'success' | 'danger';
-  icon?: 'plus' | 'edit' | 'delete' | 'search' | 'none';
+  icon?: 'plus' | 'edit' | 'delete' | 'search' | 'menu' | 'user' | 'mypage' | 'favorite' | 'home' | 'logout' | 'setting' | 'example' | 'start' | 'dashboard' | 'default' | 'none';
   size?: 'small' | 'medium' | 'large';
 }
 
@@ -49,27 +49,32 @@ const TopButton: React.FC<TopButtonProps> = ({
     }
   };
 
-  // 아이콘 가져오기
-  const getIcon = () => {
-    switch (icon) {
-      case 'plus':
-        return '+';
-      case 'edit':
-        return '✎';
-      case 'delete':
-        return '×';
-      case 'search':
-        return '🔍';
-      case 'none':
-        return null;
-      default:
-        return '+';
+  // 아이콘 크기 설정
+  const getIconSize = () => {
+    switch (size) {
+      case 'small':
+        return 'w-3.5 h-3.5';
+      case 'large':
+        return 'w-5 h-5';
+      default: // medium
+        return 'w-4 h-4';
     }
   };
 
-  const iconSize = size === 'small' ? 'text-sm' : size === 'large' ? 'text-lg' : 'text-base';
-  const buttonIcon = getIcon();
-  
+  // SVG 아이콘 경로 가져오기
+  const getIconSrc = () => {
+    if (icon === 'none') return null;
+    
+    // primary 버튼에는 흰색 아이콘 사용
+    if (variant === 'primary' && icon === 'plus') {
+      return '/icons/plus_white.svg';
+    }
+    
+    return `/icons/${icon}.svg`;
+  };
+
+  const iconSrc = getIconSrc();
+  const iconSize = getIconSize();
   const shadowClass = isHovered ? 'shadow-md' : 'shadow';
 
   return (
@@ -93,10 +98,13 @@ const TopButton: React.FC<TopButtonProps> = ({
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}
     >
-      {buttonIcon && (
-        <span className={`${iconSize} flex items-center justify-center`}>
-          {buttonIcon}
-        </span>
+      {iconSrc && (
+        <img 
+          src={iconSrc}
+          alt=""
+          className={iconSize}
+          aria-hidden="true"
+        />
       )}
       {label}
     </button>

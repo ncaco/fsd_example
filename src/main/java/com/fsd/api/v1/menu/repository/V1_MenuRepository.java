@@ -4,11 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.Modifying;
 
 import com.fsd.model.Menu;
 
 import java.util.List;
-
 @Repository
 public interface V1_MenuRepository extends JpaRepository<Menu, Integer> {
     
@@ -55,4 +55,11 @@ public interface V1_MenuRepository extends JpaRepository<Menu, Integer> {
         ORDER BY path, sort_sn ASC
     """)
     List<Menu> findMenuTreeBySiteId(@Param("siteId") String siteId);
+
+    /**
+     * 사용여부 변경
+     */
+    @Modifying
+    @Query("UPDATE Menu m SET m.useYn = :useYn WHERE m.menuSn = :menuSn")
+    void setUseYn(@Param("menuSn") Integer menuSn, @Param("useYn") String useYn);
 }
