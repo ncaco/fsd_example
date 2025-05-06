@@ -5,7 +5,7 @@ import { menuApi } from '@/features/menu/api/menu';
 
 // 공유 UI 컴포넌트 불러오기
 import { SearchBar, HierarchicalTabs, Spinner } from '@/shared/ui';
-import TreeView, { TreeItem } from '@/shared/ui/tree/TreeView';
+import TreeView, { TreeItem, TreeColumn } from '@/shared/ui/tree/TreeView';
 import { filterTreeItems, convertToTreeItems } from '@/shared/ui/tree/utils';
 import PageHeader from '@/shared/ui/pageHeader';
 import StatusToggle from '@/shared/ui/status/StatusToggle';
@@ -89,13 +89,15 @@ const menuToTreeItemProps = (menu: Menu) => ({
   data: menu
 });
 
+// 로딩 상태 키 생성 함수
+const getLoadingKey = (id: number, field: string) => `${id}-${field}`;
+
 function MenuListPage() {
   const navigate = useNavigate();
   const [menuList, setMenuList] = useState<Menu[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
-  const [useYnLoading, setUseYnLoading] = useState<Record<number, boolean>>({});
-  const [expsrYnLoading, setExpsrYnLoading] = useState<Record<number, boolean>>({});
+  const [fieldLoading, setFieldLoading] = useState<Record<string, boolean>>({});
   const [openNodes, setOpenNodes] = useState<Record<string | number, boolean>>({});
   
   // 탭 관련 상태
@@ -247,10 +249,25 @@ function MenuListPage() {
     return filterTreeItems(menuTreeItems, searchTerm, ['menuNm', 'menuHelpCn']);
   }, [menuTreeItems, searchTerm]);
   
+  // 필드 로딩 상태 설정 함수
+  const setFieldLoadingState = (id: number, field: string, isLoading: boolean) => {
+    const key = getLoadingKey(id, field);
+    setFieldLoading(prev => ({
+      ...prev,
+      [key]: isLoading
+    }));
+  };
+  
+  // 필드 로딩 상태 확인 함수
+  const isFieldLoading = (id: number, field: string) => {
+    const key = getLoadingKey(id, field);
+    return fieldLoading[key] || false;
+  };
+  
   // useYn 상태 변경 핸들러
   const handleToggleUseYn = async (menu: Menu, newStatus: boolean) => {
     try {
-      setUseYnLoading(prev => ({ ...prev, [menu.menuSn]: true }));
+      setFieldLoadingState(menu.menuSn, 'useYn', true);
       
       // Y 또는 N으로 변환
       const newUseYn = newStatus ? 'Y' : 'N';
@@ -283,14 +300,14 @@ function MenuListPage() {
       console.error('메뉴 상태 변경 실패:', error);
       // 에러 처리 - 필요시 alert 등으로 사용자에게 알림
     } finally {
-      setUseYnLoading(prev => ({ ...prev, [menu.menuSn]: false }));
+      setFieldLoadingState(menu.menuSn, 'useYn', false);
     }
   };
   
   // expsrYn 상태 변경 핸들러
   const handleToggleExpsrYn = async (menu: Menu, newStatus: boolean) => {
     try {
-      setExpsrYnLoading(prev => ({ ...prev, [menu.menuSn]: true }));
+      setFieldLoadingState(menu.menuSn, 'expsrYn', true);
       
       // Y 또는 N으로 변환
       const newExpsrYn = newStatus ? 'Y' : 'N';
@@ -323,7 +340,7 @@ function MenuListPage() {
       console.error('메뉴 노출 상태 변경 실패:', error);
       // 에러 처리 - 필요시 alert 등으로 사용자에게 알림
     } finally {
-      setExpsrYnLoading(prev => ({ ...prev, [menu.menuSn]: false }));
+      setFieldLoadingState(menu.menuSn, 'expsrYn', false);
     }
   };
   
@@ -366,7 +383,7 @@ function MenuListPage() {
   // 메뉴 상태(useYn) 렌더링 함수
   const renderMenuStatus = (item: TreeItem<Menu>) => {
     const menu = item.data!;
-    const isLoading = useYnLoading[menu.menuSn];
+    const isLoading = isFieldLoading(menu.menuSn, 'useYn');
     
     return isLoading ? (
       <Spinner size="sm" color="primary" className="w-16" />
@@ -389,7 +406,7 @@ function MenuListPage() {
   // 메뉴 노출여부(expsrYn) 렌더링 함수
   const renderMenuExposure = (item: TreeItem<Menu>) => {
     const menu = item.data!;
-    const isLoading = expsrYnLoading[menu.menuSn];
+    const isLoading = isFieldLoading(menu.menuSn, 'expsrYn');
     
     return isLoading ? (
       <Spinner size="sm" color="primary" className="w-16" />
@@ -408,6 +425,33 @@ function MenuListPage() {
       />
     );
   };
+
+  // 트리 컬럼 정의
+  const treeColumns = useMemo<TreeColumn<Menu>[]>(() => [
+    {
+      id: 'name',
+      header: '메뉴명',
+      renderCell: () => null // 기본 렌더링 사용
+    },
+    {
+      id: 'useYn',
+      header: '사용여부',
+      width: 80,
+      renderCell: renderMenuStatus
+    },
+    {
+      id: 'expsrYn',
+      header: '노출여부',
+      width: 80,
+      renderCell: renderMenuExposure
+    },
+    {
+      id: 'actions',
+      header: '관리',
+      width: 100,
+      renderCell: renderMenuActions
+    }
+  ], [fieldLoading]); // fieldLoading이 변경될 때 컬럼 정의도 다시 생성
 
   // 탭 클릭 핸들러
   const handleSiteIdTabClick = (tabId: string) => {
@@ -478,15 +522,9 @@ function MenuListPage() {
           items={filteredTreeItems}
           openNodes={openNodes}
           toggleNode={toggleNode}
-          renderActions={renderMenuActions}
-          getItemStatus={renderMenuStatus}
-          getItemExtra={renderMenuExposure}
+          columns={treeColumns}
           emptyMessage="표시할 메뉴가 없습니다."
           showHeader={true}
-          headerNameText="메뉴명"
-          headerStatusText="사용여부"
-          headerExtraText="노출여부"
-          headerActionText="관리"
         />
       )}
     </PageContainer>

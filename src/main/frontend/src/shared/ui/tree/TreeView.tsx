@@ -9,15 +9,22 @@ export interface TreeItem<T = unknown> {
   data?: T;
 }
 
+// 트리 컬럼 정의
+export interface TreeColumn<T> {
+  id: string;
+  header?: string; 
+  width?: number | string;
+  align?: 'left' | 'center' | 'right';
+  renderCell: (item: TreeItem<T>) => React.ReactNode;
+}
+
 // 트리 노드 컴포넌트 Props
 interface TreeNodeProps<T> {
   item: TreeItem<T>;
   level: number;
   openNodes: Record<string | number, boolean>;
   toggleNode: (nodeId: string | number) => void;
-  renderActions?: (item: TreeItem<T>) => React.ReactNode;
-  getItemStatus?: (item: TreeItem<T>) => React.ReactNode;
-  getItemExtra?: (item: TreeItem<T>) => React.ReactNode;
+  columns: TreeColumn<T>[];
 }
 
 // 트리 뷰 컴포넌트 Props
@@ -25,15 +32,9 @@ interface TreeViewProps<T> {
   items: TreeItem<T>[];
   openNodes: Record<string | number, boolean>;
   toggleNode: (nodeId: string | number) => void;
-  renderActions?: (item: TreeItem<T>) => React.ReactNode;
-  getItemStatus?: (item: TreeItem<T>) => React.ReactNode;
-  getItemExtra?: (item: TreeItem<T>) => React.ReactNode;
+  columns: TreeColumn<T>[];
   emptyMessage?: string;
   showHeader?: boolean;
-  headerNameText?: string;
-  headerStatusText?: string;
-  headerExtraText?: string;
-  headerActionText?: string;
 }
 
 // 트리 노드 컴포넌트
@@ -42,9 +43,7 @@ export function TreeNode<T>({
   level, 
   openNodes, 
   toggleNode,
-  renderActions,
-  getItemStatus,
-  getItemExtra
+  columns
 }: TreeNodeProps<T>) {
   const [isHovered, setIsHovered] = useState(false);
   const isOpen = openNodes[item.id];
@@ -84,9 +83,17 @@ export function TreeNode<T>({
         </div>
         
         <div className="flex gap-2 items-center ml-2">
-          {getItemStatus && getItemStatus(item)}
-          {getItemExtra && getItemExtra(item)}
-          {renderActions && renderActions(item)}
+          {columns.slice(1).map((column) => (
+            <div 
+              key={column.id}
+              style={{ 
+                width: column.width ? (typeof column.width === 'number' ? `${column.width}px` : column.width) : 'auto',
+                textAlign: column.align || 'center'
+              }}
+            >
+              {column.renderCell(item)}
+            </div>
+          ))}
         </div>
       </div>
       
@@ -99,9 +106,7 @@ export function TreeNode<T>({
               level={level + 1}
               openNodes={openNodes}
               toggleNode={toggleNode}
-              renderActions={renderActions}
-              getItemStatus={getItemStatus}
-              getItemExtra={getItemExtra}
+              columns={columns}
             />
           ))}
         </div>
@@ -110,29 +115,24 @@ export function TreeNode<T>({
   );
 }
 
-// 트리 뷰 헤더 컴포넌트 Props
-interface TreeViewHeaderProps {
-  nameText?: string;
-  statusText?: string;
-  extraText?: string;
-  actionText?: string;
-}
-
 // 트리 뷰 헤더 컴포넌트
-function TreeViewHeader({
-  nameText = '이름',
-  statusText = '상태',
-  extraText,
-  actionText = '관리'
-}: TreeViewHeaderProps) {
+function TreeViewHeader<T>({ columns }: { columns: TreeColumn<T>[] }) {
   return (
     <div className="flex items-center bg-gray-50 text-gray-600 px-4 py-2 border-b border-gray-200 text-xs font-medium">
       <div className="w-4 h-4 mr-2.5"></div>
-      <div className="flex-grow">{nameText}</div>
+      <div className="flex-grow">{columns[0].header || '이름'}</div>
       <div className="flex gap-2 items-center">
-        {statusText && <div className="w-16 text-center">{statusText}</div>}
-        {extraText && <div className="w-16 text-center">{extraText}</div>}
-        <div className="w-20 text-center">{actionText}</div>
+        {columns.slice(1).map((column) => (
+          <div 
+            key={column.id}
+            style={{ 
+              width: column.width ? (typeof column.width === 'number' ? `${column.width}px` : column.width) : 'auto',
+              textAlign: column.align || 'center'
+            }}
+          >
+            {column.header || column.id}
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -143,15 +143,9 @@ function TreeView<T>({
   items, 
   openNodes, 
   toggleNode,
-  renderActions,
-  getItemStatus,
-  getItemExtra,
+  columns,
   emptyMessage = "표시할 항목이 없습니다.",
-  showHeader = true,
-  headerNameText = '이름',
-  headerStatusText = '사용여부',
-  headerExtraText = '노출여부',
-  headerActionText = '관리'
+  showHeader = true
 }: TreeViewProps<T>) {
   if (items.length === 0) {
     return (
@@ -163,14 +157,7 @@ function TreeView<T>({
 
   return (
     <div className="border border-gray-200 rounded-md bg-white shadow-sm overflow-hidden">
-      {showHeader && (
-        <TreeViewHeader 
-          nameText={headerNameText}
-          statusText={headerStatusText}
-          extraText={headerExtraText}
-          actionText={headerActionText}
-        />
-      )}
+      {showHeader && <TreeViewHeader columns={columns} />}
       {items.map(item => (
         <TreeNode
           key={item.id}
@@ -178,9 +165,7 @@ function TreeView<T>({
           level={0}
           openNodes={openNodes}
           toggleNode={toggleNode}
-          renderActions={renderActions}
-          getItemStatus={getItemStatus}
-          getItemExtra={getItemExtra}
+          columns={columns}
         />
       ))}
     </div>
