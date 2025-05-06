@@ -20,6 +20,8 @@ interface StatusToggleProps<T> {
   tooltip?: string;
   // 툴팁 위치
   tooltipPosition?: 'top' | 'bottom' | 'left' | 'right';
+  // 고정 너비 (기본값: 자동)
+  width?: number;
 }
 
 interface TooltipStyleProps {
@@ -44,7 +46,8 @@ function StatusToggle<T>({
   size = 'md',
   iconMode = false,
   tooltip,
-  tooltipPosition = 'top'
+  tooltipPosition = 'top',
+  width
 }: StatusToggleProps<T>): React.ReactElement {
   // 활성화 여부 확인
   const isActive = isYn(item[statusField]);
@@ -55,30 +58,36 @@ function StatusToggle<T>({
   // 스위치 크기 클래스
   const sizeClasses = {
     sm: {
-      container: 'h-6 px-2.5',
+      container: 'h-6',
       circle: 'w-3 h-3',
       text: 'text-xs',
       icon: 'text-[9px]',
+      defaultWidth: 64, // 기본 너비 (px)
       paddingActive: 'pr-5 pl-2',
       paddingInactive: 'pl-5 pr-2',
     },
     md: {
-      container: 'h-7 px-3',
+      container: 'h-7',
       circle: 'w-4 h-4',
       text: 'text-sm',
       icon: 'text-[10px]',
+      defaultWidth: 76, // 기본 너비 (px)
       paddingActive: 'pr-6 pl-2.5',
       paddingInactive: 'pl-6 pr-2.5',
     },
     lg: {
-      container: 'h-8 px-3.5',
+      container: 'h-8',
       circle: 'w-5 h-5',
       text: 'text-sm',
       icon: 'text-xs font-bold',
+      defaultWidth: 88, // 기본 너비 (px)
       paddingActive: 'pr-7 pl-3',
       paddingInactive: 'pl-7 pr-3',
     }
   };
+
+  // 버튼 너비 계산
+  const buttonWidth = width || sizeClasses[size].defaultWidth;
   
   // 툴팁 위치 계산
   useEffect(() => {
@@ -127,16 +136,16 @@ function StatusToggle<T>({
     
     switch (tooltipPosition) {
       case 'top':
-        arrowClass = 'after:content-[""] after:absolute after:left-1/2 after:top-full after:transform after:-translate-x-1/2 after:border-8 after:border-transparent after:border-t-blue-500';
+        arrowClass = 'after:content-[""] after:absolute after:left-1/2 after:top-full after:transform after:-translate-x-1/2 after:border-8 after:border-transparent after:border-t-primary-500';
         break;
       case 'bottom':
-        arrowClass = 'after:content-[""] after:absolute after:left-1/2 after:bottom-full after:transform after:-translate-x-1/2 after:border-8 after:border-transparent after:border-b-blue-500';
+        arrowClass = 'after:content-[""] after:absolute after:left-1/2 after:bottom-full after:transform after:-translate-x-1/2 after:border-8 after:border-transparent after:border-b-primary-500';
         break;
       case 'left':
-        arrowClass = 'after:content-[""] after:absolute after:top-1/2 after:left-full after:transform after:-translate-y-1/2 after:border-8 after:border-transparent after:border-l-blue-500';
+        arrowClass = 'after:content-[""] after:absolute after:top-1/2 after:left-full after:transform after:-translate-y-1/2 after:border-8 after:border-transparent after:border-l-primary-500';
         break;
       case 'right':
-        arrowClass = 'after:content-[""] after:absolute after:top-1/2 after:right-full after:transform after:-translate-y-1/2 after:border-8 after:border-transparent after:border-r-blue-500';
+        arrowClass = 'after:content-[""] after:absolute after:top-1/2 after:right-full after:transform after:-translate-y-1/2 after:border-8 after:border-transparent after:border-r-primary-500';
         break;
     }
     
@@ -164,6 +173,7 @@ function StatusToggle<T>({
     return (
       <span 
         className={`${isActive ? 'bg-green-500' : 'bg-red-500'} text-white px-2 py-0.5 rounded-full ${sizeClasses[size].text}`}
+        style={{ width: buttonWidth, display: 'inline-block', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
       >
         {iconMode ? (isActive ? 'ON' : 'OFF') : (isActive ? activeLabel : inactiveLabel)}
       </span>
@@ -183,12 +193,13 @@ function StatusToggle<T>({
         ${sizeClasses[size].container}
         border-0 rounded-full cursor-pointer
         transition-colors ease-in-out duration-200
-        focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500
+        focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary-500
         ${isActive 
           ? 'bg-green-500 text-white hover:bg-green-600' 
           : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
         }
       `}
+      style={{ width: buttonWidth }}
       aria-pressed={isActive}
       aria-label={`${isActive ? activeLabel : inactiveLabel} 상태 전환`}
       title={tooltip || (isActive ? `${inactiveLabel}(으)로 전환` : `${activeLabel}(으)로 전환`)}
@@ -196,9 +207,10 @@ function StatusToggle<T>({
       <span 
         className={`
           ${iconMode ? sizeClasses[size].icon : sizeClasses[size].text}
-          font-medium z-10
+          font-medium z-10 truncate
           ${isActive ? sizeClasses[size].paddingActive : sizeClasses[size].paddingInactive}
         `}
+        style={{ maxWidth: buttonWidth - 20, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
       >
         {iconMode 
           ? (isActive ? 'ON' : 'OFF') 
@@ -221,12 +233,12 @@ function StatusToggle<T>({
           className={`
             fixed z-50 px-3 py-2 
             text-xs font-medium 
-            text-white bg-blue-500 
+            text-white bg-primary-500 
             rounded-lg shadow-lg 
             whitespace-nowrap pointer-events-none
             max-w-xs
             break-words
-            border border-blue-600
+            border border-primary-600
             animate-fadeIn
             ${getTooltipArrowStyle()}
           `}

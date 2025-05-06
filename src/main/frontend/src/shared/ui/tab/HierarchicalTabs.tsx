@@ -43,6 +43,24 @@ const HierarchicalTabs: React.FC<HierarchicalTabsProps> = ({
     return foundTab?.children || [];
   };
 
+  // 사이트 ID 탭 변형 스타일
+  const siteIdTabStyles = {
+    active: 'bg-primary-500 text-white',
+    inactive: 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+  };
+
+  // 메인 탭 변형 스타일
+  const mainTabStyles = {
+    active: 'bg-primary-50 text-primary-700 border border-primary-300',
+    inactive: 'text-gray-700 hover:bg-gray-100'
+  };
+
+  // 서브 탭 변형 스타일
+  const subTabStyles = {
+    active: 'bg-gray-100 text-gray-800 border border-gray-300',
+    inactive: 'text-gray-600 hover:bg-gray-50'
+  };
+
   return (
     <div className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 border-b border-gray-200 pb-2">
       {/* 사이트 ID 탭 */}
@@ -53,8 +71,8 @@ const HierarchicalTabs: React.FC<HierarchicalTabsProps> = ({
             onClick={() => onSiteIdTabClick(tab.id)}
             className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
               activeSiteId === tab.id
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? siteIdTabStyles.active
+                : siteIdTabStyles.inactive
             }`}
           >
             {tab.label}
@@ -73,8 +91,8 @@ const HierarchicalTabs: React.FC<HierarchicalTabsProps> = ({
             onClick={() => onMainTabClick(tab.id)}
             className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
               activeMainTab === tab.id
-                ? 'bg-blue-100 text-blue-700 border border-blue-300'
-                : 'text-gray-700 hover:bg-gray-100'
+                ? mainTabStyles.active
+                : mainTabStyles.inactive
             }`}
           >
             {tab.label}
@@ -96,8 +114,8 @@ const HierarchicalTabs: React.FC<HierarchicalTabsProps> = ({
                 onClick={() => onSubTabClick(tab.id)}
                 className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors ${
                   activeSubTab === tab.id
-                    ? 'bg-gray-100 text-gray-800 border border-gray-300'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? subTabStyles.active
+                    : subTabStyles.inactive
                 }`}
               >
                 {tab.label}

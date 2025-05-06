@@ -180,19 +180,6 @@ function MenuListPage() {
         try {
           // API에서 메뉴 트리 가져오기
           list = await menuApi.getMenuTreeList(activeSiteId);
-          
-          console.log('메뉴 트리 데이터:', list);
-          console.log('최상위 메뉴 수:', list.length);
-          
-          // 자식 메뉴 로깅
-          list.forEach(menu => {
-            console.log(`메뉴 "${menu.menuNm}" (ID: ${menu.menuSn})의 자식 메뉴 수: ${menu.childMenus?.length || 0}`);
-            if (menu.childMenus && menu.childMenus.length > 0) {
-              menu.childMenus.forEach(child => {
-                console.log(`- 자식 메뉴: "${child.menuNm}" (ID: ${child.menuSn})`);
-              });
-            }
-          });
         } catch (apiError) {
           console.error('API 호출 실패, 더미 데이터 사용:', apiError);
           list = [...dummyMenuList]; // 더미 데이터 사용
@@ -266,7 +253,6 @@ function MenuListPage() {
       
       // Y 또는 N으로 변환
       const newUseYn = newStatus ? 'Y' : 'N';
-      
       
       // API 호출
       await menuApi.setUseYn(menu.menuSn, newUseYn);
@@ -351,8 +337,9 @@ function MenuListPage() {
         inactiveLabel="미사용"
         clickable={true}
         size="sm"
-        iconMode={true}
+        iconMode={false}
         onToggle={handleToggleUseYn}
+        width={85}
       />
     );
   };

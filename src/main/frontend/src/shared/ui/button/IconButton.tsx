@@ -42,7 +42,7 @@ const IconButton: React.FC<IconButtonProps> = ({
   
   // 버튼 변형에 따른 스타일
   const variantClasses = {
-    primary: 'bg-blue-600 hover:bg-blue-700 text-white',
+    primary: 'bg-primary-500 hover:bg-primary-600 text-white',
     secondary: 'bg-gray-100 hover:bg-gray-200 text-gray-800',
     outline: 'bg-white border border-gray-300 hover:bg-gray-50 text-gray-700',
     danger: 'bg-red-500 hover:bg-red-600 text-white',
@@ -147,16 +147,16 @@ const IconButton: React.FC<IconButtonProps> = ({
     
     switch (tooltipPosition) {
       case 'top':
-        arrowClass = 'after:content-[""] after:absolute after:left-1/2 after:top-full after:transform after:-translate-x-1/2 after:border-8 after:border-transparent after:border-t-blue-500';
+        arrowClass = 'after:content-[""] after:absolute after:left-1/2 after:top-full after:transform after:-translate-x-1/2 after:border-8 after:border-transparent after:border-t-primary-500';
         break;
       case 'bottom':
-        arrowClass = 'after:content-[""] after:absolute after:left-1/2 after:bottom-full after:transform after:-translate-x-1/2 after:border-8 after:border-transparent after:border-b-blue-500';
+        arrowClass = 'after:content-[""] after:absolute after:left-1/2 after:bottom-full after:transform after:-translate-x-1/2 after:border-8 after:border-transparent after:border-b-primary-500';
         break;
       case 'left':
-        arrowClass = 'after:content-[""] after:absolute after:top-1/2 after:left-full after:transform after:-translate-y-1/2 after:border-8 after:border-transparent after:border-l-blue-500';
+        arrowClass = 'after:content-[""] after:absolute after:top-1/2 after:left-full after:transform after:-translate-y-1/2 after:border-8 after:border-transparent after:border-l-primary-500';
         break;
       case 'right':
-        arrowClass = 'after:content-[""] after:absolute after:top-1/2 after:right-full after:transform after:-translate-y-1/2 after:border-8 after:border-transparent after:border-r-blue-500';
+        arrowClass = 'after:content-[""] after:absolute after:top-1/2 after:right-full after:transform after:-translate-y-1/2 after:border-8 after:border-transparent after:border-r-primary-500';
         break;
     }
     
@@ -184,12 +184,12 @@ const IconButton: React.FC<IconButtonProps> = ({
           className={`
             fixed z-50 px-3 py-2 
             text-xs font-medium 
-            text-white bg-blue-500 
+            text-white bg-primary-500
             rounded-lg shadow-lg 
             whitespace-nowrap pointer-events-none
             max-w-xs
             break-words
-            border border-blue-600
+            border border-primary-600
             animate-fadeIn
             ${getTooltipArrowStyle()}
           `}

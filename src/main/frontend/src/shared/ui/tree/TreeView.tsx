@@ -57,7 +57,7 @@ export function TreeNode<T>({
         <div className="mr-2.5 w-4 h-4 flex items-center justify-center">
           {hasChildren && (
             <span className={`text-xs w-4 h-4 flex items-center justify-center rounded transition-all
-              ${isOpen ? 'bg-blue-50 text-blue-500' : 'bg-gray-100 text-gray-600'}`}>
+              ${isOpen ? 'bg-primary-50 text-primary-500' : 'bg-gray-100 text-gray-600'}`}>
               {isOpen ? '▼' : '▶'}
             </span>
           )}

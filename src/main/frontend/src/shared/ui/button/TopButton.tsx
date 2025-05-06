@@ -21,44 +21,26 @@ const TopButton: React.FC<TopButtonProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // 버튼 색상 클래스 설정
-  const getButtonColors = () => {
-    switch (variant) {
-      case 'primary':
-        return 'bg-blue-600 hover:bg-blue-700 text-white';
-      case 'secondary':
-        return 'bg-gray-100 hover:bg-gray-200 text-gray-800';
-      case 'success':
-        return 'bg-green-500 hover:bg-green-600 text-white';
-      case 'danger':
-        return 'bg-red-500 hover:bg-red-600 text-white';
-      default:
-        return 'bg-blue-600 hover:bg-blue-700 text-white';
-    }
+  // 버튼 색상 클래스 매핑
+  const buttonColors = {
+    primary: 'bg-primary-500 hover:bg-primary-600 text-white',
+    secondary: 'bg-secondary-500 hover:bg-secondary-600 text-white',
+    success: 'bg-success-500 hover:bg-success-600 text-white',
+    danger: 'bg-danger-500 hover:bg-danger-600 text-white'
   };
 
-  // 버튼 크기 클래스 설정
-  const getButtonSize = () => {
-    switch (size) {
-      case 'small':
-        return 'px-3 py-1.5 text-xs';
-      case 'large':
-        return 'px-5 py-2.5 text-base';
-      default: // medium
-        return 'px-4 py-2 text-sm';
-    }
+  // 버튼 크기 클래스 매핑
+  const buttonSizes = {
+    small: 'px-3 py-1.5 text-xs',
+    medium: 'px-4 py-2 text-sm',
+    large: 'px-5 py-2.5 text-base'
   };
 
-  // 아이콘 크기 설정
-  const getIconSize = () => {
-    switch (size) {
-      case 'small':
-        return 'w-3.5 h-3.5';
-      case 'large':
-        return 'w-5 h-5';
-      default: // medium
-        return 'w-4 h-4';
-    }
+  // 아이콘 크기 매핑
+  const iconSizes = {
+    small: 'w-3.5 h-3.5',
+    medium: 'w-4 h-4',
+    large: 'w-5 h-5'
   };
 
   // SVG 아이콘 경로 가져오기
@@ -74,15 +56,14 @@ const TopButton: React.FC<TopButtonProps> = ({
   };
 
   const iconSrc = getIconSrc();
-  const iconSize = getIconSize();
   const shadowClass = isHovered ? 'shadow-md' : 'shadow';
 
   return (
     <button 
       onClick={onClick}
       className={`
-        ${getButtonColors()}
-        ${getButtonSize()}
+        ${buttonColors[variant]}
+        ${buttonSizes[size]}
         ${shadowClass}
         border-none
         rounded
@@ -102,7 +83,7 @@ const TopButton: React.FC<TopButtonProps> = ({
         <img 
           src={iconSrc}
           alt=""
-          className={iconSize}
+          className={iconSizes[size]}
           aria-hidden="true"
         />
       )}

@@ -27,7 +27,7 @@ const Spinner: React.FC<SpinnerProps> = ({
   
   // 색상별 클래스
   const colorClasses = {
-    primary: 'border-blue-500 border-t-transparent',
+    primary: 'border-primary-500 border-t-transparent',
     secondary: 'border-gray-500 border-t-transparent',
     white: 'border-white border-t-transparent',
     gray: 'border-gray-300 border-t-gray-100'
