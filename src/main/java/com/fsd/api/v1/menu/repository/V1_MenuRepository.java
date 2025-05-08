@@ -69,4 +69,23 @@ public interface V1_MenuRepository extends JpaRepository<Menu, Integer> {
     @Modifying
     @Query("UPDATE Menu m SET m.expsrYn = :expsrYn WHERE m.menuSn = :menuSn")
     void setExpsrYn(@Param("menuSn") Integer menuSn, @Param("expsrYn") String expsrYn);
+
+    /**
+     * 메뉴 이동 시 순서 조정
+     * sortSn 이상의 다른 메뉴들을 한 칸씩 뒤로 미룹니다.
+     */
+    @Modifying
+    @Query("""
+        UPDATE Menu m 
+        SET m.sortSn = m.sortSn + 1 
+        WHERE 
+            m.menuUpSn = :menuUpSn 
+            AND m.menuSn != :menuSn 
+            AND m.sortSn >= :sortSn
+    """)
+    void adjustMenuOrder(
+        @Param("menuUpSn") Integer menuUpSn, 
+        @Param("menuSn") Integer menuSn, 
+        @Param("sortSn") Integer sortSn
+    );
 }

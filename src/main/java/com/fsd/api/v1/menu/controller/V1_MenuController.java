@@ -170,4 +170,25 @@ public class V1_MenuController {
             return ResponseUtil.error("노출여부 변경 중 오류가 발생했습니다.", e.getMessage());
         }
     }
+
+    /** 메뉴 이동 */
+    @PutMapping("/move")
+    public ResponseEntity<Map<String, Object>> moveMenu(@RequestBody Menu menu) {
+        LOGGER.info("\n----------------------------------메뉴 이동----------------------------------");
+        LOGGER.info("menuSn: {}", menu.getMenuSn());
+        LOGGER.info("menuUpSn: {}", menu.getMenuUpSn());
+        LOGGER.info("sortSn: {}", menu.getSortSn());
+
+        try {
+            /** 메뉴 이동 */
+            menuService.moveMenu(menu.getMenuSn(), menu.getMenuUpSn(), menu.getSortSn());
+
+            /** 반환 */
+            LOGGER.info("\n----------------------------------메뉴 이동 완료----------------------------------");
+            return ResponseUtil.success("메뉴 이동 성공");
+        } catch (Exception e) {
+            LOGGER.error("메뉴 이동 중 오류 발생", e);
+            return ResponseUtil.error("메뉴 이동 중 오류가 발생했습니다.", e.getMessage());
+        }
+    }
 }

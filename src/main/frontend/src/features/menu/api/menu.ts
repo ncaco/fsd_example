@@ -90,5 +90,23 @@ export const menuApi = {
             console.error('노출여부 변경 API 호출 오류:', error);
             throw error;
         }
+    },
+
+    /**
+     * 메뉴 이동
+     * @param menuSn 이동할 메뉴 번호
+     * @param menuUpSn 상위 메뉴 번호
+     * @param sortSn 정렬 순서
+     * @returns 변경된 메뉴 정보
+     */
+    moveMenu: async (menuSn: number, menuUpSn: number, sortSn: number): Promise<void> => {
+        try {
+            const response = await apiInstance.put(`/v1/menu/move`, { menuSn, menuUpSn, sortSn });
+            console.log('API 원본 응답:', response);
+            return response.data;
+        } catch (error) {
+            console.error('메뉴 이동 API 호출 오류:', error);
+            throw error;
+        }
     }
 };

@@ -230,13 +230,13 @@ function MenuListPage() {
     navigate('/a/menu', { state: { pgMode: 'create' } });
   };
   
-  const goToEdit = (sn: number) => {
+  const goToEdit = useCallback((sn: number) => {
     navigate('/a/menu', { state: { pgMode: 'edit', sn } });
-  };
+  }, [navigate]);
   
-  const goToShow = (sn: number) => {
+  const goToShow = useCallback((sn: number) => {
     navigate('/a/menu', { state: { pgMode: 'show', sn } });
-  };
+  }, [navigate]);
   
   // 메뉴를 TreeItem으로 변환
   const menuTreeItems = useMemo(() => {
@@ -251,22 +251,22 @@ function MenuListPage() {
   }, [menuTreeItems, searchTerm]);
   
   // 필드 로딩 상태 설정 함수
-  const setFieldLoadingState = (id: number, field: string, isLoading: boolean) => {
+  const setFieldLoadingState = useCallback((id: number, field: string, isLoading: boolean) => {
     const key = getLoadingKey(id, field);
     setFieldLoading(prev => ({
       ...prev,
       [key]: isLoading
     }));
-  };
+  }, []);
   
   // 필드 로딩 상태 확인 함수
-  const isFieldLoading = (id: number, field: string) => {
+  const isFieldLoading = useCallback((id: number, field: string) => {
     const key = getLoadingKey(id, field);
     return fieldLoading[key] || false;
-  };
+  }, [fieldLoading]);
   
   // useYn 상태 변경 핸들러
-  const handleToggleUseYn = async (menu: Menu, newStatus: boolean) => {
+  const handleToggleUseYn = useCallback(async (menu: Menu, newStatus: boolean) => {
     try {
       setFieldLoadingState(menu.menuSn, 'useYn', true);
       
@@ -303,10 +303,10 @@ function MenuListPage() {
     } finally {
       setFieldLoadingState(menu.menuSn, 'useYn', false);
     }
-  };
+  }, [setFieldLoadingState, setMenuList]);
   
   // expsrYn 상태 변경 핸들러
-  const handleToggleExpsrYn = async (menu: Menu, newStatus: boolean) => {
+  const handleToggleExpsrYn = useCallback(async (menu: Menu, newStatus: boolean) => {
     try {
       setFieldLoadingState(menu.menuSn, 'expsrYn', true);
       
@@ -343,10 +343,10 @@ function MenuListPage() {
     } finally {
       setFieldLoadingState(menu.menuSn, 'expsrYn', false);
     }
-  };
+  }, [setFieldLoadingState, setMenuList]);
   
   // 메뉴 아이템 이동 핸들러
-  const handleMenuMove = async (draggedItemId: string | number, targetItemId: string | number, position: 'before' | 'after' | 'inside') => {
+  const handleMenuMove = useCallback(async (draggedItemId: string | number, targetItemId: string | number, position: 'before' | 'after' | 'inside') => {
     try {
       setLoading(true);
 
@@ -404,11 +404,11 @@ function MenuListPage() {
           return;
       }
       
-      // API 호출 (구현 필요)
+      // API 호출
       console.log(`메뉴 이동: ${draggedMenu.menuNm}를 ${position} ${targetMenu.menuNm} (새 부모: ${newParentId}, 새 순서: ${newSortSn})`);
       
-      // 이 부분에 실제 API 호출 추가 필요
-      // await menuApi.moveMenu(draggedItemId, newParentId, newSortSn);
+      // 실제 API 호출
+      await menuApi.moveMenu(Number(draggedItemId), newParentId, newSortSn);
       
       // 성공 시 메뉴 목록 다시 불러오기
       const updatedList = await menuApi.getMenuTreeList(activeSiteId);
@@ -420,10 +420,56 @@ function MenuListPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [menuList, activeSiteId, setMenuList, setLoading]);
   
+  // 메뉴 상태(useYn) 렌더링 함수
+  const renderMenuStatus = useCallback((item: TreeItem<Menu>) => {
+    const menu = item.data!;
+    const isLoading = isFieldLoading(menu.menuSn, 'useYn');
+    
+    return isLoading ? (
+      <Spinner size="sm" color="primary" className="w-16" />
+    ) : (
+      <StatusToggle 
+        item={menu} 
+        statusField="useYn"
+        activeLabel="사용"
+        inactiveLabel="미사용"
+        clickable={true}
+        size="sm"
+        iconMode={false}
+        onToggle={handleToggleUseYn}
+        width={70}
+        tooltip="사용 여부 변경"
+      />
+    );
+  }, [isFieldLoading, handleToggleUseYn]);
+
+  // 메뉴 노출여부(expsrYn) 렌더링 함수
+  const renderMenuExposure = useCallback((item: TreeItem<Menu>) => {
+    const menu = item.data!;
+    const isLoading = isFieldLoading(menu.menuSn, 'expsrYn');
+    
+    return isLoading ? (
+      <Spinner size="sm" color="primary" className="w-16" />
+    ) : (
+      <StatusToggle 
+        item={menu} 
+        statusField="expsrYn"
+        activeLabel="노출"
+        inactiveLabel="비노출"
+        clickable={true}
+        size="sm"
+        iconMode={false}
+        width={70}
+        tooltip="노출 여부 변경"
+        onToggle={handleToggleExpsrYn}
+      />
+    );
+  }, [isFieldLoading, handleToggleExpsrYn]);
+
   // 메뉴 액션 렌더링 함수
-  const renderMenuActions = (item: TreeItem<Menu>) => {
+  const renderMenuActions = useCallback((item: TreeItem<Menu>) => {
     const menu = item.data!;
     
     return (
@@ -456,53 +502,7 @@ function MenuListPage() {
         />
       </>
     );
-  };
-
-  // 메뉴 상태(useYn) 렌더링 함수
-  const renderMenuStatus = (item: TreeItem<Menu>) => {
-    const menu = item.data!;
-    const isLoading = isFieldLoading(menu.menuSn, 'useYn');
-    
-    return isLoading ? (
-      <Spinner size="sm" color="primary" className="w-16" />
-    ) : (
-      <StatusToggle 
-        item={menu} 
-        statusField="useYn"
-        activeLabel="사용"
-        inactiveLabel="미사용"
-        clickable={true}
-        size="sm"
-        iconMode={false}
-        onToggle={handleToggleUseYn}
-        width={70}
-        tooltip="사용 여부 변경"
-      />
-    );
-  };
-
-  // 메뉴 노출여부(expsrYn) 렌더링 함수
-  const renderMenuExposure = (item: TreeItem<Menu>) => {
-    const menu = item.data!;
-    const isLoading = isFieldLoading(menu.menuSn, 'expsrYn');
-    
-    return isLoading ? (
-      <Spinner size="sm" color="primary" className="w-16" />
-    ) : (
-      <StatusToggle 
-        item={menu} 
-        statusField="expsrYn"
-        activeLabel="노출"
-        inactiveLabel="비노출"
-        clickable={true}
-        size="sm"
-        iconMode={false}
-        width={70}
-        tooltip="노출 여부 변경"
-        onToggle={handleToggleExpsrYn}
-      />
-    );
-  };
+  }, [goToShow, goToEdit]);
 
   // 트리 컬럼 정의
   const treeColumns = useMemo<TreeColumn<Menu>[]>(() => [
@@ -529,7 +529,7 @@ function MenuListPage() {
       width: 100,
       renderCell: renderMenuActions
     }
-  ], [fieldLoading]); // fieldLoading이 변경될 때 컬럼 정의도 다시 생성
+  ], [renderMenuStatus, renderMenuExposure, renderMenuActions]); // 렌더링 함수가 변경될 때 컬럼 정의도 다시 생성
 
   // 탭 클릭 핸들러
   const handleSiteIdTabClick = (tabId: string) => {

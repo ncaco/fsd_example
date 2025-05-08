@@ -143,4 +143,29 @@ public class V1_MenuService {
     public void setExpsrYn(Integer menuSn, String expsrYn) {
         menuRepository.setExpsrYn(menuSn, expsrYn);
     }   
+
+    /**
+     * 메뉴 이동
+     */
+    @Transactional
+    public void moveMenu(Integer menuSn, Integer menuUpSn, Integer sortSn) {
+        LOGGER.info("메뉴 이동 시작 - 메뉴 ID: {}, 상위 메뉴 ID: {}, 정렬 순서: {}", menuSn, menuUpSn, sortSn);
+        
+        // 이동할 메뉴 가져오기
+        Menu menu = menuRepository.findById(menuSn).orElseThrow(() -> 
+            new RuntimeException("이동할 메뉴를 찾을 수 없습니다. ID: " + menuSn));
+        
+        // 메뉴 이동 처리
+        menu.setMenuUpSn(menuUpSn);
+        menu.setSortSn(sortSn);
+        
+        // 같은 부모 아래 있는 다른 메뉴들의 순서도 조정
+        menuRepository.adjustMenuOrder(menuUpSn, menuSn, sortSn);
+        
+        // 변경된 메뉴 저장
+        menuRepository.save(menu);
+        
+        LOGGER.info("메뉴 이동 완료 - 메뉴: {}, 새 상위 메뉴 ID: {}, 새 정렬 순서: {}", 
+            menu.getMenuNm(), menuUpSn, sortSn);
+    }
 }
