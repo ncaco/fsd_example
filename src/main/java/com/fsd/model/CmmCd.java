@@ -24,7 +24,7 @@ public class CmmCd {
     }
 
     @Id
-    @Column(name = "UP_CMM_CD", length = 4, nullable = false)
+    @Column(name = "UP_CMM_CD", length = 4, nullable = true)
     private String upCmmCd; // 상위공통코드
 
     @Id

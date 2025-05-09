@@ -33,3 +33,34 @@ INSERT INTO TB_MENU (
 ; 
 
 
+-- 공통코드(CmmCd) 데이터 입력
+INSERT INTO TB_CMM_CD (
+    UP_CMM_CD,      -- 상위공통코드
+    CMM_CD,         -- 공통코드
+    CMM_CD_NM,      -- 공통코드명
+    SORT_SN,        -- 정렬순서
+    USE_YN,         -- 사용여부
+    ABBR_NM,        -- 약어명
+    USE_BGNG_YMD,   -- 사용시작일시
+    USE_END_YMD,    -- 사용종료일시
+    RGTR_ID,        -- 등록자ID
+    REG_DT,         -- 등록일시
+    MDFR_ID,        -- 수정자ID
+    MDFCN_DT        -- 수정일시
+) VALUES
+('ROOT', 'U001', '메뉴구분코드', 1, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL),
+('U001', 'C001', '프로그램', 1, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL),
+('U001', 'C002', '게시판', 2, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL),
+('U001', 'C003', '콘텐츠', 3, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL),
+('U001', 'C004', '링크', 4, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL)
+,('ROOT', 'U002', '메뉴위치코드', 1, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL)
+,('U002', 'C001', 'TOP', 1, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL)
+,('U002', 'C002', 'LEFT', 2, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL)
+,('U002', 'C003', 'RIGHT', 3, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL)
+,('U002', 'C004', 'BOTTOM', 4, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL)
+,('ROOT', 'U003', '모바일위치코드', 1, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL)
+,('U003', 'C001', '첫번째 메뉴', 1, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL)
+,('U003', 'C002', '두번째 메뉴', 2, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL)
+,('U003', 'C003', '세번째 메뉴', 3, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL)
+,('U003', 'C004', '네번째 메뉴', 4, 'Y', NULL, NULL, NULL, 'admin', CURRENT_TIMESTAMP, NULL, NULL)
+;
