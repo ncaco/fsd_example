@@ -8,7 +8,7 @@ interface PageHeaderProps {
     label: string;
     onClick: () => void;
     variant?: 'primary' | 'secondary' | 'success' | 'danger';
-    icon?: 'plus' | 'edit' | 'delete' | 'search' | 'none';
+    icon?: 'plus' | 'edit' | 'delete' | 'search' | 'none' | 'list';
     size?: 'small' | 'medium' | 'large';
   }[];
 }

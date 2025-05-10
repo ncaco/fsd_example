@@ -4,7 +4,7 @@ interface TopButtonProps {
   onClick: () => void;
   label?: string;
   variant?: 'primary' | 'secondary' | 'success' | 'danger';
-  icon?: 'plus' | 'edit' | 'delete' | 'search' | 'menu' | 'user' | 'mypage' | 'favorite' | 'home' | 'logout' | 'setting' | 'example' | 'start' | 'dashboard' | 'default' | 'none';
+  icon?: 'plus' | 'edit' | 'delete' | 'search' | 'menu' | 'user' | 'mypage' | 'favorite' | 'home' | 'logout' | 'setting' | 'example' | 'start' | 'dashboard' | 'default' | 'none' | 'list';
   size?: 'small' | 'medium' | 'large';
 }
 

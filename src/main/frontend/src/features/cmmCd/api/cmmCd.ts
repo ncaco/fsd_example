@@ -7,7 +7,7 @@ export const cmmCdApi = {
      * @returns 공통코드 목록
      */
     getAllCmmCds: async (): Promise<CmmCd[]> => {
-        const response = await apiInstance.get('/api/a/cmmCd');
+        const response = await apiInstance.get('/a/cmmCd');
         return response.data.data;
     },
 
@@ -16,7 +16,7 @@ export const cmmCdApi = {
      * @returns 사용 중인 공통코드 목록
      */
     getActiveCmmCds: async (): Promise<CmmCd[]> => {
-        const response = await apiInstance.get('/api/a/cmmCd/active');
+        const response = await apiInstance.get('/a/cmmCd/active');
         return response.data.data;
     },
 
@@ -25,7 +25,7 @@ export const cmmCdApi = {
      * @returns 상위 공통코드 목록
      */
     getDistinctUpCmmCd: async (): Promise<string[]> => {
-        const response = await apiInstance.get('/api/a/cmmCd/upCmmCd');
+        const response = await apiInstance.get('/a/cmmCd/upCmmCd');
         return response.data.data;
     },
 
@@ -35,7 +35,7 @@ export const cmmCdApi = {
      * @returns 하위 공통코드 목록
      */
     getCmmCdsByUpCmmCd: async (upCmmCd: string): Promise<CmmCd[]> => {
-        const response = await apiInstance.get(`/api/a/cmmCd/${upCmmCd}`);
+        const response = await apiInstance.get(`/a/cmmCd/${upCmmCd}`);
         return response.data.data;
     },
 
@@ -46,7 +46,7 @@ export const cmmCdApi = {
      * @returns 공통코드 정보
      */
     getCmmCdByUpCmmCdAndCmmCd: async (upCmmCd: string, cmmCd: string): Promise<CmmCd> => {
-        const response = await apiInstance.get(`/api/a/cmmCd/${upCmmCd}/${cmmCd}`);
+        const response = await apiInstance.get(`/a/cmmCd/${upCmmCd}/${cmmCd}`);
         return response.data.data;
     },
 
@@ -56,7 +56,7 @@ export const cmmCdApi = {
      */
     getCmmCdsByGroup: async (): Promise<CmmCdGroupMap> => {
         try {
-            const response = await apiInstance.get(`/api/a/cmmCd/group`);
+            const response = await apiInstance.get(`/a/cmmCd/group`);
             return response.data.data;
         } catch (error) {
             console.error('공통코드 그룹별 조회 API 호출 오류:', error);
@@ -70,7 +70,7 @@ export const cmmCdApi = {
      * @returns 생성된 공통코드 정보
      */
     createCmmCd: async (cmmCd: CmmCd): Promise<CmmCd> => {
-        const response = await apiInstance.post('/api/a/cmmCd', cmmCd);
+        const response = await apiInstance.post('/a/cmmCd', cmmCd);
         return response.data.data;
     },
 
@@ -82,7 +82,7 @@ export const cmmCdApi = {
      * @returns 수정된 공통코드 정보
      */
     updateCmmCd: async (upCmmCd: string, cmmCd: string, cmmCdDetails: CmmCd): Promise<CmmCd> => {
-        const response = await apiInstance.put(`/api/a/cmmCd/${upCmmCd}/${cmmCd}`, cmmCdDetails);
+        const response = await apiInstance.put(`/a/cmmCd/${upCmmCd}/${cmmCd}`, cmmCdDetails);
         return response.data.data;
     },
 
@@ -92,6 +92,6 @@ export const cmmCdApi = {
      * @param cmmCd 공통코드
      */
     deleteCmmCd: async (upCmmCd: string, cmmCd: string): Promise<void> => {
-        await apiInstance.delete(`/api/a/cmmCd/${upCmmCd}/${cmmCd}`);
+        await apiInstance.delete(`/a/cmmCd/${upCmmCd}/${cmmCd}`);
     }
 }; 

@@ -14,6 +14,7 @@ import { IconButton } from '@/shared/ui/button';
 
 // 레이아웃 컴포넌트 불러오기
 import { PageContainer } from '@/widgets/layouts/ALayout';
+import { PAGE_MODES } from '@/shared/lib/utils/routingUtils';
 
 // 더미 데이터 추가 (API 통신 실패시 사용)
 const dummyMenuList: Menu[] = [
@@ -227,15 +228,15 @@ function MenuListPage() {
   };
   
   const goToCreate = () => {
-    navigate('/a/menu', { state: { pgMode: 'create' } });
+    navigate('/a/menu', { state: { pgMode: PAGE_MODES.CREATE } });
   };
   
   const goToEdit = useCallback((sn: number) => {
-    navigate('/a/menu', { state: { pgMode: 'edit', sn } });
+    navigate('/a/menu', { state: { pgMode: PAGE_MODES.EDIT, sn } });
   }, [navigate]);
   
   const goToShow = useCallback((sn: number) => {
-    navigate('/a/menu', { state: { pgMode: 'show', sn } });
+    navigate('/a/menu', { state: { pgMode: PAGE_MODES.SHOW, sn } });
   }, [navigate]);
   
   // 메뉴를 TreeItem으로 변환
