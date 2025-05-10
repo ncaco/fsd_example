@@ -11,18 +11,18 @@ interface AuthState {
   error: string | null;
 }
 
-// 로컬 스토리지에서 사용자 정보 가져오기
+// 세션 스토리지에서 사용자 정보 가져오기
 const getUserFromStorage = (): User | null => {
   try {
-    const user = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
+    const user = sessionStorage.getItem('user');
+    const token = sessionStorage.getItem('token');
     // 토큰과 유저 정보가 모두 있어야 유효한 것으로 간주
     if (user && token) {
       return JSON.parse(user);
     }
     return null;
   } catch (e) {
-    console.error('Failed to parse user from localStorage', e);
+    console.error('Failed to parse user from sessionStorage', e);
     return null;
   }
 };
@@ -55,16 +55,16 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await authApi.logout();
-      // 명시적으로 로컬 스토리지 정리
-      localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('user');
+      // 명시적으로 세션 스토리지 정리
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('refreshToken');
+      sessionStorage.removeItem('user');
       return;
     } catch (error) {
-      // 에러가 발생해도 로컬 스토리지 정리
-      localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('user');
+      // 에러가 발생해도 세션 스토리지 정리
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('refreshToken');
+      sessionStorage.removeItem('user');
       
       const axiosError = error as AxiosError<{ message: string }>;
       return rejectWithValue(axiosError.response?.data?.message || '로그아웃에 실패했습니다.');
@@ -78,7 +78,7 @@ export const getSessionInfo = createAsyncThunk<User>(
   async (_, { rejectWithValue }) => {
     try {
       // 토큰이 없으면 API 호출 자체를 하지 않음
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       if (!token) {
         return rejectWithValue('인증 정보가 없습니다.');
       }
@@ -86,10 +86,10 @@ export const getSessionInfo = createAsyncThunk<User>(
       const response = await authApi.sessionInfo();
       return response;
     } catch (error) {
-      // 세션 정보 가져오기 실패 시 로컬 스토리지 초기화
-      localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('user');
+      // 세션 정보 가져오기 실패 시 세션 스토리지 초기화
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('refreshToken');
+      sessionStorage.removeItem('user');
       
       const axiosError = error as AxiosError<{ message: string }>;
       return rejectWithValue(axiosError.response?.data?.message || '세션 정보를 가져오는데 실패했습니다.');
@@ -110,10 +110,10 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = null;
       state.error = null;
-      // 로컬 스토리지 정리
-      localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('user');
+      // 세션 스토리지 정리
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('refreshToken');
+      sessionStorage.removeItem('user');
     }
   },
   extraReducers: (builder) => {

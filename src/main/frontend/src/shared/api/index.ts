@@ -13,7 +13,7 @@ export const apiInstance = axios.create({
 // 요청 인터셉터 추가
 apiInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -32,7 +32,7 @@ apiInstance.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       // 토큰이 만료되었거나 유효하지 않은 경우 로그인 페이지로 리다이렉트
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
       window.location.href = '/a/login';
     }
     return Promise.reject(error);

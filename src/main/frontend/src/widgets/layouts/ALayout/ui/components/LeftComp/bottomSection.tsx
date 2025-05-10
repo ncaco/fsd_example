@@ -25,10 +25,10 @@ export const BottomSection = ({ menuList, isCollapsed, loading }: BottomSectionP
             // Redux 액션 디스패치
             await dispatch(logout()).unwrap();
 
-            // 로컬 스토리지에서 직접 세션 정보 삭제 (중복 삭제로 확실하게)
-            localStorage.removeItem('token');
-            localStorage.removeItem('refreshToken');
-            localStorage.removeItem('user');
+            // 세션 스토리지에서 직접 세션 정보 삭제 (중복 삭제로 확실하게)
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('refreshToken');
+            sessionStorage.removeItem('user');
 
             CustomToast.success('로그아웃 되었습니다.');
 

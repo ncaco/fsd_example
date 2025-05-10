@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fsd.api.a.auth.service.AuthService;
 import com.fsd.model.User;
@@ -41,7 +42,9 @@ public class A_LoginController {
     public ResponseEntity<User> login(@RequestBody User loginRequest, HttpSession session) {
         logger.info("로그인 요청: {}, 세션 ID: {}", loginRequest.getEml(), session.getId());
         User user = new User();
+        
         try {
+            // 로그인 처리
             user = authService.login(loginRequest.getEml(), loginRequest.getPswd());
             
             // 액세스 토큰 생성 
@@ -66,12 +69,22 @@ public class A_LoginController {
             SessionUtil.loginDataSetSession(user, 30);
             
             logger.info("세션 정보 저장 완료: 세션 ID: {}, 사용자: {}", SessionUtil.getASn(), SessionUtil.getAEml());
-            
-            logger.info("로그인 성공: {}", user);
+            logger.info("로그인 성공: {}", user.getEml());
 
             return ResponseEntity.ok(user);
+        } catch (ResponseStatusException e) {
+            // 인증 오류 (이메일/비밀번호 불일치) - 스택트레이스 없이 간결하게 로깅
+            logger.warn("로그인 실패 - {}: {}", e.getStatusCode(), e.getReason());
+            // 토큰 정보를 null로 설정
+            user.setToken(null);
+            user.setRefreshToken(null);
+            return ResponseEntity.ok(user);
         } catch (Exception e) {
-            logger.error("로그인 에러: {}", e.getMessage(), e);
+            // 예상치 못한 오류 - 디버깅을 위해 간단한 메시지만 로깅
+            logger.error("로그인 처리 중 오류 발생: {}", e.getMessage());
+            // 토큰 정보를 null로 설정
+            user.setToken(null);
+            user.setRefreshToken(null);
             return ResponseEntity.ok(user);
         }
     }
@@ -85,6 +98,7 @@ public class A_LoginController {
             SessionUtil.removeSession_A(request);
             return ResponseEntity.ok(user);
         } catch (Exception e) {
+            logger.warn("로그아웃 처리 중 오류: {}", e.getMessage());
             return ResponseEntity.ok(user);
         }
     }
